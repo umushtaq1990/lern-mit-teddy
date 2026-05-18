@@ -61,9 +61,11 @@ class LangGraphStream(llm.LLMStream):
         tools: list[FunctionTool | RawFunctionTool],
         conn_options: APIConnectOptions,
         graph: Pregel,
+        langfuse_handler: Any = None,
     ):
         super().__init__(llm, chat_ctx=chat_ctx, tools=tools, conn_options=conn_options)
         self._graph = graph
+        self._langfuse_handler = langfuse_handler
 
     async def _run(self):
         """Consume LangGraph stream and emit LiveKit ChatChunks."""
@@ -86,10 +88,16 @@ class LangGraphStream(llm.LLMStream):
             input_state = state
 
         try:
+            # Merge Langfuse callback into graph config so every LLM call is traced
+            run_config = dict(self._llm._config or {})
+            if self._langfuse_handler is not None:
+                existing = list(run_config.get("callbacks", []))
+                run_config["callbacks"] = [self._langfuse_handler] + existing
+
             # LangGraph astream with explicit modes (messages, custom)
             # https://github.com/langchain-ai/langgraph/blob/main/docs/docs/how-tos/streaming.md
             async for mode, data in self._graph.astream(
-                input_state, config=self._llm._config, stream_mode=["messages", "custom"]
+                input_state, config=run_config, stream_mode=["messages", "custom"]
             ):
                 if mode == "messages":
                     if data and len(data) > 0:
@@ -297,10 +305,16 @@ class LangGraphAdapter(llm.LLM):
     See LiveKit LLM.chat signature and LLMStream contract in the docs.
     """
 
-    def __init__(self, graph: Any, config: dict[str, Any] | None = None):
+    def __init__(
+        self,
+        graph: Any,
+        config: dict[str, Any] | None = None,
+        langfuse_handler: Any = None,
+    ):
         super().__init__()
         self._graph = graph
         self._config = config
+        self._langfuse_handler = langfuse_handler
 
     def chat(
         self,
@@ -324,4 +338,5 @@ class LangGraphAdapter(llm.LLM):
             tools=tools or [],
             conn_options=conn_options,
             graph=self._graph,
+            langfuse_handler=self._langfuse_handler,
         )

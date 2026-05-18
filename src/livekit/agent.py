@@ -6,7 +6,10 @@ from dotenv import load_dotenv
 
 from langgraph.pregel.remote import RemoteGraph
 from livekit.agents import Agent, AgentSession, get_job_context
-from livekit.plugins import deepgram, silero, hume
+from livekit.plugins import silero, hume
+from livekit.agents import tts as tts_base
+from .stt import FasterWhisperSTT
+from .tracing import VoiceSessionTracer
 from livekit.plugins.turn_detector.english import EnglishModel
 from livekit.agents import (
     AutoSubscribe,
@@ -322,6 +325,31 @@ class VisionAssistant(Agent):
         self._tasks.clear()
 
 
+class TracedTTS(tts_base.TTS):
+    """Thin wrapper around any LiveKit TTS that records a Langfuse span per synthesis call."""
+
+    def __init__(self, inner: tts_base.TTS, tracer: VoiceSessionTracer, model_name: str = "hume") -> None:
+        super().__init__(capabilities=inner.capabilities)
+        self._inner = inner
+        self._tracer = tracer
+        self._model_name = model_name
+
+    def synthesize(self, text: str, **kwargs) -> tts_base.SynthesizeStream:
+        span = self._tracer.tts_span(text=text, model=self._model_name)
+        stream = self._inner.synthesize(text, **kwargs)
+        # End the span once the stream closes
+        original_aclose = stream.aclose
+
+        async def _aclose_and_end():
+            try:
+                await original_aclose()
+            finally:
+                span.end(output={"char_count": len(text)})
+
+        stream.aclose = _aclose_and_end
+        return stream
+
+
 def prewarm(proc: JobProcess):
     """Preload VAD model to reduce cold-start latency."""
     proc.userdata["vad"] = silero.VAD.load()
@@ -358,6 +386,18 @@ async def entrypoint(ctx: JobContext):
         f"starting vision-enabled voice assistant for participant {participant.identity} (thread ID: {thread_id or 'new'})"
     )
 
+    # One Langfuse trace per voice session — links STT, LLM, and TTS spans together
+    llm_model = os.getenv("LLM_MODEL", "gpt-4.1-nano")
+    tracer = VoiceSessionTracer(
+        session_id=ctx.room.name,
+        room=ctx.room.name,
+        participant=participant.identity,
+        thread_id=thread_id,
+        stt_model="faster-whisper/base",
+        llm_model=llm_model,
+        tts_model="hume",
+    )
+
     # LangGraph dev server URL (override via LANGGRAPH_URL)
     langgraph_url = os.getenv("LANGGRAPH_URL", "http://localhost:2024")
 
@@ -365,16 +405,28 @@ async def entrypoint(ctx: JobContext):
     # RemoteGraph: https://github.com/langchain-ai/langgraph/blob/main/docs/docs/how-tos/use-remote-graph.md
     graph = RemoteGraph("todo_agent", url=langgraph_url)
 
+    # Build pipeline components — tracer is threaded through STT and LLM
+    stt_component = FasterWhisperSTT(
+        model="base",
+        language="en",
+        device="cpu",
+        compute_type="int8",
+        tracer=tracer,
+    )
+    tts_component = TracedTTS(hume.TTS(), tracer, model_name="hume")
+    llm_component = LangGraphAdapter(
+        graph,
+        config={"configurable": {"thread_id": thread_id}} if thread_id else {},
+        langfuse_handler=tracer.get_langchain_handler(),
+    )
+
     # Create the agent session with video processing enabled
     # AgentSession wiring & options: https://github.com/livekit/agents/blob/main/README.md#_snippet_1
     session = AgentSession(
         vad=ctx.proc.userdata["vad"],
-        stt=deepgram.STT(model="nova-3", language="en-US", interim_results=True),
-        llm=LangGraphAdapter(
-            graph,
-            config={"configurable": {"thread_id": thread_id}} if thread_id else {},
-        ),
-        tts=hume.TTS(),
+        stt=stt_component,
+        llm=llm_component,
+        tts=tts_component,
         turn_detection=EnglishModel(),
         min_endpointing_delay=0.8,
         max_endpointing_delay=6.0,
@@ -413,6 +465,8 @@ async def entrypoint(ctx: JobContext):
         # Clean up video processing resources
         if hasattr(session, 'agent') and hasattr(session.agent, 'cleanup'):
             await session.agent.cleanup()
+        # Flush any buffered Langfuse events before the process exits
+        tracer.flush()
 
 
 if __name__ == "__main__":
