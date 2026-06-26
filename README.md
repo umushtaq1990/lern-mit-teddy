@@ -1,20 +1,40 @@
-# LinguaAI — Voice Language Learning Agent
+# Lern mit Teddy 🐻
 
-Real-time AI language coach built on LiveKit and LangGraph. Speak naturally in your target language — LinguaAI listens, corrects gently, and keeps the conversation flowing.
+> **Version 1.0.0** — A real-time AI voice companion that teaches German to children through natural conversation.
 
-**Supported languages:** English · Spanish · French · German · Arabic · Chinese · Japanese · Korean · Portuguese · Italian · Dutch · Russian · Turkish · Hindi
+Teddy is a friendly 8-year-old bear who lives in the browser. Kids speak with him, he asks about their day, their favourite foods, their pets — all in German. Vocabulary cards appear automatically as topics come up, and Teddy works through the items one by one with simple questions.
 
-**AI models:** OpenAI (GPT) · Gemini Live · Custom / OpenAI Realtime
+**Built on:** LiveKit · LangGraph · OpenAI · faster-whisper
+
+---
+
+## Credits & Origin
+
+This project is based on **[langgraph-voice-call-agent](https://github.com/ahmad2b/langgraph-voice-call-agent)** by [@ahmad2b](https://github.com/ahmad2b) — a brilliant starting point for building voice agents with LangGraph and LiveKit.
+
+**What was added / changed in Lern mit Teddy:**
+
+| Feature | Original | Lern mit Teddy |
+|---------|----------|----------------|
+| Purpose | General voice chatbot demo | German learning for children |
+| Agent persona | Generic assistant | Teddy — an 8-year-old bear |
+| Prompts | Single English prompt | Per-language prompt files (`de`, `en`, `ar`, `hi`) |
+| Vocabulary cards | — | 16 interactive topic sets with article gender colours |
+| Item-by-item drilling | — | Teddy asks about each card item with follow-ups |
+| Animated character | — | SVG bear with lip-sync and blinking |
+| Feedback modal | — | Thumbs up/down → Langfuse score |
+| Language system message | Agent instructions | Stripped from adapter; LangGraph owns all system prompts |
+| NVIDIA / Cartesia backends | Included | Removed (not needed) |
 
 ---
 
 ## How it works
 
-1. Open the browser UI and pick the language you want to learn and your native language.
-2. Select an AI model and click **🎙️ Let's Chat!**
-3. LinguaAI greets you in your target language, assesses your level, and starts a natural conversation.
-4. Mistakes are corrected kindly — the coach models the right form without interrupting the flow.
-5. If you get stuck, speak or type in your native language and the coach will explain, then guide you back.
+1. Open the browser UI at `http://localhost:8080`
+2. Select **language to learn** and **your native language**
+3. Click **Let's Chat!** — Teddy greets you in German immediately
+4. Vocabulary cards appear as Teddy talks about a topic
+5. Teddy asks questions about each card item, one at a time
 
 ---
 
@@ -22,332 +42,185 @@ Real-time AI language coach built on LiveKit and LangGraph. Speak naturally in y
 
 ```
 Browser (http://localhost:8080)
-        │  language + native_language + model selection
-        │  WebRTC audio / video
+        │  language + native_language → room metadata
+        │  WebRTC audio
         ▼
 LiveKit Server  (Docker · port 7880)
         │
-        │  dispatches room with language metadata
         ▼
 LiveKit Voice Worker  (src/livekit/agent.py)
         │
-        ├── STT  faster-whisper (on-device, multilingual)
-        │        mic audio → text in target language
+        ├── STT  faster-whisper  (on-device, multilingual)
         │
-        ├── LLM  LangGraph Adapter  (src/livekit/adapter/langgraph.py)
-        │        │  passes language + native_language in config
-        │        ▼
-        │    LangGraph Server (port 2024) → src/langgraph/agent.py
-        │        LinguaAI coach · dynamic prompt per language pair
-        │        Safety filters · no tools (pure conversation)
+        ├── LLM  LangGraph Adapter  →  src/langgraph/agent.py
+        │         per-language prompt from src/langgraph/prompts/
+        │         topic tracking · question deduplication
         │
-        └── TTS  Hume / Kokoro (local) / Cartesia / OpenAI
-                 coach speech → plays in browser
+        └── TTS  OpenAI TTS / Kokoro (local) / Hume / EdgeTTS
 ```
 
 **Key files:**
 
 | File | Responsibility |
 |------|---------------|
-| `src/langgraph/agent.py` | LinguaAI coach — dynamic prompt, language pair, safety rules |
-| `src/livekit/agent.py` | Voice worker — wires STT + LangGraph + TTS, multilingual greetings |
-| `src/livekit/config.py` | Config — `language`, `native_language`, voice mode, STT/TTS settings |
-| `src/livekit/adapter/langgraph.py` | Bridges LiveKit ↔ LangGraph streaming |
-| `src/livekit/stt/faster_whisper_stt.py` | On-device multilingual speech-to-text |
+| `src/langgraph/agent.py` | LangGraph agent — dynamic prompt, topic tracking |
+| `src/langgraph/prompts/de.py` | German system prompt written in German |
+| `src/livekit/agent.py` | Voice worker — STT → LangGraph → TTS pipeline |
+| `src/livekit/adapter/langgraph.py` | LiveKit ↔ LangGraph streaming bridge |
+| `src/livekit/config.py` | Per-call config from room metadata |
 | `src/livekit/providers.py` | TTS + realtime LLM factories |
-| `src/livekit/tracing.py` | Optional Langfuse observability |
-| `src/frontend/` | FastAPI server + LinguaAI browser UI |
-
-All four processes must run simultaneously: LiveKit (Docker), LangGraph server, voice worker, and frontend.
-
----
-
-## Prerequisites
-
-| Tool | Version |
-|------|---------|
-| Python + `uv` | 3.12+ |
-| Docker Desktop | any recent |
-| OpenAI API key | required for pipeline / realtime modes |
+| `src/livekit/vision.py` | Optional live video frame injection |
+| `src/frontend/` | FastAPI server + browser UI |
 
 ---
 
 ## Quick Start
 
-### 1. Install dependencies
+### 1. Clone & install
 
 ```bash
-git clone https://github.com/ahmad2b/langgraph-voice-call-agent.git
-cd langgraph-voice-call-agent
+git clone https://github.com/umushtaq1990/lern-mit-teddy.git
+cd lern-mit-teddy
 uv sync
 ```
 
 ### 2. Configure environment
 
-Create a `.env` file in the project root:
+```bash
+cp .env.example .env
+# Edit .env and fill in your API keys
+```
+
+Minimum required keys:
 
 ```env
-# LiveKit
-LIVEKIT_URL=ws://localhost:7880
-LIVEKIT_API_KEY=devkey
-LIVEKIT_API_SECRET=secret
-
-# LLM
-OPENAI_API_KEY=your-openai-key
-LLM_MODEL=gpt-4.1-nano
-
-# Default language to learn (overridable from UI per session)
-LANGUAGE=es   # en | es | fr | de | ar | zh | ja | ko | pt | it | nl | ru | tr | hi
-
-# Voice mode default (overridable from UI per session)
-VOICE_MODE=pipeline   # pipeline | openai_realtime | gemini_live | ultravox
-
-# STT — on-device faster-whisper
-STT_MODEL=base   # tiny | base | small | medium | large-v3
-
-# TTS — pick one provider
-TTS_PROVIDER=openai
-TTS_BASE_URL=http://localhost:8880/v1   # Kokoro local (no API key needed)
-TTS_VOICE=af_sky
-
-# LangGraph
-LANGGRAPH_URL=http://localhost:2024
+LIVEKIT_URL=wss://your-project.livekit.cloud
+LIVEKIT_API_KEY=your_livekit_api_key
+LIVEKIT_API_SECRET=your_livekit_api_secret
+OPENAI_API_KEY=your_openai_api_key
+LANGUAGE=de
 ```
 
-### 3. Download VAD and turn-detector models
+### 3. Start LiveKit (Docker)
 
 ```bash
-uv run -m src.livekit.agent download-files
-```
-
-### 4. Start Docker services
-
-```bash
-# LiveKit media server
 docker compose up -d
-
-# Kokoro TTS (local, no API key) — skip if using Hume or Cartesia
-docker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest
 ```
 
-If the containers already exist from a previous run:
+### 4. Download VAD model (first run only)
 
 ```bash
-docker start livekit-server
-docker start <kokoro-container-name>
+uv run python -m src.livekit.agent download-files
 ```
 
-### 5. Start LangGraph server
+### 5. Start voice worker
 
 ```bash
-uv run langgraph dev
+uv run python -m src.livekit.agent dev
 ```
 
-Wait until you see `Ready` before starting the voice worker.
-
-### 6. Start voice worker
+### 6. Start frontend
 
 ```bash
-uv run -m src.livekit.agent dev
-```
-
-### 7. Start frontend
-
-```bash
-uv run python -m src.frontend
+uv run voice-frontend
 # Open http://127.0.0.1:8080
 ```
 
-### 8. Start a lesson
-
-1. Select **I want to learn** — e.g. Spanish
-2. Select **My native language** — e.g. English
-3. Select **AI Model** — OpenAI (GPT), Gemini, or Custom
-4. Click **🎙️ Let's Chat!**
-5. Speak — LinguaAI will greet you in Spanish and start the lesson.
+> **Note:** No separate LangGraph server needed — the LangGraph agent runs in-process inside the voice worker.
 
 ---
 
-## Language Selection
+## Language Prompts
 
-Language is selected in the UI per session and passed as room metadata to the voice worker. It controls:
+Each supported language has its own prompt file written **in that language** so the LLM starts in the right language context from the first token:
 
-| Component | Effect |
-|-----------|--------|
-| STT (faster-whisper) | Transcribes speech in the target language |
-| LLM system prompt | Coach responds in the target language; explains in native language when needed |
-| TTS | Synthesises speech in the target language |
-| Greeting | Opening message is in the target language |
-| Turn detector | English turn-detector used for English; VAD-based endpointing for other languages |
+| File | Language | Status |
+|------|----------|--------|
+| `src/langgraph/prompts/de.py` | German | ✅ Full |
+| `src/langgraph/prompts/en.py` | English | ✅ Full |
+| `src/langgraph/prompts/ar.py` | Arabic | ✅ Full |
+| `src/langgraph/prompts/hi.py` | Hindi | ✅ Full |
 
-**Supported language codes:**
-
-| Code | Language | Code | Language |
-|------|----------|------|----------|
-| `en` | English  | `ko` | Korean   |
-| `es` | Spanish  | `pt` | Portuguese |
-| `fr` | French   | `it` | Italian  |
-| `de` | German   | `nl` | Dutch    |
-| `ar` | Arabic   | `ru` | Russian  |
-| `zh` | Chinese  | `tr` | Turkish  |
-| `ja` | Japanese | `hi` | Hindi    |
-
-You can also set a server-wide default in `.env`:
-
-```env
-LANGUAGE=fr   # all sessions default to French
-```
+Other language codes fall back to English. Add a new `xx.py` to support more languages.
 
 ---
 
-## AI Models (Voice Modes)
+## Vocabulary Sets
 
-| UI Label | `VOICE_MODE` | How it works | Requires |
-|----------|-------------|--------------|---------|
-| OpenAI (GPT) | `pipeline` | STT → LangGraph (GPT) → TTS | `OPENAI_API_KEY` |
-| Gemini (Google) | `gemini_live` | Google Gemini Realtime end-to-end | `GOOGLE_API_KEY` |
-| Custom Model | `openai_realtime` | OpenAI Realtime API streaming | `OPENAI_API_KEY` |
-| Ultravox | `ultravox` | Ultravox Realtime end-to-end | `ULTRAVOX_API_KEY` |
+16 topic sets built into the UI — cards appear automatically when Teddy mentions a related word:
 
-Pipeline mode (OpenAI GPT) is recommended — it gives full LangGraph control and the richest language coaching experience.
+| Set | German Title | Items |
+|-----|-------------|-------|
+| Breakfast | Frühstück | Milch, Eier, Brot, Butter … |
+| Fruits | Obst | Apfel, Banane, Orange … |
+| Vegetables | Gemüse | Karotte, Tomate, Gurke … |
+| Animals | Tiere | Hund, Katze, Vogel … |
+| Family | Familie | Mama, Papa, Bruder … |
+| School | Schule | Buch, Stift, Tasche … |
+| Sports | Sport & Spiele | Fußball, Schwimmen … |
+| Hobbies | Hobbys | Lesen, Malen, Singen … |
+| Drinks | Getränke | Wasser, Milch, Saft … |
+| Ice Cream | Eis | Schokolade, Vanille … |
+| Seasons | Jahreszeiten | Frühling, Sommer … |
+| Colours | Farben | Rot, Blau, Grün … |
+| Jobs | Berufe | Arzt, Lehrer, Bäcker … |
+| Superpowers | Superkräfte | Fliegen, Unsichtbarkeit … |
+| Favourite Food | Lieblingsessen | Pizza, Nudeln, Suppe … |
+| Toys | Spielzeug | Ball, Puppe, Auto … |
+
+Article gender is colour-coded on every card: **blue** = der, **pink** = die, **green** = das.
 
 ---
 
 ## TTS Options
 
-**Kokoro** (local, no API key — recommended for privacy):
+**OpenAI TTS** (default, recommended):
+```env
+TTS_PROVIDER=openai
+TTS_MODEL=tts-1-hd
+TTS_VOICE=nova
+```
 
+**Kokoro** (local, free, no API key):
 ```bash
 docker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest
 ```
-
 ```env
 TTS_PROVIDER=openai
 TTS_BASE_URL=http://localhost:8880/v1
-TTS_VOICE=af_sky
+TTS_VOICE=ef_dora   # German female voice
 ```
 
-**Hume**:
-
+**Hume AI** (expressive voice):
 ```env
 TTS_PROVIDER=hume
-HUME_API_KEY=your-key
+HUME_API_KEY=your_key
+HUME_SECRET_KEY=your_secret
+HUME_CONFIG_ID=your_config_id
 ```
 
-**Cartesia**:
-
+**Microsoft Edge TTS** (free, no key):
 ```env
-TTS_PROVIDER=cartesia
-CARTESIA_API_KEY=your-key
-```
-
----
-
-## Content Safety
-
-LinguaAI enforces strict content rules at the prompt level:
-
-- Refuses sexual, violent, abusive, or hateful content
-- Refuses harmful role-play scenarios and suggests appropriate alternatives
-- Stays focused on language learning — redirects off-topic conversations
-- Keeps every session positive, respectful, and educational
-
----
-
-## Full Environment Variable Reference
-
-```env
-# LiveKit
-LIVEKIT_URL=ws://localhost:7880
-LIVEKIT_API_KEY=devkey
-LIVEKIT_API_SECRET=secret
-
-# LLM
-OPENAI_API_KEY=
-LLM_MODEL=gpt-4.1-nano
-
-# Language defaults (overridable per session from UI)
-LANGUAGE=en        # BCP-47 code of the language to learn
-VOICE_MODE=pipeline
-
-# STT — on-device faster-whisper
-STT_MODEL=base     # tiny | base | small | medium | large-v3
-
-# TTS
-TTS_PROVIDER=openai          # openai | hume | cartesia
-TTS_VOICE=af_sky
-TTS_BASE_URL=http://localhost:8880/v1   # Kokoro local endpoint
-TTS_API_KEY=not-needed                  # placeholder for local servers
-
-HUME_API_KEY=
-CARTESIA_API_KEY=
-
-# Realtime modes
-OPENAI_REALTIME_MODEL=gpt-4o-realtime-preview
-OPENAI_REALTIME_VOICE=alloy
-GOOGLE_API_KEY=
-GEMINI_LIVE_MODEL=gemini-3.1-flash-live-preview
-GEMINI_LIVE_VOICE=Puck
-ULTRAVOX_API_KEY=
-ULTRAVOX_MODEL=fixie-ai/ultravox
-ULTRAVOX_VOICE=Mark
-
-# LangGraph
-LANGGRAPH_URL=http://localhost:2024
-
-# Langfuse tracing (optional)
-LANGFUSE_PUBLIC_KEY=
-LANGFUSE_SECRET_KEY=
-LANGFUSE_HOST=http://localhost:3000
+TTS_PROVIDER=edge_tts
 ```
 
 ---
 
 ## Troubleshooting
 
-**`OPENAI_API_KEY` not set** — check `.env`; the key line must not start with `#`.
-
-**LangGraph `connection refused`** — start `uv run langgraph dev` before the voice worker.
-
-**VAD / turn-detector models not found:**
-
-```bash
-uv run -m src.livekit.agent download-files
-```
-
-**Kokoro TTS silent** — ensure `TTS_PROVIDER=openai` and `TTS_BASE_URL` points to the running Kokoro container.
-
-**Frontend serving old JS** — hard-refresh the browser (`Ctrl+Shift+R`) to clear the cached `app.js`.
-
-**Import errors** — always run as a module:
-
-```bash
-uv run -m src.livekit.agent dev   # correct
-python src/livekit/agent.py       # wrong
-```
-
-**Docker container name conflict:**
-
-```bash
-docker start livekit-server   # reuse existing container — no need for docker compose up
-```
-
----
-
-## LiveKit Cloud
-
-Replace local LiveKit with a cloud project:
-
-```env
-LIVEKIT_URL=wss://your-project.livekit.cloud
-LIVEKIT_API_KEY=your-api-key
-LIVEKIT_API_SECRET=your-api-secret
-```
+| Problem | Fix |
+|---------|-----|
+| Teddy speaks English instead of German | Check `LANGUAGE=de` in `.env`; restart voice worker |
+| Frontend shows old English UI | Open an Incognito window or clear site data in DevTools |
+| `connection refused` on LiveKit | Run `docker compose up -d` first |
+| No audio from Teddy | Check browser microphone permissions |
+| VAD model not found | Run `uv run python -m src.livekit.agent download-files` |
 
 ---
 
 ## References
 
+- [langgraph-voice-call-agent](https://github.com/ahmad2b/langgraph-voice-call-agent) — original project by @ahmad2b
 - [LiveKit Agents](https://github.com/livekit/agents)
 - [LangGraph](https://github.com/langchain-ai/langgraph)
 - [faster-whisper](https://github.com/SYSTRAN/faster-whisper)

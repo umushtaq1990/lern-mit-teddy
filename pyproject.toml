@@ -1,7 +1,7 @@
 [project]
-name = "langgraph-voice-call-agent"
-version = "0.1.0"
-description = "A real-time voice/call AI agent that lets you talk to a LangGraph agent over LiveKit — similar to 'voice mode' experiences in ChatGPT Voice, OpenAI Realtime API sessions, and Gemini Live. This project demonstrates adapting any LangGraph agent into a full-duplex, low-latency voice assistant using LiveKit Agents."
+name = "lern-mit-teddy"
+version = "1.0.0"
+description = "Lern mit Teddy — AI German language learning voice agent for children. Teddy is a friendly bear who teaches German through natural conversation, vocabulary cards, and item-by-item drilling."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -11,9 +11,8 @@ dependencies = [
     "langgraph>=0.6.6",
     "langgraph-cli[inmem]>=0.3.8",
     "livekit>=1.0.12",
-    "livekit-agents[cartesia,openai,silero,turn-detector]~=1.2",
+    "livekit-agents[openai,silero,turn-detector]~=1.2",
     "faster-whisper>=1.0.3",
-    "livekit-plugins-cartesia>=1.2.6",
     "livekit-plugins-deepgram>=1.2.6",
     "livekit-plugins-google>=1.2.6",
     "livekit-plugins-hume>=1.2.6",
@@ -26,8 +25,6 @@ dependencies = [
     "python-dotenv>=1.1.1",
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
-    "streamlit>=1.40.0",
-    "nvidia-riva-client>=2.26.0",
     "edge-tts>=7.2.8",
 ]
 
