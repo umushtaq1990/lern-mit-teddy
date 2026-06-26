@@ -1,479 +1,296 @@
-import logging
-import os
-import asyncio
-import base64
-from dotenv import load_dotenv
+"""LiveKit voice worker entry point.
 
-from langgraph.pregel.remote import RemoteGraph
-from livekit.agents import Agent, AgentSession, get_job_context
-from livekit.plugins import silero, hume
-from livekit.agents import tts as tts_base
-from .stt import FasterWhisperSTT
-from .tracing import VoiceSessionTracer
-from livekit.plugins.turn_detector.english import EnglishModel
+Responsibilities (only):
+  1. prewarm()   — preload the VAD model before the first call.
+  2. entrypoint()— resolve per-call config, assemble AgentSession, run until teardown.
+
+All construction details live in focused modules:
+  config.py    → VoiceSettings / CallConfig
+  providers.py → create_tts / create_realtime_llm / TracedTTS
+  tracing.py   → VoiceSessionTracer / RealtimeLangfuseTracer
+  vision.py    → VisionAssistant
+"""
+
+from __future__ import annotations
+
+import asyncio
+import json
+import logging
+import uuid
+
+from dotenv import load_dotenv
 from livekit.agents import (
+    AgentSession,
     AutoSubscribe,
     JobContext,
     JobProcess,
+    RoomInputOptions,
     WorkerOptions,
     cli,
-    RoomInputOptions,
 )
-from livekit.agents.llm import ChatContext, ImageContent, ChatMessage
-from livekit import rtc
-
+from livekit.agents.voice.turn import InterruptionOptions, TurnHandlingOptions
+from livekit.plugins import deepgram as deepgram_plugin
+from livekit.plugins import silero
+from src.langgraph.agent import agent as lingua_graph
 from .adapter.langgraph import LangGraphAdapter
-
-# Turn detector models: EnglishModel (light) / MultilingualModel (heavier)
-# Ref: https://github.com/livekit/agents/blob/main/livekit-plugins/livekit-plugins-turn-detector/README.md
-# Deepgram STT / TTS: https://github.com/livekit/agents/tree/main/livekit-plugins/livekit-plugins-deepgram
+from .config import SUPPORTED_LANGUAGES, CallConfig, VoiceSettings
+from .providers import TracedTTS, create_realtime_llm, create_tts
+from .stt import FasterWhisperSTT
+from .tracing import RealtimeLangfuseTracer, VoiceSessionTracer
+from .vision import VisionAssistant
 
 load_dotenv(dotenv_path=".env")
 logger = logging.getLogger("voice-agent")
 
+# Loaded once at startup; immutable for the lifetime of the worker process.
+_SETTINGS = VoiceSettings.from_env()
 
-class VisionAssistant(Agent):
-    """Enhanced agent with vision capabilities for processing camera and screen sharing."""
-    
-    def __init__(self) -> None:
-        self._latest_frame = None
-        self._video_stream = None
-        self._tasks = []
-        self._screen_share_active = False
-        self._has_video_input = False
-        self._room = None
-        super().__init__(
-            instructions="You are a helpful voice AI assistant that helps manage todo lists. You can also see and understand visual content from the user's camera or screen sharing."
-        )
+_TURN_HANDLING = TurnHandlingOptions(interruption=InterruptionOptions(mode="vad"))
+_SESSION_KWARGS = {"min_endpointing_delay": 0.8, "max_endpointing_delay": 6.0}
 
-    async def on_enter(self):
-        """Initialize video processing when the agent enters the room."""
-        logger.info("VisionAssistant on_enter called - initializing video handlers")
+_SILENCE_TIMEOUT = 5.0  # seconds before re-prompting after silence
 
-        # Attach to room events per official docs to guarantee we catch subscriptions
-        try:
-            room = get_job_context().room
-            self._room = room
+_REPROMPTS: dict[str, str] = {
+    "de": "Bist du noch da?",
+    "en": "Are you still there?",
+    "hi": "क्या आप वहाँ हैं?",
+    "ar": "هل أنت هناك؟",
+    "es": "¿Sigues ahí?",
+    "fr": "Tu es encore là ?",
+    "zh": "你还在吗？",
+    "ja": "まだいる？",
+    "ko": "아직 거기 있어?",
+    "pt": "Ainda está aí?",
+    "it": "Sei ancora lì?",
+    "nl": "Ben je er nog?",
+    "ru": "Ты ещё здесь?",
+    "tr": "Hâlâ orada mısın?",
+}
 
-            @room.on("track_subscribed")
-            def _room_on_track_subscribed(track, publication, participant):
-                try:
-                    logger.info(
-                        f"room.on(track_subscribed) track={getattr(track,'sid',None)} kind={getattr(getattr(track,'kind',None),'value',getattr(track,'kind',None))} "
-                        f"source={getattr(publication,'source',None)} participant={getattr(participant,'identity',None)}"
-                    )
-                    if getattr(track, "kind", None) == rtc.TrackKind.KIND_VIDEO:
-                        self._create_video_stream(track, getattr(publication, "source", None))
-                except Exception as e:
-                    logger.warning(f"room.on(track_subscribed) handler error: {e}")
-        except Exception as e:
-            logger.debug(f"Unable to bind room track_subscribed handler: {e}")
+_GREETINGS: dict[str, str] = {
+    "de": "Hallo! Ich bin Teddy! Wie geht's?",
+    "en": "Hey! I'm Teddy! How are you?",
+    "hi": "हेलो! मैं Teddy हूँ! कैसे हो?",
+    "ar": "أهلاً! أنا Teddy! كيف حالك؟",
+    "es": "¡Hola! Soy Teddy. ¿Cómo estás?",
+    "fr": "Salut ! Je suis Teddy. Ça va ?",
+    "zh": "嗨！我是Teddy！你好吗？",
+    "ja": "やあ！Teddyだよ！元気？",
+    "ko": "안녕! 나는 Teddy야! 어때?",
+    "pt": "Oi! Sou Teddy. Como vai?",
+    "it": "Ciao! Sono Teddy. Come stai?",
+    "nl": "Hoi! Ik ben Teddy. Hoe gaat het?",
+    "ru": "Привет! Я Teddy! Как дела?",
+    "tr": "Selam! Ben Teddy! Nasılsın?",
+}
 
-        async def _delayed_scan_for_tracks():
-            try:
-                await asyncio.sleep(0.5)
-                await self._attach_existing_remote_video_tracks()
-            except Exception as e:
-                logger.debug(f"Deferred scan for existing video tracks failed: {e}")
 
-        asyncio.create_task(_delayed_scan_for_tracks())
+# ── Silence watchdog ───────────────────────────────────────────────────────────
 
-    def _setup_video_callbacks(self):
-        """Set up callbacks for video processing that the LiveKit framework can call."""
-        logger.info("Setting up video processing callbacks")
-        
-        # The LiveKit framework will call these methods when video events occur
-        # We need to implement them in a way that the framework can find them
-        
-        # Set up a method to handle video input streams
-        # This will be called when the LiveKit framework detects video input
-        self._handle_video_input = self._process_video_input
-        
-        # Add a method that the LiveKit framework can actually call
-        # This method name should match what the framework expects
-        self._on_video_stream_start = self._handle_video_stream_start
-        
-    def _handle_video_stream_start(self, participant: str, source: str):
-        """Handle when the LiveKit framework starts reading a video stream."""
-        logger.info(f"Video stream started: participant={participant}, source={source}")
-        if source == "SOURCE_SCREENSHARE":
-            self._screen_share_active = True
-            self._has_video_input = True
-            logger.info("Screen sharing stream started and processed")
-        elif source == "SOURCE_CAMERA":
-            self._has_video_input = True
-            logger.info("Camera stream started and processed")
-        
-        # Try to get the actual video track from the room
-        # This is the key - we need to access the actual video data
-        try:
-            # The framework has started reading the stream, so we should be able to access it
-            logger.info(f"Video stream {source} is now available for processing")
-        except Exception as e:
-            logger.error(f"Error accessing video stream: {e}")
-        
-    def _process_video_input(self, source: str):
-        """Handle video input streams from the LiveKit framework."""
-        logger.info(f"Processing video input: {source}")
-        if source == "SOURCE_SCREENSHARE":
-            self._screen_share_active = True
-            self._has_video_input = True
-            logger.info("Screen sharing input detected and processed")
-        elif source == "SOURCE_CAMERA":
-            self._has_video_input = True
-            logger.info("Camera input detected and processed")
-        
-        # Also handle the video stream attachment events
-        # This will be called when the LiveKit framework attaches video streams
-        self._handle_video_stream_attachment = self._process_video_stream_attachment
-        
-    def _process_video_stream_attachment(self, participant: str, source: str):
-        """Handle video stream attachment events from the LiveKit framework."""
-        logger.info(f"Video stream attached: participant={participant}, source={source}")
-        if source == "SOURCE_SCREENSHARE":
-            self._screen_share_active = True
-            self._has_video_input = True
-            logger.info("Screen sharing stream attached and processed")
-        elif source == "SOURCE_CAMERA":
-            self._has_video_input = True
-            logger.info("Camera stream attached and processed")
-        
-    def on_track_subscribed(self, *args, **kwargs):
-        """Handle video tracks when they're subscribed (robust to signature differences)."""
-        try:
-            track = None
-            publication = None
-            participant = None
+async def _silence_watchdog(session: AgentSession, language: str) -> None:
+    """Re-prompt the user if they go silent for more than _SILENCE_TIMEOUT seconds
+    after the agent finishes speaking."""
+    idle_since: float | None = None
+    has_spoken = False  # wait for agent to have spoken at least once
 
-            # Try kwargs first
-            track = kwargs.get("track", None)
-            publication = kwargs.get("publication", None)
-            participant = kwargs.get("participant", None)
-
-            # Fallback: infer from positional args by attribute presence
-            if track is None or publication is None:
-                for obj in args:
-                    if hasattr(obj, "kind") and hasattr(obj, "sid"):
-                        track = obj
-                    elif hasattr(obj, "source"):
-                        publication = obj
-                    elif hasattr(obj, "identity"):
-                        participant = obj
-
-            # Log what we inferred
-            logger.info(
-                f"on_track_subscribed invoked (track={getattr(track,'sid',None)}, "
-                f"kind={getattr(getattr(track,'kind',None),'value',getattr(track,'kind',None))}, "
-                f"source={getattr(publication,'source',None)}, "
-                f"participant={getattr(participant,'identity',None)})"
-            )
-
-            if track and getattr(track, "kind", None) == rtc.TrackKind.KIND_VIDEO:
-                self._create_video_stream(track, getattr(publication, "source", None))
-        except Exception as e:
-            logger.warning(f"on_track_subscribed handler error: {e}")
-
-    def on_video_input_available(self, source: str):
-        """Handle when video input becomes available."""
-        logger.info(f"Video input available: {source}")
-        if source == "SOURCE_SCREENSHARE":
-            self._screen_share_active = True
-            logger.info("Screen sharing input detected")
-        elif source == "SOURCE_CAMERA":
-            logger.info("Camera input detected")
-        
-        # Set a flag to indicate we have video input
-        self._has_video_input = True
-
-    async def _wait_and_process_track(self, publication: rtc.RemoteTrackPublication, participant: rtc.RemoteParticipant):
-        """Wait for a track to be subscribed and then process it."""
-        try:
-            # Wait a bit for the track to be subscribed
-            await asyncio.sleep(0.5)
-            
-            # Check if the track is now subscribed
-            if publication.track and publication.track.subscribed:
-                logger.info(f"Track {publication.track.sid} is now subscribed, processing...")
-                self._create_video_stream(publication.track, publication.source)
-            else:
-                logger.info(f"Track {publication.track.sid} is not yet subscribed")
-        except Exception as e:
-            logger.error(f"Error waiting for track: {e}")
-
-    async def on_user_turn_completed(self, turn_ctx: ChatContext, new_message: ChatMessage) -> None:
-        """Add visual context to the conversation when available."""
-        if self._latest_frame:
-            try:
-                # Pass the actual frame as ImageContent so LLM can see it (per docs)
-                new_message.content.append(ImageContent(image=self._latest_frame))
-                logger.info("Added latest video frame to conversation context")
-            except Exception as e:
-                logger.warning(f"Failed to process video frame: {e}")
-            finally:
-                self._latest_frame = None
-        elif hasattr(self, '_has_video_input') and self._has_video_input:
-            # Add information about available video input
-            video_info = "Screen sharing" if self._screen_share_active else "Camera"
-            logger.info(f"Video input available: {video_info}")
-            new_message.content.append(f"I see {video_info.lower()} input is available.")
-
-    def _create_video_stream(self, track: rtc.Track, source: rtc.TrackSource | int | str | None):
-        """Create a video stream to process frames from the track."""
-        if self._video_stream is not None:
-            try:
-                asyncio.create_task(self._video_stream.aclose())
-            except Exception:
-                pass
-
-        self._video_stream = rtc.VideoStream(track)
-        logger.info(f"Created VideoStream for track {getattr(track,'sid',None)}")
-        
-        # Update screen share status - accept enum, numeric, or string
-        try:
-            src_val = source
-            if isinstance(source, rtc.TrackSource):
-                src_val = source
-            elif isinstance(source, str):
-                src_val = source
-            elif isinstance(source, int):
-                src_val = source
-        except Exception:
-            src_val = source
-
-        if src_val in (rtc.TrackSource.SCREEN_SHARE if hasattr(rtc.TrackSource, 'SCREEN_SHARE') else None, 1, "SOURCE_SCREENSHARE"):
-            self._screen_share_active = True
-            logger.info("Screen sharing track detected")
-        elif src_val in (rtc.TrackSource.CAMERA if hasattr(rtc.TrackSource, 'CAMERA') else None, 0, "SOURCE_CAMERA"):
-            logger.info("Camera track detected")
+    def on_agent_state(ev) -> None:
+        nonlocal idle_since, has_spoken
+        if ev.new_state == "idle":
+            if has_spoken:
+                idle_since = asyncio.get_event_loop().time()
         else:
-            logger.info(f"Video track from unknown source: {source}")
+            idle_since = None
+            if ev.new_state in ("speaking", "thinking"):
+                has_spoken = True
 
-        async def read_stream():
-            try:
-                async for event in self._video_stream:
-                    self._latest_frame = event.frame
-            except Exception as e:
-                logger.error(f"Error reading video stream: {e}")
-            finally:
-                if self._video_stream:
-                    await self._video_stream.aclose()
+    def on_user_transcribed(ev) -> None:
+        nonlocal idle_since
+        idle_since = None  # user spoke — cancel pending reprompt
 
-        task = asyncio.create_task(read_stream())
-        task.add_done_callback(lambda t: self._tasks.remove(t))
-        self._tasks.append(task)
-
-    async def _attach_existing_remote_video_tracks(self):
-        """Scan the current room for any existing remote video tracks and attach streams."""
-        try:
-            room = self._room or getattr(getattr(self, "session", None), "_room", None) or getattr(getattr(self, "session", None), "room", None)
-            if room is None:
-                logger.debug("No room available on agent to scan for video tracks")
-                return
-
-            # Iterate remote participants and their publications
-            for _, participant in getattr(room, "remote_participants", {}).items():
-                pubs = getattr(participant, "track_publications", {})
-                for _, pub in pubs.items():
-                    track = getattr(pub, "track", None)
-                    if track and getattr(track, "kind", None) == rtc.TrackKind.KIND_VIDEO:
-                        logger.info(
-                            f"Found existing remote video track {getattr(track,'sid',None)} from participant {getattr(participant,'identity',None)}"
-                        )
-                        self._create_video_stream(track, getattr(pub, "source", None))
-                        return
-            logger.debug("No existing remote video tracks found during scan")
-        except Exception as e:
-            logger.debug(f"Error while scanning for existing video tracks: {e}")
-
-    async def _process_video_frame(self, frame: rtc.VideoFrame) -> ImageContent | None:
-        """Process a video frame and convert it to a format suitable for LLM processing."""
-        try:
-            logger.info(f"Processing video frame: {frame.width}x{frame.height}, type: {frame.type}")
-            
-            # Convert frame to BGRA format for processing
-            frame_bgra = frame.convert(rtc.VideoBufferType.BGRA)
-            logger.info(f"Converted frame to BGRA: {frame_bgra.width}x{frame_bgra.height}")
-            
-            # Create a basic image content with frame metadata
-            frame_info = f"Video frame: {frame.width}x{frame.height}, format: {frame.type}"
-            if self._screen_share_active:
-                frame_info += " (Screen sharing)"
-            else:
-                frame_info += " (Camera)"
-            
-            logger.info(f"Frame info: {frame_info}")
-            
-            # For now, we'll add the frame info as text content since we can't encode the image
-            # The LLM will receive this information about what the user is showing
-            return ImageContent(
-                image=f"data:text/plain;base64,{base64.b64encode(frame_info.encode()).decode()}"
-            )
-            
-        except Exception as e:
-            logger.error(f"Error processing video frame: {e}")
-            return None
-
-    async def cleanup(self):
-        """Clean up video processing resources."""
-        if self._video_stream is not None:
-            await self._video_stream.aclose()
-        
-        for task in self._tasks:
-            if not task.done():
-                task.cancel()
-        
-        self._tasks.clear()
+    session.on("agent_state_changed", on_agent_state)
+    session.on("user_input_transcribed", on_user_transcribed)
+    try:
+        while True:
+            await asyncio.sleep(0.5)
+            if idle_since is not None:
+                elapsed = asyncio.get_event_loop().time() - idle_since
+                if elapsed >= _SILENCE_TIMEOUT:
+                    idle_since = None  # reset so we don't spam
+                    reprompt = _REPROMPTS.get(language, _REPROMPTS["de"])
+                    logger.debug("silence timeout (%.1fs) — re-prompting", elapsed)
+                    await session.say(reprompt, allow_interruptions=True)
+    finally:
+        session.off("agent_state_changed", on_agent_state)
+        session.off("user_input_transcribed", on_user_transcribed)
 
 
-class TracedTTS(tts_base.TTS):
-    """Thin wrapper around any LiveKit TTS that records a Langfuse span per synthesis call."""
+# ── Worker lifecycle ───────────────────────────────────────────────────────────
 
-    def __init__(self, inner: tts_base.TTS, tracer: VoiceSessionTracer, model_name: str = "hume") -> None:
-        super().__init__(capabilities=inner.capabilities)
-        self._inner = inner
-        self._tracer = tracer
-        self._model_name = model_name
-
-    def synthesize(self, text: str, **kwargs) -> tts_base.SynthesizeStream:
-        span = self._tracer.tts_span(text=text, model=self._model_name)
-        stream = self._inner.synthesize(text, **kwargs)
-        # End the span once the stream closes
-        original_aclose = stream.aclose
-
-        async def _aclose_and_end():
-            try:
-                await original_aclose()
-            finally:
-                span.end(output={"char_count": len(text)})
-
-        stream.aclose = _aclose_and_end
-        return stream
-
-
-def prewarm(proc: JobProcess):
-    """Preload VAD model to reduce cold-start latency."""
+def prewarm(proc: JobProcess) -> None:
+    """Preload the VAD model to eliminate cold-start latency on the first call."""
     proc.userdata["vad"] = silero.VAD.load()
 
 
-async def entrypoint(ctx: JobContext):
-    """LiveKit worker entrypoint with video processing capabilities.
-
-    - Connect to the room with video enabled for processing camera and screen sharing.
-    - Wait for a participant and optionally extract a LangGraph thread_id from metadata.
-    - Create a RemoteGraph client to a running LangGraph server (dev or remote).
-    - Start AgentSession wired to VAD, STT/TTS, LLM adapter, turn detection, and video processing.
-
-    References:
-    - LiveKit AgentSession: https://github.com/livekit/agents/blob/main/README.md
-    - LangGraph RemoteGraph: https://github.com/langchain-ai/langgraph/blob/main/docs/docs/how-tos/use-remote-graph.md
-    """
-    logger.info(f"connecting to room {ctx.room.name} with video processing enabled")
+async def entrypoint(ctx: JobContext) -> None:
     await ctx.connect(auto_subscribe=AutoSubscribe.SUBSCRIBE_ALL)
-
-    # Wait for the first participant to connect
     participant = await ctx.wait_for_participant()
-    logger.info(f"participant: {participant}")
 
-    # Use metadata if present, otherwise let LangGraph handle state
-    # thread_id = participant.metadata if participant.metadata else None
-    thread_id = "2432c116-7868-4d4a-8a87-189c58962dca"
-    if thread_id:
-        logger.info(f"Using threadId from metadata: {thread_id}")
-    else:
-        logger.info("No threadId provided - LangGraph will create new conversation state")
+    cfg = CallConfig.from_room_metadata(ctx.room.metadata, _SETTINGS)
+    session_id = participant.metadata or ctx.room.name
+    thread_id = str(uuid.uuid5(uuid.NAMESPACE_URL, session_id))
 
     logger.info(
-        f"starting vision-enabled voice assistant for participant {participant.identity} (thread ID: {thread_id or 'new'})"
+        "Room=%s participant=%s mode=%s stt=%s tts=%s language=%s",
+        ctx.room.name, participant.identity,
+        cfg.voice_mode, cfg.stt_model, cfg.tts_label, cfg.language,
     )
 
-    # One Langfuse trace per voice session — links STT, LLM, and TTS spans together
-    llm_model = os.getenv("LLM_MODEL", "gpt-4.1-nano")
+    langgraph_config = {
+        "configurable": {
+            "thread_id": thread_id,
+            "language": cfg.language,
+            "native_language": cfg.native_language,
+        },
+        "metadata": {
+            "session_id": session_id,
+            "langfuse_session_id": session_id,
+            "langfuse_user_id": participant.identity,
+            "voice_mode": cfg.voice_mode,
+            "language": cfg.language,
+            "native_language": cfg.native_language,
+            "thread_id": thread_id,
+            "room": ctx.room.name,
+            "participant": participant.identity,
+        },
+        "tags": cfg.langfuse_tags(_SETTINGS),
+        "run_name": f"lingua-ai-{thread_id}",
+    }
+
+    if cfg.is_realtime:
+        session = _build_realtime_session(cfg)
+        realtime_tracer = RealtimeLangfuseTracer(
+            voice_mode=cfg.voice_mode,
+            metadata=langgraph_config["metadata"],
+        )
+        realtime_tracer.attach(session)
+        pipeline_tracer = None
+    else:
+        session, pipeline_tracer = _build_pipeline_session(ctx, cfg, langgraph_config, session_id, thread_id, participant)
+        realtime_tracer = None
+
+    await _publish_trace_info(ctx, session_id, pipeline_tracer)
+
+    agent = VisionAssistant()
+    agent._room = ctx.room
+    await session.start(
+        agent=agent,
+        room=ctx.room,
+        room_input_options=RoomInputOptions(video_enabled=True, audio_enabled=True, text_enabled=True),
+    )
+
+    supports_say = getattr(getattr(getattr(session, "llm", None), "capabilities", None), "supports_say", True)
+    if supports_say:
+        greeting = _GREETINGS.get(cfg.language, _GREETINGS["en"])
+        await session.say(greeting, allow_interruptions=True)
+
+    watchdog = asyncio.create_task(_silence_watchdog(session, cfg.language))
+
+    try:
+        await asyncio.sleep(float("inf"))
+    finally:
+        watchdog.cancel()
+        if realtime_tracer:
+            realtime_tracer.end(status_message="worker shutdown")
+        if pipeline_tracer:
+            pipeline_tracer.flush()
+        await agent.cleanup()
+
+
+# ── Session builders ───────────────────────────────────────────────────────────
+
+def _build_realtime_session(cfg: CallConfig) -> AgentSession:
+    return AgentSession(
+        llm=create_realtime_llm(
+            cfg.voice_mode, _SETTINGS,
+            language=cfg.language,
+            native_language=cfg.native_language,
+        ),
+        turn_handling=_TURN_HANDLING,
+        **_SESSION_KWARGS,
+    )
+
+
+def _build_pipeline_session(
+    ctx: JobContext,
+    cfg: CallConfig,
+    langgraph_config: dict,
+    session_id: str,
+    thread_id: str,
+    participant,
+) -> tuple[AgentSession, VoiceSessionTracer]:
+    stt_label = (
+        f"deepgram/{cfg.stt_model}" if cfg.stt_provider == "deepgram"
+        else f"faster-whisper/{cfg.stt_model}"
+    )
     tracer = VoiceSessionTracer(
-        session_id=ctx.room.name,
+        session_id=session_id,
         room=ctx.room.name,
         participant=participant.identity,
         thread_id=thread_id,
-        stt_model="faster-whisper/base",
-        llm_model=llm_model,
-        tts_model="hume",
+        stt_model=stt_label,
+        llm_model=_SETTINGS.llm_model,
+        tts_model=cfg.tts_label,
     )
 
-    # LangGraph dev server URL (override via LANGGRAPH_URL)
-    langgraph_url = os.getenv("LANGGRAPH_URL", "http://localhost:2024")
+    graph = lingua_graph
 
-    # Remote LangGraph compiled graph. Ensure the LangGraph server is running.
-    # RemoteGraph: https://github.com/langchain-ai/langgraph/blob/main/docs/docs/how-tos/use-remote-graph.md
-    graph = RemoteGraph("todo_agent", url=langgraph_url)
+    inner_tts = create_tts(cfg, _SETTINGS)
+    tts = TracedTTS(inner_tts, tracer, model_name=cfg.tts_label) if tracer._enabled else inner_tts
 
-    # Build pipeline components — tracer is threaded through STT and LLM
-    stt_component = FasterWhisperSTT(
-        model="base",
-        language="en",
-        device="cpu",
-        compute_type="int8",
-        tracer=tracer,
-    )
-    tts_component = TracedTTS(hume.TTS(), tracer, model_name="hume")
-    llm_component = LangGraphAdapter(
-        graph,
-        config={"configurable": {"thread_id": thread_id}} if thread_id else {},
-        langfuse_handler=tracer.get_langchain_handler(),
-    )
+    # Build STT — Deepgram cloud (low latency) or local faster-whisper
+    if cfg.stt_provider == "deepgram":
+        logger.info("Deepgram STT — model=%s language=%s", cfg.stt_model, cfg.language)
+        stt = deepgram_plugin.STT(model=cfg.stt_model, language=cfg.language, detect_language=False)
+    else:
+        stt = FasterWhisperSTT(
+            model=cfg.stt_model,
+            language=cfg.language,
+            device="cpu",
+            compute_type="int8",
+            tracer=tracer,
+        )
 
-    # Create the agent session with video processing enabled
-    # AgentSession wiring & options: https://github.com/livekit/agents/blob/main/README.md#_snippet_1
     session = AgentSession(
         vad=ctx.proc.userdata["vad"],
-        stt=stt_component,
-        llm=llm_component,
-        tts=tts_component,
-        turn_detection=EnglishModel(),
-        min_endpointing_delay=0.8,
-        max_endpointing_delay=6.0,
+        stt=stt,
+        llm=LangGraphAdapter(
+            graph,
+            config=langgraph_config,
+            langfuse_handler=tracer.get_langchain_handler(),
+        ),
+        tts=tts,
+        turn_handling=_TURN_HANDLING,
+        **_SESSION_KWARGS,
     )
+    return session, tracer
 
-    # Start the agent session with VisionAssistant for video processing
-    vision_agent = VisionAssistant()
-    # Provide room reference for fallback scanning
+
+async def _publish_trace_info(
+    ctx: JobContext,
+    session_id: str,
+    pipeline_tracer: VoiceSessionTracer | None,
+) -> None:
+    """Send trace metadata to the room so the frontend can link feedback to this trace."""
     try:
-        vision_agent._room = ctx.room
-    except Exception:
-        pass
-    await session.start(
-        agent=vision_agent,
-        room=ctx.room,
-        room_input_options=RoomInputOptions(
-            video_enabled=True,
-            audio_enabled=True,
-            text_enabled=True
-        )
-    )
-
-    # Initial greeting with interruptions allowed for responsiveness.
-    await session.say(
-        "Hey, I'm your vision-enabled AI assistant! I can help you manage your todo list and I can see what you're showing me through your camera or screen sharing.",
-        allow_interruptions=True,
-    )
-
-    # Keep the session running to process video streams
-    try:
-        while True:
-            await asyncio.sleep(1)
-    except KeyboardInterrupt:
-        logger.info("Shutting down gracefully...")
-    finally:
-        # Clean up video processing resources
-        if hasattr(session, 'agent') and hasattr(session.agent, 'cleanup'):
-            await session.agent.cleanup()
-        # Flush any buffered Langfuse events before the process exits
-        tracer.flush()
+        payload = json.dumps({
+            "type": "trace_info",
+            "session_id": session_id,
+            "trace_id": getattr(pipeline_tracer, "_trace_id", None),
+        }).encode()
+        await ctx.room.local_participant.publish_data(payload, reliable=True)
+    except Exception as exc:
+        logger.warning("Failed to publish trace info: %s", exc)
 
 
 if __name__ == "__main__":
-    # Standard worker runner. Use `uv run -m src.livekit.agent console` for local terminal I/O.
-    cli.run_app(
-        WorkerOptions(
-            entrypoint_fnc=entrypoint,
-            prewarm_fnc=prewarm,
-        ),
-    )
+    cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint, prewarm_fnc=prewarm))

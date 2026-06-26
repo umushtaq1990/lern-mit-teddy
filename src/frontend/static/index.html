@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lern mit Teddy — Dein Sprachfreund</title>
+    <link rel="stylesheet" href="/static/styles.css?v=2" />
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.15.5/dist/livekit-client.umd.min.js"></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <div class="logo-wrap">
+          <span class="logo-icon">🐻</span>
+          <h1>Lern mit Teddy</h1>
+        </div>
+        <p class="subtitle">Sprich mit Teddy und lern eine neue Sprache — einfach und Spaß!</p>
+      </header>
+
+      <!-- WELCOME / CONFIG PANEL -->
+      <section id="welcome" class="panel">
+
+        <div class="config-row">
+          <!-- Language to learn -->
+          <div class="config-section">
+            <label class="config-label" for="sel-learn-lang">I want to learn</label>
+            <select id="sel-learn-lang" class="full-select">
+              <option value="de" selected>🇩🇪 German</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="hi">🇮🇳 Hindi</option>
+              <option value="ar">🇸🇦 Arabic</option>
+            </select>
+          </div>
+
+          <!-- Native language -->
+          <div class="config-section">
+            <label class="config-label" for="sel-native-lang">My native language</label>
+            <select id="sel-native-lang" class="full-select">
+              <option value="en">🇬🇧 English</option>
+              <option value="hi">🇮🇳 Hindi</option>
+              <option value="de">🇩🇪 German</option>
+              <option value="ar">🇸🇦 Arabic</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- AI Model -->
+        <div class="config-section">
+          <label class="config-label" for="sel-model">AI Model</label>
+          <select id="sel-model" class="full-select">
+            <option value="pipeline" selected>OpenAI (GPT) ⚡</option>
+            <option value="gemini_live">Gemini (Google)</option>
+            <option value="nvidia">NVIDIA (slow)</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button id="btn-start" class="primary start-btn">🎙️ Let's Chat!</button>
+        </div>
+        <p id="status" class="status">Ready — choose a language and click Let's Chat!</p>
+      </section>
+
+      <!-- ACTIVE SESSION PANEL -->
+      <section id="session" class="panel hidden">
+
+        <!-- Teddy — absolute upper-right corner -->
+        <div id="character-wrap">
+          <svg id="lingua-bear" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="52"  cy="52"  r="30" fill="#B8734A"/>
+            <circle cx="52"  cy="52"  r="18" fill="#E8B89A"/>
+            <circle cx="168" cy="52"  r="30" fill="#B8734A"/>
+            <circle cx="168" cy="52"  r="18" fill="#E8B89A"/>
+            <circle cx="110" cy="110" r="85" fill="#D4956A"/>
+            <circle cx="80"  cy="90"  r="14" fill="#2C1810"/>
+            <circle cx="85"  cy="85"  r="5"  fill="white"/>
+            <circle cx="140" cy="90"  r="14" fill="#2C1810"/>
+            <circle cx="145" cy="85"  r="5"  fill="white"/>
+            <ellipse id="blink-left"  cx="80"  cy="90"  rx="14" ry="0" fill="#D4956A"/>
+            <ellipse id="blink-right" cx="140" cy="90"  rx="14" ry="0" fill="#D4956A"/>
+            <ellipse cx="60"  cy="118" rx="16" ry="9"  fill="#FF9999" opacity="0.35"/>
+            <ellipse cx="160" cy="118" rx="16" ry="9"  fill="#FF9999" opacity="0.35"/>
+            <ellipse cx="110" cy="140" rx="34" ry="26" fill="#E8C4A0"/>
+            <ellipse cx="110" cy="128" rx="11" ry="8"  fill="#2C1810"/>
+            <ellipse id="bear-mouth"  cx="110" cy="153" rx="15" ry="5"  fill="#2C1810"/>
+          </svg>
+          <div id="char-state-label">Hallo!</div>
+        </div>
+
+        <div class="session-header">
+          <div class="session-meta">
+            <span id="lang-label" class="badge lang-badge"></span>
+            <span id="mode-label" class="badge mode-badge"></span>
+          </div>
+          <button id="btn-end" class="danger">End Session</button>
+        </div>
+
+        <!-- Vocabulary cards — full width, shown when agent asks about a topic -->
+        <div id="vocab-panel" class="hidden">
+          <div id="vocab-title"></div>
+          <div id="vocab-cards"></div>
+        </div>
+
+        <div id="messages" class="messages" aria-live="polite">
+          <div class="msg system">Deine Stunde beginnt — Teddy begrüßt dich gleich!</div>
+        </div>
+
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" placeholder="Type in any language…" autocomplete="off" />
+          <button type="submit">Send</button>
+        </form>
+        <audio id="agent-audio" autoplay></audio>
+      </section>
+    </main>
+
+    <!-- FEEDBACK MODAL -->
+    <div id="feedback-overlay" class="overlay hidden">
+      <div class="modal">
+        <h2>How was your lesson?</h2>
+        <p class="modal-sub">Dein Feedback hilft Teddy besser zu werden!</p>
+        <div class="thumb-row">
+          <button id="btn-thumbs-up" class="thumb-btn" title="Great!">👍</button>
+          <button id="btn-thumbs-down" class="thumb-btn" title="Needs improvement">👎</button>
+        </div>
+        <textarea id="feedback-comment" class="feedback-textarea" placeholder="Any comments? (optional)" rows="3"></textarea>
+        <div class="modal-actions">
+          <button id="btn-submit-feedback" class="primary" disabled>Submit</button>
+          <button id="btn-skip-feedback" class="ghost">Skip</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/app.js?v=8"></script>
+  </body>
+</html>

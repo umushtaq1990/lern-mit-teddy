@@ -33,7 +33,7 @@ try:
 except Exception:  # pragma: no cover
     LKImageContent = None  # sentinel; we'll fallback to hasattr checks
 from langgraph.pregel import Pregel
-from langchain_core.messages import BaseMessageChunk, AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import BaseMessageChunk, AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langgraph.types import Command
 from langgraph.errors import GraphInterrupt
 
@@ -167,8 +167,10 @@ class LangGraphStream(llm.LLMStream):
                 messages.append(AIMessage(content=content_out, id=item_id))
             elif role == "user":
                 messages.append(HumanMessage(content=content_out, id=item_id))
-            elif role in ["system", "developer"]:
-                messages.append(SystemMessage(content=content_out, id=item_id))
+            # System messages are intentionally excluded: LangGraph's _build_prompt
+            # generates the authoritative system message from the per-language prompt
+            # files. Passing LiveKit's Agent.instructions here would create a second
+            # conflicting system message and override the target language.
 
         return {"messages": messages}
 
@@ -199,33 +201,6 @@ class LangGraphStream(llm.LLMStream):
             logger.warning(f"Error getting interrupt state: {e}")
             return None
 
-    def _to_message(cls, msg: llm.ChatMessage) -> HumanMessage:
-        # Helper used for converting LiveKit inbound to HumanMessage
-        if isinstance(msg.content, str):
-            content = msg.content
-        elif isinstance(msg.content, list):
-            content = []
-            for c in msg.content:
-                if isinstance(c, str):
-                    content.append({"type": "text", "text": c})
-                elif (LKImageContent and isinstance(c, LKImageContent)) or hasattr(c, "image"):
-                    img_obj = getattr(c, "image", None)
-                    if isinstance(img_obj, str):
-                        content.append({"type": "image_url", "image_url": {"url": img_obj}})
-                    else:
-                        try:
-                            img_bytes = encode(img_obj, EncodeOptions(format="JPEG"))
-                            data_url = f"data:image/jpeg;base64,{base64.b64encode(img_bytes).decode('utf-8')}"
-                            content.append({"type": "image_url", "image_url": {"url": data_url}})
-                        except Exception:
-                            logger.warning("Unsupported image type; skipping")
-                else:
-                    logger.warning("Unsupported content type")
-        else:
-            content = ""
-
-        return HumanMessage(content=content, id=msg.id)
-
     @staticmethod
     def _create_livekit_chunk(
         content: str,
@@ -252,6 +227,9 @@ class LangGraphStream(llm.LLMStream):
         Returns None when content is missing or not a string.
         """
         if not msg:
+            return None
+
+        if isinstance(msg, ToolMessage) or getattr(msg, "type", None) == "tool":
             return None
 
         request_id = None

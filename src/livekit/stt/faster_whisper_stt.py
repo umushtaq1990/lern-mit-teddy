@@ -50,6 +50,17 @@ def _frames_to_float32(frames: list[rtc.AudioFrame]) -> tuple[np.ndarray, int]:
     return np.concatenate(chunks), sample_rate
 
 
+def _resample_to_whisper(audio: np.ndarray, sample_rate: int) -> np.ndarray:
+    """Resample mono float32 audio to 16 kHz for Whisper."""
+    if sample_rate == WHISPER_SAMPLE_RATE or len(audio) == 0:
+        return audio
+    new_length = int(len(audio) * WHISPER_SAMPLE_RATE / sample_rate)
+    if new_length < 1:
+        return np.array([], dtype=np.float32)
+    indices = np.linspace(0, len(audio) - 1, new_length)
+    return np.interp(indices, np.arange(len(audio)), audio).astype(np.float32)
+
+
 class FasterWhisperSTT(stt.STT):
     """Open-source STT backed by faster-whisper running entirely on-device."""
 
@@ -62,8 +73,11 @@ class FasterWhisperSTT(stt.STT):
         compute_type: str = "int8",
         tracer: VoiceSessionTracer | None = None,
     ) -> None:
+        # streaming=False so LiveKit wraps us with StreamAdapter+VAD, which calls
+        # recognize() after each speech segment. A custom streaming=True path would
+        # never receive flush() from the default voice pipeline.
         super().__init__(
-            capabilities=stt.STTCapabilities(streaming=True, interim_results=False)
+            capabilities=stt.STTCapabilities(streaming=False, interim_results=False)
         )
         self._model_name = model
         self._language = language
@@ -111,7 +125,7 @@ class FasterWhisperSTT(stt.STT):
             vad_filter=False,  # VAD is handled upstream by Silero
         )
         text = " ".join(seg.text.strip() for seg in segments).strip()
-        logger.debug("Transcription: %r (lang=%s, prob=%.2f)", text, info.language, info.language_probability)
+        logger.info("Transcription: %r (lang=%s, prob=%.2f)", text, info.language, info.language_probability)
 
         return SpeechEvent(
             type=SpeechEventType.FINAL_TRANSCRIPT,
@@ -127,9 +141,8 @@ class FasterWhisperSTT(stt.STT):
     async def _transcribe_frames(self, frames: list[rtc.AudioFrame], language: str) -> SpeechEvent:
         """Convert frames to float32, run faster-whisper, emit a Langfuse STT span."""
         audio, sr = _frames_to_float32(frames)
-
-        # Frames arriving here are already at WHISPER_SAMPLE_RATE because
-        # RecognizeStream resamples them when sample_rate is set.
+        if sr != WHISPER_SAMPLE_RATE:
+            audio = _resample_to_whisper(audio, sr)
         duration_s = len(audio) / WHISPER_SAMPLE_RATE
 
         span = (

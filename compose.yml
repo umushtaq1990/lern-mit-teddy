@@ -17,10 +17,12 @@ services:
     restart: unless-stopped
     
     # Server configuration for local development
-    command: >
-      --dev                    # Development mode (debug logging, insecure)
-      --bind 0.0.0.0           # Bind to all interfaces
-      --keys "devkey: secret"  # Development API keys (NOT for production)
+    command:
+      - --dev
+      - --bind
+      - 0.0.0.0
+      - --keys
+      - "devkey: secret"
     
     # Port mappings for LiveKit services
     ports:

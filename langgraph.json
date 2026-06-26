@@ -1,6 +1,6 @@
 {
     "graphs": {
-        "todo_agent": "./src/langgraph/agent.py:agent"
+        "lingua_ai_agent": "./src/langgraph/agent.py:agent"
     },
     "env": ".env",
     "dependencies": [

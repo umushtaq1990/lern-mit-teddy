@@ -7,18 +7,30 @@ requires-python = ">=3.12"
 dependencies = [
     "langchain>=0.3.27",
     "langchain-openai>=0.3.30",
+    "langfuse>=4.6.1",
     "langgraph>=0.6.6",
     "langgraph-cli[inmem]>=0.3.8",
     "livekit>=1.0.12",
     "livekit-agents[cartesia,openai,silero,turn-detector]~=1.2",
     "faster-whisper>=1.0.3",
-    "langfuse>=2.0.0",
     "livekit-plugins-cartesia>=1.2.6",
+    "livekit-plugins-deepgram>=1.2.6",
+    "livekit-plugins-google>=1.2.6",
     "livekit-plugins-hume>=1.2.6",
     "livekit-plugins-langchain~=1.1",
     "livekit-plugins-noise-cancellation~=0.2",
     "livekit-plugins-openai>=1.2.6",
     "livekit-plugins-silero>=1.2.6",
     "livekit-plugins-turn-detector>=1.2.6",
+    "livekit-plugins-ultravox>=1.5.9",
     "python-dotenv>=1.1.1",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "streamlit>=1.40.0",
+    "nvidia-riva-client>=2.26.0",
+    "edge-tts>=7.2.8",
 ]
+
+[project.scripts]
+voice-frontend = "src.frontend.server:main"
+voice-frontend-native = "src.frontend.native_client:main"

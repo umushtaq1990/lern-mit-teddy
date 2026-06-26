@@ -1,4 +1,4 @@
-.PHONY: help download-files dev clean langgraph-dev dev-all
+.PHONY: help download-files dev clean langgraph-dev dev-all frontend streamlit-frontend
 
 # Default target
 help:
@@ -7,6 +7,8 @@ help:
 	@echo "  make dev            - Run the LiveKit agent in development mode"
 	@echo "  make langgraph-dev  - Run the LangGraph dev server (uv run langgraph dev)"
 	@echo "  make dev-all        - Start LangGraph server and LiveKit agent together"
+	@echo "  make frontend       - Run Python FastAPI voice UI (http://127.0.0.1:8080)"
+	@echo "  make streamlit-frontend - Run Streamlit wrapper around the FastAPI UI"
 	@echo "  make clean          - Clean up any generated files"
 	@echo "  make help           - Show this help message"
 
@@ -27,6 +29,13 @@ langgraph-dev:
 # Stop processes with your terminal controls (Ctrl+C) as needed.
 dev-all:
 	( uv run langgraph dev & ); sleep 2; uv run -m src.livekit.agent dev
+
+# Python voice UI (replaces Next.js frontend)
+frontend:
+	uv run python -m src.frontend
+
+streamlit-frontend:
+	uv run streamlit run src/frontend/streamlit_app.py
 
 # Clean up any generated files
 clean:

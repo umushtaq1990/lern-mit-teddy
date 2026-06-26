@@ -146,3 +146,7 @@ tmp/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Test audio files
+*.mp3
+*.wav
