@@ -1,6 +1,6 @@
 # Lern mit Teddy 🐻
 
-> **Version 1.0.0** — A real-time AI voice companion that teaches German to children through natural conversation.
+> **Version 1.1.0** — A real-time AI voice companion that teaches German to children through natural conversation.
 
 Teddy is a friendly 8-year-old bear who lives in the browser. Kids speak with him, he asks about their day, their favourite foods, their pets — all in German. Vocabulary cards appear automatically as topics come up, and Teddy works through the items one by one with simple questions.
 
@@ -130,6 +130,60 @@ uv run voice-frontend
 
 ---
 
+## Production Deployment (Docker)
+
+This repository now includes production Docker assets:
+
+- `Dockerfile.frontend` — serves the FastAPI UI and token API on port `8080`
+- `Dockerfile.worker` — runs the LiveKit voice worker process
+- `docker-compose.prod.yml` — runs both services together
+
+### 1. Prepare environment
+
+Use LiveKit Cloud credentials in your `.env`:
+
+```env
+LIVEKIT_URL=wss://your-project.livekit.cloud
+LIVEKIT_API_KEY=your_livekit_api_key
+LIVEKIT_API_SECRET=your_livekit_api_secret
+OPENAI_API_KEY=your_openai_api_key
+
+# Recommended for production to avoid running local Whisper on your server
+STT_PROVIDER=deepgram
+DEEPGRAM_API_KEY=your_deepgram_api_key
+
+VOICE_MODE=pipeline
+LANGUAGE=de
+```
+
+### 2. Build and start
+
+```bash
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+### 3. Verify
+
+```bash
+docker compose -f docker-compose.prod.yml ps
+curl http://localhost:8080/api/health
+```
+
+If your server has a firewall, allow inbound TCP on port `8080`.
+
+### 4. Update to new versions
+
+```bash
+git pull
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+### Optional: HTTPS + domain
+
+Place Nginx/Caddy in front of `frontend:8080` for TLS termination, then route `https://your-domain` to this service.
+
+---
+
 ## Language Prompts
 
 Each supported language has its own prompt file written **in that language** so the LLM starts in the right language context from the first token:
@@ -145,30 +199,46 @@ Other language codes fall back to English. Add a new `xx.py` to support more lan
 
 ---
 
-## Vocabulary Sets
+## Full Language Learning Curriculum
 
-16 topic sets built into the UI — cards appear automatically when Teddy mentions a related word:
+30 vocabulary sets organised into 7 levels — selectable from a **dropdown during any session**. Cards also appear automatically when Teddy mentions a related word.
 
-| Set | German Title | Items |
-|-----|-------------|-------|
-| Breakfast | Frühstück | Milch, Eier, Brot, Butter … |
-| Fruits | Obst | Apfel, Banane, Orange … |
-| Vegetables | Gemüse | Karotte, Tomate, Gurke … |
-| Animals | Tiere | Hund, Katze, Vogel … |
-| Family | Familie | Mama, Papa, Bruder … |
-| School | Schule | Buch, Stift, Tasche … |
-| Sports | Sport & Spiele | Fußball, Schwimmen … |
-| Hobbies | Hobbys | Lesen, Malen, Singen … |
-| Drinks | Getränke | Wasser, Milch, Saft … |
-| Ice Cream | Eis | Schokolade, Vanille … |
-| Seasons | Jahreszeiten | Frühling, Sommer … |
-| Colours | Farben | Rot, Blau, Grün … |
-| Jobs | Berufe | Arzt, Lehrer, Bäcker … |
-| Superpowers | Superkräfte | Fliegen, Unsichtbarkeit … |
-| Favourite Food | Lieblingsessen | Pizza, Nudeln, Suppe … |
-| Toys | Spielzeug | Ball, Puppe, Auto … |
+| Level | Section | German Title | Sample Words |
+|-------|---------|-------------|--------------|
+| ⭐ 1 | Greetings | Hallo! (Begrüßung) | Hallo, Tschüss, Wie geht's… |
+| ⭐ 1 | Numbers 1–10 | Zahlen 1–10 | eins, zwei, drei … zehn |
+| ⭐ 1 | Numbers 11–20 | Zahlen 11–20 | elf, zwölf … zwanzig |
+| ⭐ 1 | Alphabet | Das ABC | A wie Apfel … Z wie Zebra |
+| ⭐ 1 | Colours | Farben | Rot, Blau, Grün … |
+| 👨‍👩‍👧 2 | Family | Familie | Mama, Papa, Bruder … |
+| 👨‍👩‍👧 2 | Body | Mein Körper | Kopf, Augen, Nase … |
+| 🏠 3 | House rooms | Das Haus | Wohnzimmer, Küche … |
+| 🏠 3 | Bedroom | Schlafzimmer | Bett, Lampe, Fenster … |
+| 🏠 3 | Bathroom | Badezimmer | Zahnbürste, Seife … |
+| 🏠 3 | Living room | Wohnzimmer | Sofa, Fernseher … |
+| 🏠 3 | Kitchen | Küche | Herd, Kühlschrank … |
+| 🌿 4 | Garden | Garten | Baum, Blume, Biene … |
+| 🌿 4 | Weather | Wetter | Sonne, Regen, Schnee … |
+| 🌿 4 | Seasons | Jahreszeiten | Frühling, Sommer … |
+| 🌿 4 | Animals | Tiere | Hund, Katze, Löwe … |
+| 🍕 5 | Breakfast | Frühstück | Milch, Eier, Brot … |
+| 🍕 5 | Fruits | Obst | Apfel, Banane … |
+| 🍕 5 | Vegetables | Gemüse | Karotte, Tomate … |
+| 🍕 5 | Drinks | Getränke | Wasser, Saft, Kakao … |
+| 🍕 5 | Favourite Food | Lieblingsessen | Pizza, Nudeln … |
+| 🍕 5 | Ice Cream | Eis | Schokolade, Vanille … |
+| 🎒 6 | School | Schule | Buch, Stift, Rucksack … |
+| 🎒 6 | Transport | Transport & Verkehr | Auto, Bus, Zug … |
+| 🎒 6 | Sports | Sport & Spiele | Fußball, Schwimmen … |
+| 🎒 6 | Hobbies | Hobbys | Lesen, Malen, Singen … |
+| 👗 7 | Clothes | Kleidung | T-Shirt, Hose, Schuhe … |
+| 👗 7 | Jobs | Berufe | Arzt, Lehrer, Bäcker … |
+| 👗 7 | Toys | Spielzeug | Ball, Puppe, Auto … |
+| 👗 7 | Superpowers | Superkräfte | Fliegen, Magie … |
 
 Article gender is colour-coded on every card: **blue** = der, **pink** = die, **green** = das.
+
+**How the dropdown works:** select a section → vocab cards appear immediately → Teddy receives a natural German prompt and switches his drilling focus to that topic.
 
 ---
 

@@ -6,6 +6,27 @@ Format: [Semantic Versioning](https://semver.org) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [1.1.0] — 2026-06-26
+
+### Added — Full Language Learning Curriculum
+
+- **30-section structured syllabus** grouped into 7 levels, selectable from a dropdown during a live call
+- **Level 1 — Basics:** Begrüßung (greetings), Zahlen 1–10, Zahlen 11–20, Das ABC (A–Z with example words), Farben
+- **Level 2 — Body & Family:** Mein Körper (10 body parts), Familie
+- **Level 3 — Home:** Das Haus (rooms overview), Schlafzimmer, Badezimmer, Wohnzimmer, Küche
+- **Level 4 — Nature:** Garten, Wetter, Jahreszeiten, Tiere
+- **Level 5 — Food & Drinks:** Frühstück, Obst, Gemüse, Getränke, Lieblingsessen, Eis
+- **Level 6 — World & School:** Schule, Transport & Verkehr, Sport, Hobbys
+- **Level 7 — Society:** Kleidung, Berufe, Spielzeug, Superkräfte
+- **Section dropdown** (`#section-bar`) appears during active sessions — picking a section shows the vocabulary panel AND sends a natural German prompt to Teddy so he switches focus immediately
+- **3 new card display types:** `phrase` (wide cards for greeting phrases), `number` (large digit), `abc` (large letter A–Z)
+- **14 new VOCAB_SETS:** greetings, numbers1, numbers2, alphabet, body, rooms, bedroom, bathroom, living_room, kitchen, garden, weather, transport, clothes
+- **14 new KEYWORD_MAP entries** so sections also appear automatically when Teddy mentions those words
+- **Expanded de.py drilling** — 14 new VOKABEL-RUNDEN blocks (Begrüßung, Zahlen 1–10, Zahlen 11–20, ABC, Körper, Räume, Schlafzimmer, Badezimmer, Wohnzimmer, Küche, Garten, Wetter, Transport, Kleidung)
+- **Architecture note:** syllabus structure is language-neutral — adding a new language requires only a new `prompts/xx.py` with equivalent drilling sections
+
+---
+
 ## [1.0.0] — 2026-06-26
 
 Initial release of **Lern mit Teddy**, forked from

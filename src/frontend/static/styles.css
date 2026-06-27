@@ -218,6 +218,11 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
 #char-state-label.listening { color: #a5b4fc; }
 #char-state-label.thinking  { color: #fbbf24; }
 
+/* ── Section / curriculum selector (welcome panel) ── */
+.section-label {
+  color: var(--accent) !important;
+}
+
 /* ── Vocabulary panel — full width card grid ─────── */
 #vocab-panel {
   background: rgba(255,255,255,0.03);
@@ -256,6 +261,25 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
   gap: 0.45rem;
+}
+
+/* Phrase cards (greetings) — wider so the full phrase fits */
+#vocab-cards.phrase-grid {
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+}
+
+/* Number and ABC cards — tighter, the big character IS the visual */
+#vocab-cards.number-grid,
+#vocab-cards.abc-grid {
+  grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+}
+
+/* Big digit / letter — rendered from the emoji field */
+.vc-num, .vc-letter {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #34d399;
 }
 
 .vocab-card {

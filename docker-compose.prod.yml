@@ -1,0 +1,26 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    image: lern-mit-teddy-frontend:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      FRONTEND_HOST: 0.0.0.0
+      FRONTEND_PORT: 8080
+      FRONTEND_RELOAD: "false"
+    ports:
+      - "8080:8080"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    image: lern-mit-teddy-worker:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - frontend

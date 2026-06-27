@@ -24,6 +24,10 @@ const selLearnLang     = document.getElementById("sel-learn-lang");
 const selNativeLang    = document.getElementById("sel-native-lang");
 const selModel         = document.getElementById("sel-model");
 
+// Section / curriculum selector (visible during active session)
+const selSection       = document.getElementById("sel-section");
+const sectionBar       = document.getElementById("section-bar");
+
 // Feedback
 const feedbackOverlay  = document.getElementById("feedback-overlay");
 const btnThumbsUp      = document.getElementById("btn-thumbs-up");
@@ -36,6 +40,7 @@ const btnSkipFeedback  = document.getElementById("btn-skip-feedback");
 let selectedRating   = null;
 let currentRoomName  = null;
 let currentSessionId = null;
+let _pendingSection  = null;   // section chosen on welcome screen, triggered when Teddy joins
 
 // ── Vocabulary data ────────────────────────────────────────────────────────
 // article: 'der'=masculine, 'die'=feminine, 'das'=neuter, ''=no article (verbs/adj)
@@ -209,6 +214,184 @@ const VOCAB_SETS = {
     { emoji:'🧲', article:'der', de:'Magnet',       en:'Magnet'     },
     { emoji:'🪁', article:'die', de:'Schleuder',    en:'Slingshot'  },
   ]},
+
+  // ── Level 1: Basics ────────────────────────────────────────────────────────
+  greetings:  { title: 'Hallo! (Begrüßung)', type: 'phrase', items: [
+    { emoji:'👋', article:'', de:'Hallo!',               en:'Hello!'             },
+    { emoji:'👋', article:'', de:'Tschüss!',             en:'Goodbye!'           },
+    { emoji:'🌅', article:'', de:'Guten Morgen!',        en:'Good morning!'      },
+    { emoji:'🌙', article:'', de:'Gute Nacht!',          en:'Good night!'        },
+    { emoji:'🤝', article:'', de:'Wie geht\'s?',         en:'How are you?'       },
+    { emoji:'😊', article:'', de:'Mir geht\'s gut!',     en:'I\'m fine!'         },
+    { emoji:'🙋', article:'', de:'Ich heiße…',           en:'My name is…'        },
+    { emoji:'🎂', article:'', de:'Ich bin … Jahre alt',  en:'I am … years old'   },
+    { emoji:'🌍', article:'', de:'Woher kommst du?',     en:'Where are you from?'},
+    { emoji:'🏠', article:'', de:'Ich komme aus…',       en:'I come from…'       },
+  ]},
+  numbers1:   { title: 'Zahlen 1–10', type: 'number', items: [
+    { emoji:'1', article:'', de:'eins',    en:'one'    },
+    { emoji:'2', article:'', de:'zwei',    en:'two'    },
+    { emoji:'3', article:'', de:'drei',    en:'three'  },
+    { emoji:'4', article:'', de:'vier',    en:'four'   },
+    { emoji:'5', article:'', de:'fünf',    en:'five'   },
+    { emoji:'6', article:'', de:'sechs',   en:'six'    },
+    { emoji:'7', article:'', de:'sieben',  en:'seven'  },
+    { emoji:'8', article:'', de:'acht',    en:'eight'  },
+    { emoji:'9', article:'', de:'neun',    en:'nine'   },
+    { emoji:'🔟', article:'', de:'zehn',   en:'ten'    },
+  ]},
+  numbers2:   { title: 'Zahlen 11–20', type: 'number', items: [
+    { emoji:'11', article:'', de:'elf',          en:'eleven'    },
+    { emoji:'12', article:'', de:'zwölf',        en:'twelve'    },
+    { emoji:'13', article:'', de:'dreizehn',     en:'thirteen'  },
+    { emoji:'14', article:'', de:'vierzehn',     en:'fourteen'  },
+    { emoji:'15', article:'', de:'fünfzehn',     en:'fifteen'   },
+    { emoji:'16', article:'', de:'sechzehn',     en:'sixteen'   },
+    { emoji:'17', article:'', de:'siebzehn',     en:'seventeen' },
+    { emoji:'18', article:'', de:'achtzehn',     en:'eighteen'  },
+    { emoji:'19', article:'', de:'neunzehn',     en:'nineteen'  },
+    { emoji:'20', article:'', de:'zwanzig',      en:'twenty'    },
+  ]},
+  alphabet:   { title: 'Das ABC', type: 'abc', items: [
+    { emoji:'A', article:'', de:'wie Apfel',      en:'for Apple'     },
+    { emoji:'B', article:'', de:'wie Ball',       en:'for Ball'      },
+    { emoji:'C', article:'', de:'wie Computer',   en:'for Computer'  },
+    { emoji:'D', article:'', de:'wie Delfin',     en:'for Dolphin'   },
+    { emoji:'E', article:'', de:'wie Elefant',    en:'for Elephant'  },
+    { emoji:'F', article:'', de:'wie Fisch',      en:'for Fish'      },
+    { emoji:'G', article:'', de:'wie Giraffe',    en:'for Giraffe'   },
+    { emoji:'H', article:'', de:'wie Hund',       en:'for Dog'       },
+    { emoji:'I', article:'', de:'wie Igel',       en:'for Hedgehog'  },
+    { emoji:'J', article:'', de:'wie Joghurt',    en:'for Yogurt'    },
+    { emoji:'K', article:'', de:'wie Katze',      en:'for Cat'       },
+    { emoji:'L', article:'', de:'wie Löwe',       en:'for Lion'      },
+    { emoji:'M', article:'', de:'wie Maus',       en:'for Mouse'     },
+    { emoji:'N', article:'', de:'wie Nase',       en:'for Nose'      },
+    { emoji:'O', article:'', de:'wie Orange',     en:'for Orange'    },
+    { emoji:'P', article:'', de:'wie Papagei',    en:'for Parrot'    },
+    { emoji:'Q', article:'', de:'wie Qualle',     en:'for Jellyfish' },
+    { emoji:'R', article:'', de:'wie Regenbogen', en:'for Rainbow'   },
+    { emoji:'S', article:'', de:'wie Sonne',      en:'for Sun'       },
+    { emoji:'T', article:'', de:'wie Tiger',      en:'for Tiger'     },
+    { emoji:'U', article:'', de:'wie Uhr',        en:'for Clock'     },
+    { emoji:'V', article:'', de:'wie Vogel',      en:'for Bird'      },
+    { emoji:'W', article:'', de:'wie Wolke',      en:'for Cloud'     },
+    { emoji:'X', article:'', de:'wie Xylofon',    en:'for Xylophone' },
+    { emoji:'Y', article:'', de:'wie Yak',        en:'for Yak'       },
+    { emoji:'Z', article:'', de:'wie Zebra',      en:'for Zebra'     },
+  ]},
+
+  // ── Level 2: Body & Family ─────────────────────────────────────────────────
+  body:        { title: 'Mein Körper',               items: [
+    { emoji:'🗣️', article:'der', de:'Kopf',         en:'Head'    },
+    { emoji:'👀', article:'die', de:'Augen',        en:'Eyes'    },
+    { emoji:'👃', article:'die', de:'Nase',         en:'Nose'    },
+    { emoji:'👄', article:'der', de:'Mund',         en:'Mouth'   },
+    { emoji:'👂', article:'die', de:'Ohren',        en:'Ears'    },
+    { emoji:'🤲', article:'die', de:'Hände',        en:'Hands'   },
+    { emoji:'🦶', article:'die', de:'Füße',         en:'Feet'    },
+    { emoji:'🫄', article:'der', de:'Bauch',        en:'Belly'   },
+    { emoji:'🦵', article:'die', de:'Beine',        en:'Legs'    },
+    { emoji:'💇', article:'die', de:'Haare',        en:'Hair'    },
+  ]},
+
+  // ── Level 3: Home ──────────────────────────────────────────────────────────
+  rooms:       { title: 'Das Haus (Räume)',           items: [
+    { emoji:'🛋️', article:'das', de:'Wohnzimmer',   en:'Living Room'  },
+    { emoji:'🛏️', article:'das', de:'Schlafzimmer', en:'Bedroom'      },
+    { emoji:'🚿', article:'das', de:'Badezimmer',   en:'Bathroom'     },
+    { emoji:'🍳', article:'die', de:'Küche',        en:'Kitchen'      },
+    { emoji:'🌱', article:'der', de:'Garten',       en:'Garden'       },
+    { emoji:'🚪', article:'der', de:'Flur',         en:'Hallway'      },
+    { emoji:'🧸', article:'das', de:'Kinderzimmer', en:'Kids Room'    },
+    { emoji:'🍽️', article:'das', de:'Esszimmer',    en:'Dining Room'  },
+  ]},
+  bedroom:     { title: 'Schlafzimmer',               items: [
+    { emoji:'🛏️', article:'das', de:'Bett',         en:'Bed'        },
+    { emoji:'💡', article:'die', de:'Lampe',        en:'Lamp'       },
+    { emoji:'🪟', article:'das', de:'Fenster',      en:'Window'     },
+    { emoji:'🚪', article:'die', de:'Tür',          en:'Door'       },
+    { emoji:'📚', article:'das', de:'Regal',        en:'Shelf'      },
+    { emoji:'🪞', article:'der', de:'Spiegel',      en:'Mirror'     },
+    { emoji:'🎴', article:'der', de:'Teppich',      en:'Carpet'     },
+    { emoji:'🧸', article:'der', de:'Teddybär',     en:'Teddy Bear' },
+  ]},
+  bathroom:    { title: 'Badezimmer',                 items: [
+    { emoji:'🪥', article:'die', de:'Zahnbürste',   en:'Toothbrush' },
+    { emoji:'🧼', article:'die', de:'Seife',        en:'Soap'       },
+    { emoji:'🧴', article:'das', de:'Shampoo',      en:'Shampoo'    },
+    { emoji:'🚿', article:'die', de:'Dusche',       en:'Shower'     },
+    { emoji:'🛁', article:'die', de:'Badewanne',    en:'Bathtub'    },
+    { emoji:'🪞', article:'der', de:'Spiegel',      en:'Mirror'     },
+    { emoji:'🚽', article:'die', de:'Toilette',     en:'Toilet'     },
+    { emoji:'🏊', article:'das', de:'Handtuch',     en:'Towel'      },
+  ]},
+  living_room: { title: 'Wohnzimmer',                 items: [
+    { emoji:'🛋️', article:'das', de:'Sofa',         en:'Sofa'       },
+    { emoji:'📺', article:'der', de:'Fernseher',    en:'TV'         },
+    { emoji:'🪑', article:'der', de:'Stuhl',        en:'Chair'      },
+    { emoji:'🍽️', article:'der', de:'Tisch',        en:'Table'      },
+    { emoji:'📚', article:'das', de:'Bücherregal',  en:'Bookshelf'  },
+    { emoji:'🌿', article:'die', de:'Pflanze',      en:'Plant'      },
+    { emoji:'🖼️', article:'das', de:'Bild',         en:'Picture'    },
+    { emoji:'🪟', article:'das', de:'Fenster',      en:'Window'     },
+  ]},
+  kitchen:     { title: 'Küche',                      items: [
+    { emoji:'🍳', article:'der', de:'Herd',         en:'Stove'  },
+    { emoji:'❄️', article:'der', de:'Kühlschrank',  en:'Fridge' },
+    { emoji:'🍽️', article:'der', de:'Teller',       en:'Plate'  },
+    { emoji:'🥄', article:'der', de:'Löffel',       en:'Spoon'  },
+    { emoji:'🍴', article:'die', de:'Gabel',        en:'Fork'   },
+    { emoji:'🔪', article:'das', de:'Messer',       en:'Knife'  },
+    { emoji:'🥛', article:'das', de:'Glas',         en:'Glass'  },
+    { emoji:'🫖', article:'die', de:'Tasse',        en:'Cup'    },
+  ]},
+
+  // ── Level 4: Nature ────────────────────────────────────────────────────────
+  garden:      { title: 'Garten',                     items: [
+    { emoji:'🌳', article:'der', de:'Baum',          en:'Tree'       },
+    { emoji:'🌸', article:'die', de:'Blume',         en:'Flower'     },
+    { emoji:'🌿', article:'das', de:'Gras',          en:'Grass'      },
+    { emoji:'🐝', article:'die', de:'Biene',         en:'Bee'        },
+    { emoji:'🦋', article:'der', de:'Schmetterling', en:'Butterfly'  },
+    { emoji:'🐦', article:'der', de:'Vogel',         en:'Bird'       },
+    { emoji:'🐰', article:'der', de:'Hase',          en:'Rabbit'     },
+    { emoji:'🪱', article:'der', de:'Regenwurm',     en:'Earthworm'  },
+  ]},
+  weather:     { title: 'Wetter',                     items: [
+    { emoji:'☀️', article:'die', de:'Sonne',         en:'Sun'         },
+    { emoji:'🌧️', article:'der', de:'Regen',         en:'Rain'        },
+    { emoji:'❄️', article:'der', de:'Schnee',        en:'Snow'        },
+    { emoji:'💨', article:'der', de:'Wind',          en:'Wind'        },
+    { emoji:'☁️', article:'die', de:'Wolke',         en:'Cloud'       },
+    { emoji:'🌈', article:'der', de:'Regenbogen',    en:'Rainbow'     },
+    { emoji:'⛈️', article:'das', de:'Gewitter',      en:'Storm'       },
+    { emoji:'🌡️', article:'die', de:'Temperatur',    en:'Temperature' },
+  ]},
+
+  // ── Level 6: World ─────────────────────────────────────────────────────────
+  transport:   { title: 'Transport & Verkehr',         items: [
+    { emoji:'🚗', article:'das', de:'Auto',          en:'Car'        },
+    { emoji:'🚌', article:'der', de:'Bus',           en:'Bus'        },
+    { emoji:'🚂', article:'der', de:'Zug',           en:'Train'      },
+    { emoji:'🚲', article:'das', de:'Fahrrad',       en:'Bicycle'    },
+    { emoji:'✈️', article:'das', de:'Flugzeug',      en:'Airplane'   },
+    { emoji:'🚢', article:'das', de:'Schiff',        en:'Ship'       },
+    { emoji:'🏍️', article:'das', de:'Motorrad',      en:'Motorcycle' },
+    { emoji:'🚛', article:'der', de:'LKW',           en:'Truck'      },
+  ]},
+
+  // ── Level 7: Society ───────────────────────────────────────────────────────
+  clothes:     { title: 'Kleidung',                   items: [
+    { emoji:'👕', article:'das', de:'T-Shirt',       en:'T-shirt'  },
+    { emoji:'👖', article:'die', de:'Hose',          en:'Pants'    },
+    { emoji:'👟', article:'die', de:'Schuhe',        en:'Shoes'    },
+    { emoji:'🧦', article:'die', de:'Socken',        en:'Socks'    },
+    { emoji:'🧥', article:'die', de:'Jacke',         en:'Jacket'   },
+    { emoji:'🎩', article:'der', de:'Hut',           en:'Hat'      },
+    { emoji:'👗', article:'das', de:'Kleid',         en:'Dress'    },
+    { emoji:'🧣', article:'der', de:'Schal',         en:'Scarf'    },
+  ]},
 };
 
 const KEYWORD_MAP = [
@@ -226,8 +409,8 @@ const KEYWORD_MAP = [
           'family','siblings','brother','sister','parents'],                        set: 'family'     },
   { kw: ['schule','klasse','lehrer','lehrerin','lieblingsfach','fach',
           'school','class','teacher','subject','favourite subject'],                set: 'school'     },
-  { kw: ['jahreszeit','sommer','winter','frühling','herbst','wetter','regen','schnee',
-          'season','seasons','summer','winter','spring','autumn','weather','rain','snow'], set: 'seasons' },
+  { kw: ['jahreszeit','sommer','winter','frühling','herbst','lieblingsjahreszeit',
+          'season','seasons','summer','spring','autumn','favourite season'],              set: 'seasons'     },
   { kw: ['lieblingsessen','lieblingsgericht','was isst','mittag','abend',
           'favourite food','favorite food','lunch','dinner','eat for lunch'],       set: 'food'       },
   { kw: ['gemüse','karotte','brokkoli','kartoffel',
@@ -244,7 +427,75 @@ const KEYWORD_MAP = [
           'job','jobs','when you grow up','dream job','want to be'],               set: 'jobs'       },
   { kw: ['spielzeug','puppe','lieblingssspielzeug','lieblingsspielzeug',
           'toy','toys','favourite toy','favorite toy'],                             set: 'toys'       },
+  // Level 1 — Basics
+  { kw: ['hallo','tschüss','guten morgen','gute nacht','wie geht','ich heiße','vorstellen',
+          'begrüßung','hello','goodbye','good morning','how are you','my name is'],  set: 'greetings'   },
+  { kw: ['eins','zwei','drei','vier','fünf','zahlen 1','zählen bis zehn','count to 10',
+          'one','two','three','four','five','numbers 1'],                            set: 'numbers1'    },
+  { kw: ['elf','zwölf','dreizehn','vierzehn','fünfzehn','zahlen 11','zwanzig','bis 20',
+          'eleven','twelve','thirteen','twenty','count to 20'],                      set: 'numbers2'    },
+  { kw: ['abc','das abc','buchstabe','buchstaben','alphabet','wie apfel','wie ball',
+          'letter','letters','alphabet'],                                             set: 'alphabet'    },
+  // Level 2 — Body
+  { kw: ['körper','kopf','augen','nase','mund','ohren','hände','füße','bauch','beine',
+          'body','head','eyes','nose','mouth','hands','feet','body parts'],          set: 'body'        },
+  // Level 3 — Home
+  { kw: ['zimmer im haus','welches zimmer','kinderzimmer','esszimmer',
+          'rooms','house rooms','dining room'],                                      set: 'rooms'       },
+  { kw: ['bett','kissen','schlafzimmer möbel','nachttisch','schlafzimmer',
+          'bed','pillow','bedroom furniture'],                                       set: 'bedroom'     },
+  { kw: ['zahnbürste','seife','dusche','badewanne','toilette','shampoo','handtuch',
+          'toothbrush','soap','shower','bathtub','toilet'],                          set: 'bathroom'    },
+  { kw: ['sofa','fernseher','bücherregal','wohnzimmer möbel',
+          'sofa','tv','television','living room furniture'],                         set: 'living_room' },
+  { kw: ['herd','kühlschrank','teller','löffel','gabel','messer','küche möbel',
+          'stove','fridge','plate','spoon','fork','knife','kitchen'],                set: 'kitchen'     },
+  // Level 4 — Nature
+  { kw: ['baum','blume','biene','schmetterling','garten','regenwurm','hase garten',
+          'tree','flower','bee','butterfly','garden'],                               set: 'garden'      },
+  { kw: ['sonne','regen','schnee','wind','wolke','gewitter','wetter heute','wie ist das wetter',
+          'sun','rain','snow','wind','cloud','storm','weather'],                     set: 'weather'     },
+  // Level 6 — World
+  { kw: ['auto','bus','zug','fahrrad','flugzeug','schiff','motorrad','lkw','verkehr',
+          'car','train','bicycle','airplane','ship','transport','vehicle'],          set: 'transport'   },
+  // Level 7 — Society
+  { kw: ['t-shirt','hose','schuhe','socken','jacke','hut','kleid','schal','kleidung',
+          'shirt','pants','shoes','socks','jacket','hat','dress','clothes'],         set: 'clothes'     },
 ];
+
+// Message sent to Teddy when the user picks a section from the dropdown
+const SECTION_MESSAGES = {
+  greetings:   'Lass uns Begrüßungen üben! Sag mir: Hallo!',
+  numbers1:    'Lass uns die Zahlen 1 bis 10 lernen! Fang an: eins!',
+  numbers2:    'Lass uns die Zahlen 11 bis 20 lernen! Kannst du elf sagen?',
+  alphabet:    'Lass uns das ABC lernen! A wie Apfel — sag es nach!',
+  colors:      'Lass uns Farben üben! Was ist deine Lieblingsfarbe?',
+  family:      'Lass uns über Familie sprechen! Hast du Geschwister?',
+  body:        'Lass uns den Körper lernen! Zeig mir deinen Kopf!',
+  rooms:       'Lass uns die Zimmer im Haus lernen! In welchem Zimmer bist du gerade?',
+  bedroom:     'Lass uns das Schlafzimmer erkunden! Was steht in deinem Zimmer?',
+  bathroom:    'Lass uns das Badezimmer lernen! Welche Farbe hat deine Zahnbürste?',
+  living_room: 'Lass uns das Wohnzimmer erkunden! Habt ihr ein Sofa?',
+  kitchen:     'Lass uns die Küche lernen! Wer kocht bei euch?',
+  garden:      'Lass uns den Garten erkunden! Habt ihr einen Baum im Garten?',
+  seasons:     'Lass uns über Jahreszeiten sprechen! Was ist deine Lieblingszeit?',
+  weather:     'Lass uns über das Wetter sprechen! Wie ist das Wetter heute?',
+  animals:     'Lass uns Tiere lernen! Hast du ein Haustier?',
+  breakfast:   'Lass uns über Frühstück sprechen! Was isst du morgens?',
+  fruits:      'Lass uns Obst lernen! Was ist deine Lieblingsfrucht?',
+  vegetables:  'Lass uns Gemüse lernen! Magst du Karotten?',
+  drinks:      'Lass uns Getränke lernen! Was trinkst du am liebsten?',
+  food:        'Lass uns über Lieblingsessen sprechen! Was ist dein Lieblingsessen?',
+  icecream:    'Lass uns Eissorten lernen! Welche Eissorte magst du am liebsten?',
+  school:      'Lass uns über Schule sprechen! Was ist dein Lieblingsfach?',
+  transport:   'Lass uns Transport lernen! Wie fährst du zur Schule?',
+  sports:      'Lass uns über Sport sprechen! Was spielst du gerne?',
+  hobbies:     'Lass uns über Hobbys sprechen! Was machst du gerne in der Freizeit?',
+  clothes:     'Lass uns Kleidung lernen! Was trägst du heute?',
+  jobs:        'Lass uns Berufe lernen! Was möchtest du werden?',
+  toys:        'Lass uns Spielzeug lernen! Was ist dein Lieblingsspielzeug?',
+  superpower:  'Lass uns Superkräfte besprechen! Welche Superpower hättest du gerne?',
+};
 
 function detectVocabSet(text) {
   const t = text.toLowerCase();
@@ -264,6 +515,11 @@ function showVocabPanel(setKey) {
   const vs = VOCAB_SETS[setKey];
   if (!vs) return;
   titleEl.textContent = vs.title;
+  // Apply type-specific grid layout
+  cardsEl.className = '';
+  if (vs.type === 'phrase')  cardsEl.classList.add('phrase-grid');
+  if (vs.type === 'number')  cardsEl.classList.add('number-grid');
+  if (vs.type === 'abc')     cardsEl.classList.add('abc-grid');
   cardsEl.innerHTML = '';
   vs.items.forEach((item, i) => {
     const card = document.createElement('div');
@@ -271,9 +527,13 @@ function showVocabPanel(setKey) {
     card.style.animationDelay = `${i * 110}ms`;
     card.dataset.de = item.de;
 
-    // Visual: big emoji or color swatch
+    // Visual: big emoji, color swatch, or large digit/letter
     const visual = vs.type === 'color'
       ? `<div class="vc-swatch" style="background:${item.color}"></div>`
+      : vs.type === 'number'
+      ? `<div class="vc-num">${item.emoji}</div>`
+      : vs.type === 'abc'
+      ? `<div class="vc-letter">${item.emoji}</div>`
       : `<div class="vc-emoji">${item.emoji}</div>`;
 
     // Article rendered as colored inline span; none shown if article is empty
@@ -532,6 +792,23 @@ room.on(RoomEvent.TrackSubscribed, (track, _pub, participant) => {
     track.attach(agentAudioEl);
     addMessage("", "Teddy ist da! Sprich mit ihm!", "system");
     startLipSync(track);
+
+    // Trigger pre-selected section: show vocab cards + tell Teddy the topic
+    if (_pendingSection) {
+      const key = _pendingSection;
+      _pendingSection = null;
+      _currentVocabSet = null;
+      showVocabPanel(key);
+      const msg = SECTION_MESSAGES[key];
+      if (msg) {
+        // Small delay so Teddy's greeting fires first
+        setTimeout(() => {
+          room.localParticipant.sendText(msg, { topic: 'lk.chat' })
+            .then(() => addMessage('Du', msg, 'user'))
+            .catch(err => console.warn('Pending section message failed:', err));
+        }, 2500);
+      }
+    }
   }
 });
 
@@ -541,6 +818,7 @@ room.on(RoomEvent.Disconnected, () => {
   _currentVocabSet = null;
   const vp = document.getElementById('vocab-panel');
   if (vp) vp.classList.add('hidden');
+  _pendingSection = null;
   setStatus("Session ended.");
   sessionEl.classList.add("hidden");
   showFeedback();
@@ -576,6 +854,7 @@ async function startCall() {
     langLabelEl.textContent = `${learnName} ← ${nativeName}`;
     modeLabelEl.textContent = modelLabel;
 
+    _pendingSection = selSection ? (selSection.value || null) : null;
     addMessage("", `Teddy lernt ${learnName} mit dir! Er begrüßt dich gleich…`, "system");
 
     await Promise.all([
@@ -655,6 +934,11 @@ btnSubmitFeedback.addEventListener("click", async () => {
 });
 
 btnSkipFeedback.addEventListener("click", () => closeFeedback());
+
+// ── Section / theme selector ───────────────────────────────────────────────
+// On the welcome screen the selection is stored and triggered when the session
+// starts (see TrackSubscribed handler). Nothing visual happens pre-session.
+// If the user somehow changes it while connected (shouldn't happen), switch live.
 
 // ── Wire up main buttons ───────────────────────────────────────────────────
 btnStart.addEventListener("click", startCall);

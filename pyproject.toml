@@ -1,6 +1,6 @@
 [project]
 name = "lern-mit-teddy"
-version = "1.0.0"
+version = "1.1.0"
 description = "Lern mit Teddy — AI German language learning voice agent for children. Teddy is a friendly bear who teaches German through natural conversation, vocabulary cards, and item-by-item drilling."
 readme = "README.md"
 requires-python = ">=3.12"

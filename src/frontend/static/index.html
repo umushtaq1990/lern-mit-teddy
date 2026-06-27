@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lern mit Teddy — Dein Sprachfreund</title>
-    <link rel="stylesheet" href="/static/styles.css?v=2" />
+    <link rel="stylesheet" href="/static/styles.css?v=4" />
     <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.15.5/dist/livekit-client.umd.min.js"></script>
   </head>
   <body>
@@ -51,6 +51,58 @@
             <option value="pipeline" selected>OpenAI (GPT) ⚡</option>
             <option value="gemini_live">Gemini (Google)</option>
             <option value="nvidia">NVIDIA (slow)</option>
+          </select>
+        </div>
+
+        <!-- Section / theme selector — choose what to learn before starting -->
+        <div id="section-bar" class="config-section">
+          <label class="config-label section-label" for="sel-section">📚 Lernbereich wählen (optional)</label>
+          <select id="sel-section" class="full-select">
+            <option value="">🎲 Überrasch mich! (alle Themen)</option>
+            <optgroup label="⭐ Level 1 — Grundlagen">
+              <option value="greetings">👋 Hallo! (Begrüßung)</option>
+              <option value="numbers1">🔢 Zahlen 1–10</option>
+              <option value="numbers2">🔢 Zahlen 11–20</option>
+              <option value="alphabet">🔤 Das ABC</option>
+              <option value="colors">🎨 Farben</option>
+            </optgroup>
+            <optgroup label="👨‍👩‍👧 Level 2 — Familie &amp; Körper">
+              <option value="family">👨‍👩‍👧 Familie</option>
+              <option value="body">🫀 Mein Körper</option>
+            </optgroup>
+            <optgroup label="🏠 Level 3 — Zu Hause">
+              <option value="rooms">🏠 Das Haus (Räume)</option>
+              <option value="bedroom">🛏️ Schlafzimmer</option>
+              <option value="bathroom">🚿 Badezimmer</option>
+              <option value="living_room">🛋️ Wohnzimmer</option>
+              <option value="kitchen">🍳 Küche</option>
+            </optgroup>
+            <optgroup label="🌿 Level 4 — Natur">
+              <option value="garden">🌳 Garten</option>
+              <option value="weather">🌤️ Wetter</option>
+              <option value="seasons">🍂 Jahreszeiten</option>
+              <option value="animals">🐾 Tiere</option>
+            </optgroup>
+            <optgroup label="🍕 Level 5 — Essen &amp; Trinken">
+              <option value="breakfast">🍳 Frühstück</option>
+              <option value="fruits">🍎 Obst</option>
+              <option value="vegetables">🥕 Gemüse</option>
+              <option value="drinks">🥛 Getränke</option>
+              <option value="food">🍕 Lieblingsessen</option>
+              <option value="icecream">🍦 Eis</option>
+            </optgroup>
+            <optgroup label="🎒 Level 6 — Welt &amp; Schule">
+              <option value="school">📚 Schule</option>
+              <option value="transport">🚗 Transport &amp; Verkehr</option>
+              <option value="sports">⚽ Sport &amp; Spiele</option>
+              <option value="hobbies">🎨 Hobbys</option>
+            </optgroup>
+            <optgroup label="👗 Level 7 — Gesellschaft">
+              <option value="clothes">👕 Kleidung</option>
+              <option value="jobs">👨‍⚕️ Berufe</option>
+              <option value="toys">🧸 Spielzeug</option>
+              <option value="superpower">🦸 Superkräfte</option>
+            </optgroup>
           </select>
         </div>
 
@@ -129,6 +181,6 @@
       </div>
     </div>
 
-    <script src="/static/app.js?v=8"></script>
+    <script src="/static/app.js?v=10"></script>
   </body>
 </html>
