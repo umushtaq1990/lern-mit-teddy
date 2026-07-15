@@ -13,7 +13,17 @@ from typing import TYPE_CHECKING, Any
 from livekit.agents import tts as tts_base
 from livekit.plugins import hume, openai
 
-from .config import EDGE_TTS_VOICES, KOKORO_VOICES, SUPPORTED_LANGUAGES, CallConfig, VoiceSettings, build_lingua_prompt
+from .config import (
+    EDGE_TTS_RATE_OVERRIDES,
+    EDGE_TTS_VOICES,
+    KOKORO_VOICES,
+    SUPPORTED_LANGUAGES,
+    TTS_PROVIDER_OVERRIDES,
+    TTS_SPEED_OVERRIDES,
+    CallConfig,
+    VoiceSettings,
+    build_lingua_prompt,
+)
 
 if TYPE_CHECKING:
     from .tracing import VoiceSessionTracer
@@ -23,7 +33,12 @@ logger = logging.getLogger(__name__)
 
 def create_tts(cfg: CallConfig, settings: VoiceSettings) -> tts_base.TTS:
     """Instantiate the TTS backend for a pipeline call."""
-    provider = cfg.tts_provider.lower()
+    provider = TTS_PROVIDER_OVERRIDES.get(cfg.language, cfg.tts_provider.lower())
+    if provider != cfg.tts_provider.lower():
+        logger.info(
+            "TTS provider override — language=%s configured=%s using=%s",
+            cfg.language, cfg.tts_provider, provider,
+        )
 
     if provider == "nvidia_riva":
         from .riva_tts import RivaTTS
@@ -61,13 +76,18 @@ def create_tts(cfg: CallConfig, settings: VoiceSettings) -> tts_base.TTS:
             if settings.tts_api_key:
                 kwargs["api_key"] = settings.tts_api_key
 
+        if cfg.language in TTS_SPEED_OVERRIDES:
+            kwargs["speed"] = TTS_SPEED_OVERRIDES[cfg.language]
+            logger.info("TTS speed override — language=%s speed=%s", cfg.language, kwargs["speed"])
+
         return openai.TTS(**kwargs)
 
     if provider == "edge_tts":
         from .edge_tts_wrapper import EdgeTTSProvider
         voice = EDGE_TTS_VOICES.get(cfg.language, EDGE_TTS_VOICES["en"])
-        logger.info("Edge TTS — language=%s voice=%s", cfg.language, voice)
-        return EdgeTTSProvider(language=cfg.language)
+        rate = EDGE_TTS_RATE_OVERRIDES.get(cfg.language, "+0%")
+        logger.info("Edge TTS — language=%s voice=%s rate=%s", cfg.language, voice, rate)
+        return EdgeTTSProvider(language=cfg.language, rate=rate)
 
     if provider == "hume":
         return hume.TTS()

@@ -6,6 +6,30 @@ Format: [Semantic Versioning](https://semver.org) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [1.2.0] — 2026-07-15
+
+### Added — Arabic Learning Mode
+
+- **Native Arabic voice** — Edge TTS's `ar-SA-ZariyahNeural` (Saudi accent) forced for Arabic regardless of the globally configured `TTS_PROVIDER`, with prosody-based slow rate (`-15%`) instead of audio-stretch speed changes
+- **STT accuracy fallback** — Deepgram's `nova-2` rejects Arabic outright; the worker now detects this and falls back to local faster-whisper automatically, using the `small` model size for Arabic specifically (better accented-speech accuracy than the default `base`)
+- **Silent English translation captions** — a dedicated translation LLM call (separate from Teddy's persona reply) produces a caption in the learner's native language, sent to the browser as a data message and rendered as its own line, never spoken aloud; keyed by a per-turn ID so it can't attach to the wrong transcript line
+- **Deterministic vocab-card drilling** — sessions default to a greetings/introductions curriculum automatically, even without picking a card from the dropdown; whichever card is active, the backend (not the model) decides the single next word to drill, verified complete by a dedicated judge LLM call before advancing
+- **Full-sentence correction** — a fragment answer (e.g. "bread") is modeled into the correct complete Arabic sentence and re-asked, rather than silently moving on
+- **Topic lock** — off-topic remarks (in Arabic or the learner's native language) are briefly acknowledged, then redirected back to the current card; a single ambiguous word (e.g. "حلو") can no longer derail the topic
+- **Native-language bridging** — if the learner answers in English instead of Arabic, Teddy now recognizes it as an attempt at the current word and bridges it into the lesson, rather than misreading it as an unrelated request
+- **Vocab card checkmarks** — cards show a ✓ once a word is judged complete and a highlight ring on the word currently being drilled, driven by an authoritative `vocab_progress` data message from the backend
+- **RTL transcript layout** — Arabic lines render right-to-left with Arabic speaker labels ("تيدي"/"أنت"); English captions stay left-to-right underneath
+- **2 new greetings-card items** — "I'm not feeling well" and "I'm a student"
+- **Local session logs** — every session (any language) now writes to `logs/sessions/<session_id>.jsonl`, independent of in-memory state or cloud tracing
+
+### Fixed
+
+- `HumanMessage.content` from LiveKit's `ChatContext` is always a list of parts, never a bare string — several message-scanning functions (`_active_vocab_set_ar`, `_covered_topics`, `_asked_questions`, the judge's transcript builder) were checking `isinstance(content, str)` and silently skipping every user message in production, only working in direct-invoke testing. Added a shared `_plain_text()` helper and fixed every affected function
+- Judge LLM call's raw JSON output was leaking into the spoken TTS stream (it runs inside the same graph invocation the adapter streams via `stream_mode="messages"`) — fixed with `tags=["nostream"]`
+- Vocabulary-card TTS/STT/keyword-detection system was entirely German-only; Arabic now has its own mirrored vocab data (`src/langgraph/vocab_ar.json`)
+
+---
+
 ## [1.1.0] — 2026-06-26
 
 ### Added — Full Language Learning Curriculum

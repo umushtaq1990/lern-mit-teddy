@@ -35,14 +35,15 @@ _NUM_CHANNELS = 1
 class EdgeTTSProvider(tts_base.TTS):
     """LiveKit TTS adapter backed by Microsoft Edge TTS neural voices."""
 
-    def __init__(self, *, language: str = "en") -> None:
+    def __init__(self, *, language: str = "en", rate: str = "+0%") -> None:
         super().__init__(
             capabilities=tts_base.TTSCapabilities(streaming=False),
             sample_rate=_SAMPLE_RATE,
             num_channels=_NUM_CHANNELS,
         )
         self._voice = EDGE_TTS_VOICES.get(language, EDGE_TTS_VOICES["en"])
-        logger.info("EdgeTTS init — language=%s voice=%s", language, self._voice)
+        self._rate = rate
+        logger.info("EdgeTTS init — language=%s voice=%s rate=%s", language, self._voice, rate)
 
     @property
     def model(self) -> str:
@@ -73,7 +74,9 @@ class EdgeChunkedStream(tts_base.ChunkedStream):
         self._provider = tts
 
     async def _run(self, output_emitter: AudioEmitter) -> None:
-        communicate = edge_tts.Communicate(self._input_text, self._provider._voice)
+        communicate = edge_tts.Communicate(
+            self._input_text, self._provider._voice, rate=self._provider._rate
+        )
 
         initialized = False
         got_audio = False

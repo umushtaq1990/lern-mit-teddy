@@ -317,6 +317,41 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
   transform: translateY(-2px) scale(1.04);
 }
 
+/* Authoritative drill state from the backend — which word is done vs. the
+   one word Teddy is asking about right now */
+.vocab-card.vocab-current {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251,191,36,0.35);
+}
+
+.vocab-card.vocab-done {
+  opacity: 0.55;
+  position: relative;
+}
+
+.vocab-card.vocab-done::after {
+  content: "✓";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #34d399;
+  color: #052e22;
+  font-size: 0.85rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--bg, #0b1220);
+}
+
+.vocab-card.rtl.vocab-done::after {
+  right: auto;
+  left: -8px;
+}
+
 /* Big emoji / color swatch */
 .vocab-card .vc-emoji { font-size: 2.6rem; line-height: 1; }
 .vocab-card .vc-swatch {
@@ -340,6 +375,16 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
 .vocab-card .vc-de .art.der { color: #93c5fd; }   /* blue  — masculine */
 .vocab-card .vc-de .art.die { color: #f9a8d4; }   /* pink  — feminine  */
 .vocab-card .vc-de .art.das { color: #6ee7b7; }   /* green — neuter    */
+
+/* Arabic: no der/die/das, so noun gender is colored directly (masculine/feminine only) */
+.vocab-card .vc-de .art.gender-m { color: #93c5fd; }   /* blue — مذكر (masculine) */
+.vocab-card .vc-de .art.gender-f { color: #f9a8d4; }   /* pink — مؤنث (feminine)  */
+
+/* Arabic cards read right-to-left */
+.vocab-card.rtl .vc-de {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
 
 .vocab-card .vc-en {
   font-size: 0.52rem;
@@ -381,6 +426,16 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
 .msg.user { color: var(--text); }
 
 .msg.system { color: var(--muted); font-size: 0.82rem; font-style: italic; }
+
+/* Silent translation caption — its own line, text only, never spoken */
+.msg.caption {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: -0.15rem;
+  margin-bottom: 0.3rem;
+  margin-inline-start: 1.5rem;
+}
 
 /* ── Chat form ───────────────────────────────────── */
 .chat-form {

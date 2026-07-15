@@ -33,8 +33,16 @@ from livekit.plugins import deepgram as deepgram_plugin
 from livekit.plugins import silero
 from src.langgraph.agent import agent as lingua_graph
 from .adapter.langgraph import LangGraphAdapter
-from .config import SUPPORTED_LANGUAGES, CallConfig, VoiceSettings
+from .config import (
+    DEEPGRAM_UNSUPPORTED_LANGUAGES,
+    FASTER_WHISPER_FALLBACK_DEFAULT,
+    FASTER_WHISPER_FALLBACK_MODEL,
+    SUPPORTED_LANGUAGES,
+    CallConfig,
+    VoiceSettings,
+)
 from .providers import TracedTTS, create_realtime_llm, create_tts
+from .session_logger import SessionLogger
 from .stt import FasterWhisperSTT
 from .tracing import RealtimeLangfuseTracer, VoiceSessionTracer
 from .vision import VisionAssistant
@@ -166,6 +174,10 @@ async def entrypoint(ctx: JobContext) -> None:
         "run_name": f"lingua-ai-{thread_id}",
     }
 
+    session_logger = SessionLogger(
+        session_id, language=cfg.language, native_language=cfg.native_language, room=ctx.room.name,
+    )
+
     if cfg.is_realtime:
         session = _build_realtime_session(cfg)
         realtime_tracer = RealtimeLangfuseTracer(
@@ -175,7 +187,9 @@ async def entrypoint(ctx: JobContext) -> None:
         realtime_tracer.attach(session)
         pipeline_tracer = None
     else:
-        session, pipeline_tracer = _build_pipeline_session(ctx, cfg, langgraph_config, session_id, thread_id, participant)
+        session, pipeline_tracer = _build_pipeline_session(
+            ctx, cfg, langgraph_config, session_id, thread_id, participant, session_logger,
+        )
         realtime_tracer = None
 
     await _publish_trace_info(ctx, session_id, pipeline_tracer)
@@ -192,6 +206,7 @@ async def entrypoint(ctx: JobContext) -> None:
     if supports_say:
         greeting = _GREETINGS.get(cfg.language, _GREETINGS["en"])
         await session.say(greeting, allow_interruptions=True)
+        session_logger.log("assistant", greeting)
 
     watchdog = asyncio.create_task(_silence_watchdog(session, cfg.language))
 
@@ -227,6 +242,7 @@ def _build_pipeline_session(
     session_id: str,
     thread_id: str,
     participant,
+    session_logger: SessionLogger,
 ) -> tuple[AgentSession, VoiceSessionTracer]:
     stt_label = (
         f"deepgram/{cfg.stt_model}" if cfg.stt_provider == "deepgram"
@@ -244,16 +260,47 @@ def _build_pipeline_session(
 
     graph = lingua_graph
 
+    async def _publish_caption(translation: str, turn_id: str) -> None:
+        """Forward a silent translation caption to the frontend (never spoken by TTS).
+
+        turn_id lets the frontend give each reply's caption its own line instead of
+        guessing which transcript bubble it belongs to.
+        """
+        try:
+            payload = json.dumps({"type": "caption", "translation": translation, "turn_id": turn_id}).encode()
+            await ctx.room.local_participant.publish_data(payload, reliable=True)
+        except Exception as exc:
+            logger.warning("Failed to publish caption: %s", exc)
+
+    async def _log_turn(role: str, text: str) -> None:
+        session_logger.log(role, text)
+
+    async def _publish_vocab_progress(progress: dict) -> None:
+        """Forward vocab-card drill progress (current word, completed words) to the
+        frontend so it can show tick/cross state directly on the vocab cards."""
+        try:
+            payload = json.dumps({"type": "vocab_progress", **progress}).encode()
+            await ctx.room.local_participant.publish_data(payload, reliable=True)
+        except Exception as exc:
+            logger.warning("Failed to publish vocab progress: %s", exc)
+
     inner_tts = create_tts(cfg, _SETTINGS)
     tts = TracedTTS(inner_tts, tracer, model_name=cfg.tts_label) if tracer._enabled else inner_tts
 
     # Build STT — Deepgram cloud (low latency) or local faster-whisper
-    if cfg.stt_provider == "deepgram":
+    use_deepgram = cfg.stt_provider == "deepgram" and cfg.language not in DEEPGRAM_UNSUPPORTED_LANGUAGES
+    if cfg.stt_provider == "deepgram" and not use_deepgram:
+        logger.warning(
+            "Deepgram model=%s rejects language=%s; falling back to local faster-whisper",
+            cfg.stt_model, cfg.language,
+        )
+    if use_deepgram:
         logger.info("Deepgram STT — model=%s language=%s", cfg.stt_model, cfg.language)
         stt = deepgram_plugin.STT(model=cfg.stt_model, language=cfg.language, detect_language=False)
     else:
+        fallback_model = FASTER_WHISPER_FALLBACK_MODEL.get(cfg.language, FASTER_WHISPER_FALLBACK_DEFAULT)
         stt = FasterWhisperSTT(
-            model=cfg.stt_model,
+            model=cfg.stt_model if cfg.stt_provider != "deepgram" else fallback_model,
             language=cfg.language,
             device="cpu",
             compute_type="int8",
@@ -267,6 +314,9 @@ def _build_pipeline_session(
             graph,
             config=langgraph_config,
             langfuse_handler=tracer.get_langchain_handler(),
+            on_caption=_publish_caption if cfg.language == "ar" else None,
+            on_turn=_log_turn,
+            on_progress=_publish_vocab_progress if cfg.language == "ar" else None,
         ),
         tts=tts,
         turn_handling=_TURN_HANDLING,

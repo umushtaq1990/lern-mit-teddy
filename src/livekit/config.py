@@ -35,6 +35,32 @@ SUPPORTED_LANGUAGES: dict[str, str] = {
     "hi": "Hindi",
 }
 
+# Languages the configured Deepgram model (nova-2) rejects outright (HTTP 400 on
+# connect). Confirmed for Arabic: https://developers.deepgram.com/docs/models-languages-overview
+# — sessions using these must fall back to local faster-whisper instead.
+DEEPGRAM_UNSUPPORTED_LANGUAGES: frozenset[str] = frozenset({"ar"})
+
+# Slower OpenAI TTS playback (0.25-4.0, default 1.0) for beginner learners in
+# languages where kids need more time to follow along. Not used for languages
+# covered by TTS_PROVIDER_OVERRIDES below — Edge TTS's rate control (real
+# prosody) replaces this audio-stretch approach for those.
+TTS_SPEED_OVERRIDES: dict[str, float] = {}
+
+# Force Edge TTS (native regional neural voice + real prosody-based rate control)
+# for these languages regardless of the globally configured TTS_PROVIDER — a
+# beginner needs a natural, unhurried accent, not OpenAI's audio-stretched "speed".
+TTS_PROVIDER_OVERRIDES: dict[str, str] = {"ar": "edge_tts"}
+
+# Edge TTS speech-rate override per language (SSML-style percentage, e.g. "-15%").
+EDGE_TTS_RATE_OVERRIDES: dict[str, str] = {"ar": "-15%"}
+
+# faster-whisper model size to use when falling back from Deepgram (see
+# DEEPGRAM_UNSUPPORTED_LANGUAGES above). "base" is fast but weak on accented or
+# imperfect beginner pronunciation; Arabic gets "small" for meaningfully better
+# accuracy at some added CPU latency.
+FASTER_WHISPER_FALLBACK_MODEL: dict[str, str] = {"ar": "small"}
+FASTER_WHISPER_FALLBACK_DEFAULT = "base"
+
 _LANG_NAME_TO_CODE: dict[str, str] = {v: k for k, v in SUPPORTED_LANGUAGES.items()}
 
 
@@ -182,13 +208,14 @@ class CallConfig:
     @property
     def tts_label(self) -> str:
         """Human-readable TTS identifier for tags/traces, e.g. 'edge_tts:de-DE-SeraphinaMultilingualNeural'."""
-        if self.tts_provider == "edge_tts":
+        effective_provider = TTS_PROVIDER_OVERRIDES.get(self.language, self.tts_provider)
+        if effective_provider == "edge_tts":
             voice = EDGE_TTS_VOICES.get(self.language, EDGE_TTS_VOICES["en"])
             return f"edge_tts:{voice}"
-        if self.tts_provider == "openai" and self.tts_base_url:
+        if effective_provider == "openai" and self.tts_base_url:
             voice = KOKORO_VOICES.get(self.language, self.tts_voice)
             return f"kokoro:{voice}"
-        return f"{self.tts_provider}:{self.tts_voice}"
+        return f"{effective_provider}:{self.tts_voice}"
 
     @property
     def language_name(self) -> str:

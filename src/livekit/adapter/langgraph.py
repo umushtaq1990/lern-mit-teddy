@@ -14,7 +14,7 @@ References:
   https://github.com/langchain-ai/langgraph/blob/main/docs/docs/how-tos/use-remote-graph.md
 """
 
-from typing import Any, Optional
+from typing import Any, Awaitable, Callable, Optional
 import base64
 from httpx import HTTPStatusError
 from livekit.agents import llm
@@ -36,10 +36,47 @@ from langgraph.pregel import Pregel
 from langchain_core.messages import BaseMessageChunk, AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langgraph.types import Command
 from langgraph.errors import GraphInterrupt
+from langchain_openai import ChatOpenAI
+
+from ..config import SUPPORTED_LANGUAGES
 
 import logging
+import os
 
 logger = logging.getLogger(__name__)
+
+# Dedicated translator for the on-screen caption — deliberately separate from the
+# main persona LLM call. Asking one call to speak in-character AND produce a
+# translation with a formatting marker proved unreliable (the model would
+# sometimes drop the marker, or let English leak into the spoken reply). A
+# second, single-purpose call has one job and nothing else to get wrong.
+_TRANSLATOR_MODEL = os.getenv("LLM_MODEL", "gpt-4o-mini")
+_translator: ChatOpenAI | None = None
+
+
+def _get_translator() -> ChatOpenAI:
+    global _translator
+    if _translator is None:
+        _translator = ChatOpenAI(model=_TRANSLATOR_MODEL, temperature=0)
+    return _translator
+
+
+async def _translate(text: str, target_language_name: str) -> str:
+    """Translate a short spoken reply into target_language_name. Best-effort —
+    caller treats an empty/failed result as "no caption this turn"."""
+    if not text.strip():
+        return ""
+    messages = [
+        (
+            "system",
+            f"Translate the following short text into {target_language_name}. "
+            "Reply with ONLY the translation — no quotes, no notes, no original text.",
+        ),
+        ("human", text),
+    ]
+    result = await _get_translator().ainvoke(messages)
+    content = result.content
+    return content.strip() if isinstance(content, str) else ""
 
 
 class LangGraphStream(llm.LLMStream):
@@ -62,10 +99,46 @@ class LangGraphStream(llm.LLMStream):
         conn_options: APIConnectOptions,
         graph: Pregel,
         langfuse_handler: Any = None,
+        on_caption: Callable[[str, str], Awaitable[None]] | None = None,
+        on_turn: Callable[[str, str], Awaitable[None]] | None = None,
+        on_progress: Callable[[dict], Awaitable[None]] | None = None,
     ):
         super().__init__(llm, chat_ctx=chat_ctx, tools=tools, conn_options=conn_options)
         self._graph = graph
         self._langfuse_handler = langfuse_handler
+        self._on_caption = on_caption
+        self._on_turn = on_turn
+        self._on_progress = on_progress
+        # One LangGraphStream instance == one turn, so a single id per instance is
+        # enough to let the frontend tell captions from different turns apart.
+        self._turn_id = shortuuid()
+        self._spoken_parts: list[str] = []  # accumulates the full reply for translation
+
+    @staticmethod
+    def _plain_text(content: Any) -> str:
+        """Flatten a LangChain message's .content into plain text — it's a plain
+        str for AI/system messages, but ChatContext-derived HumanMessages carry
+        a list of content parts (e.g. [{"type": "text", "text": "hello"}]) since
+        LiveKit's ChatMessage.content is always a list, never a bare string."""
+        if isinstance(content, str):
+            return content
+        if isinstance(content, list):
+            parts = []
+            for c in content:
+                if isinstance(c, str):
+                    parts.append(c)
+                elif isinstance(c, dict) and c.get("type") == "text":
+                    parts.append(c.get("text", ""))
+            return " ".join(p for p in parts if p)
+        return ""
+
+    async def _log_turn(self, role: str, text: str) -> None:
+        if not self._on_turn or not text:
+            return
+        try:
+            await self._on_turn(role, text)
+        except Exception:
+            logger.warning("on_turn callback failed", exc_info=True)
 
     async def _run(self):
         """Consume LangGraph stream and emit LiveKit ChatChunks."""
@@ -87,6 +160,19 @@ class LangGraphStream(llm.LLMStream):
         else:
             input_state = state
 
+        # Log the user's latest turn (whatever this stream is responding to)
+        last_human = next(
+            (m for m in reversed(state.get("messages", [])) if isinstance(m, HumanMessage)),
+            None,
+        )
+        if last_human:
+            user_text = self._plain_text(last_human.content)
+            if user_text:
+                await self._log_turn("user", user_text)
+
+        configurable = (self._llm._config or {}).get("configurable") or {}
+        native_language = SUPPORTED_LANGUAGES.get(configurable.get("native_language", "en"), "English")
+
         try:
             # Merge Langfuse callback into graph config so every LLM call is traced
             run_config = dict(self._llm._config or {})
@@ -95,31 +181,65 @@ class LangGraphStream(llm.LLMStream):
                 run_config["callbacks"] = [self._langfuse_handler] + existing
 
             # LangGraph astream with explicit modes (messages, custom)
-            # https://github.com/langchain-ai/langgraph/blob/main/docs/docs/how-tos/streaming.md
+            # https://github.com/livekit/agents/blob/main/docs/docs/how-tos/streaming.md
             async for mode, data in self._graph.astream(
                 input_state, config=run_config, stream_mode=["messages", "custom"]
             ):
                 if mode == "messages":
                     if data and len(data) > 0:
-                        message = data[0]
-                        if chunk := await self._to_livekit_chunk(message):
-                            self._event_ch.send_nowait(chunk)
+                        self._forward(data[0])
 
                 if mode == "custom":
                     # Minimal custom protocol: {"type": "say", data: {content: str}}
                     if isinstance(data, dict) and (event := data.get("type")):
-                        if event in ("say"):
+                        if event == "say":
                             content = (data.get("data") or {}).get("content")
-                            if chunk := await self._to_livekit_chunk(content):
-                                self._event_ch.send_nowait(chunk)
+                            self._forward(content)
+                        elif event == "vocab_progress" and self._on_progress:
+                            try:
+                                await self._on_progress(data.get("data") or {})
+                            except Exception:
+                                logger.warning("on_progress callback failed", exc_info=True)
         except GraphInterrupt:
             # Graph was interrupted; we gracefully stop streaming
             pass
 
         # If interrupted late, send the string as a message
         if interrupt := await self._get_interrupt():
-            if chunk := await self._to_livekit_chunk(interrupt.value):
+            content, _ = self._extract_content(interrupt.value)
+            if content and (chunk := self._create_livekit_chunk(content)):
                 self._event_ch.send_nowait(chunk)
+                self._spoken_parts.append(content)
+
+        await self._log_turn("assistant", "".join(self._spoken_parts).strip())
+        await self._dispatch_translation(native_language)
+
+    def _forward(self, msg: BaseMessageChunk | str | None) -> None:
+        """Extract content from a stream chunk, forward it to TTS, and keep a
+        copy for the end-of-turn translation pass."""
+        content, request_id = self._extract_content(msg)
+        if not content:
+            return
+        self._spoken_parts.append(content)
+        if chunk := self._create_livekit_chunk(content, id=request_id):
+            self._event_ch.send_nowait(chunk)
+
+    async def _dispatch_translation(self, native_language: str) -> None:
+        """Translate the full turn's reply and send it via on_caption — a separate,
+        single-purpose call so the main persona LLM never has to juggle speaking
+        in-character AND producing a formatted translation in the same response."""
+        if not self._on_caption:
+            return
+        text = "".join(self._spoken_parts).strip()
+        if not text:
+            return
+        try:
+            translation = await _translate(text, native_language)
+            if translation:
+                await self._on_caption(translation, self._turn_id)
+                await self._log_turn("translation", translation)
+        except Exception:
+            logger.warning("translation dispatch failed", exc_info=True)
 
     def _chat_ctx_to_state(self) -> dict[str, Any]:
         """Translate LiveKit ChatContext into LangGraph state messages.
@@ -214,23 +334,23 @@ class LangGraphStream(llm.LLMStream):
         )
 
     @staticmethod
-    async def _to_livekit_chunk(
+    def _extract_content(
         msg: BaseMessageChunk | str | None,
-    ) -> llm.ChatChunk | None:
-        """Normalize LangGraph message chunk or string into a ChatChunk.
+    ) -> tuple[str | None, str | None]:
+        """Normalize a LangGraph message chunk or string into (content, request_id).
 
         Accepts:
           - str content
           - message-like objects with .content (str)
           - dicts with {id?, content?}
           - lists where first element carries the content
-        Returns None when content is missing or not a string.
+        Returns (None, None) when content is missing or not a string.
         """
         if not msg:
-            return None
+            return None, None
 
         if isinstance(msg, ToolMessage) or getattr(msg, "type", None) == "tool":
-            return None
+            return None, None
 
         request_id = None
         content = msg
@@ -257,20 +377,20 @@ class LangGraphStream(llm.LLMStream):
                     request_id = first_item.get("id")
                 else:
                     logger.warning(f"Unsupported message type in list: {type(first_item)}")
-                    return None
+                    return None, None
             else:
                 logger.warning("Empty message list received")
-                return None
+                return None, None
         else:
             logger.warning(f"Unsupported message type: {type(msg)}")
-            return None
+            return None, None
 
         # Ensure content is a string
         if not isinstance(content, str):
             logger.warning(f"Content is not a string: {type(content)}")
-            return None
+            return None, None
 
-        return LangGraphStream._create_livekit_chunk(content, id=request_id)
+        return content, request_id
 
 
 class LangGraphAdapter(llm.LLM):
@@ -288,11 +408,17 @@ class LangGraphAdapter(llm.LLM):
         graph: Any,
         config: dict[str, Any] | None = None,
         langfuse_handler: Any = None,
+        on_caption: Callable[[str, str], Awaitable[None]] | None = None,
+        on_turn: Callable[[str, str], Awaitable[None]] | None = None,
+        on_progress: Callable[[dict], Awaitable[None]] | None = None,
     ):
         super().__init__()
         self._graph = graph
         self._config = config
         self._langfuse_handler = langfuse_handler
+        self._on_caption = on_caption
+        self._on_turn = on_turn
+        self._on_progress = on_progress
 
     def chat(
         self,
@@ -317,4 +443,7 @@ class LangGraphAdapter(llm.LLM):
             conn_options=conn_options,
             graph=self._graph,
             langfuse_handler=self._langfuse_handler,
+            on_caption=self._on_caption,
+            on_turn=self._on_turn,
+            on_progress=self._on_progress,
         )
