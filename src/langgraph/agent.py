@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import os
@@ -32,6 +33,29 @@ _LANGUAGE_NAMES: dict[str, str] = {
     "tr": "Turkish",
     "hi": "Hindi",
 }
+
+# Language-specific grammar reminder used only when building a full sentence
+# around a vocabulary word (see "word"-kind cards in vocab_data.json) — the
+# drilling CODE is language-generic, but the correct grammar to model genuinely
+# differs per language, so that part stays data, not logic. Falls back to a
+# generic reminder for any language without a specific entry here.
+_SENTENCE_GRAMMAR_HINTS: dict[str, str] = {
+    "de": (
+        "Use correct German grammar when you model the sentence: right article gender "
+        "(der/die/das and its accusative form, e.g. 'den Apfel'), correct verb conjugation "
+        "for 'ich' (e.g. 'Ich esse Brot.', 'Ich mag Hunde.'), and natural word order — "
+        "not just the bare word."
+    ),
+    "ar": (
+        "Use correct Arabic sentence structure when you model it: natural verb-subject "
+        "agreement and the correct definite article (ال) where needed, e.g. 'أنا أحب الخبز' "
+        "— not just the bare word."
+    ),
+}
+_DEFAULT_SENTENCE_GRAMMAR_HINT = (
+    "Use correct, natural grammar for the target language when you model the sentence — "
+    "not just the bare word inserted into a template."
+)
 
 
 def get_langfuse_config() -> dict:
@@ -92,38 +116,39 @@ def _covered_topics(messages: list) -> list[str]:
     return [label for label, keywords in _TOPIC_KEYWORDS if any(kw in all_text for kw in keywords)]
 
 
-# ── Arabic vocab-card drilling ──────────────────────────────────────────────
+# ── Vocab-card drilling (any language with data below) ──────────────────────
 # Mirrors the frontend's VOCAB_SETS (src/frontend/static/app.js) — the backend
 # has no other way to know which card is on screen or what its items are, so
-# this is generated once from that source of truth (see vocab_ar.json). Keep
-# the two in sync if the vocab sets change.
-_VOCAB_AR_PATH = Path(__file__).parent / "vocab_ar.json"
+# this is generated once from that source of truth (see vocab_data.json, keyed
+# by language code). Keep the two in sync if the vocab sets change.
+_VOCAB_DATA_PATH = Path(__file__).parent / "vocab_data.json"
 try:
-    _VOCAB_SETS_AR: dict = json.loads(_VOCAB_AR_PATH.read_text(encoding="utf-8"))
+    _VOCAB_DATA: dict[str, dict] = json.loads(_VOCAB_DATA_PATH.read_text(encoding="utf-8"))
 except FileNotFoundError:
-    _VOCAB_SETS_AR = {}
+    _VOCAB_DATA = {}
 
 
-def _active_vocab_set_ar(messages: list) -> str | None:
+def _active_vocab_set(messages: list, lang_code: str) -> str | None:
     """Identify which vocab card is currently active by finding its section
     trigger phrase in the conversation (most recent occurrence wins)."""
+    sets = _VOCAB_DATA.get(lang_code, {})
     for m in reversed(messages):
         content = _plain_text(getattr(m, "content", None))
         if not content:
             continue
-        for key, data in _VOCAB_SETS_AR.items():
+        for key, data in sets.items():
             trigger = data.get("trigger")
             if trigger and trigger in content:
                 return key
     return None
 
 
-def _vocab_progress_ar(messages: list, set_key: str) -> tuple[list[str], list[str]]:
+def _vocab_progress_heuristic(messages: list, lang_code: str, set_key: str) -> tuple[list[str], list[str]]:
     """Cheap heuristic fallback: a word counts as introduced once Teddy's own
     message has mentioned it. Used only if the dedicated judge call (below)
     fails — it doesn't verify the child actually answered, just that Teddy
     said the word."""
-    data = _VOCAB_SETS_AR.get(set_key)
+    data = _VOCAB_DATA.get(lang_code, {}).get(set_key)
     if not data:
         return [], []
     ai_text = " ".join(_plain_text(m.content) for m in messages if isinstance(m, AIMessage))
@@ -154,7 +179,7 @@ def _recent_transcript(messages: list, limit: int = 24) -> str:
     return "\n".join(lines)
 
 
-async def _judge_vocab_progress_ar(messages: list, set_key: str) -> list[str]:
+async def _judge_vocab_progress(messages: list, lang_code: str, set_key: str) -> list[str]:
     """Dedicated call whose only job is judging which words have been BOTH
     asked about by Teddy AND answered by the child with an attempted full
     sentence. Kept separate from the persona reply so this judgment doesn't
@@ -164,25 +189,44 @@ async def _judge_vocab_progress_ar(messages: list, set_key: str) -> list[str]:
     Falls back to the cheap substring heuristic if the call fails or returns
     something unparseable, so a transient API error can't break the drill.
     """
-    data = _VOCAB_SETS_AR.get(set_key)
+    data = _VOCAB_DATA.get(lang_code, {}).get(set_key)
     if not data:
         return []
     items = data["items"]
+    kind = data.get("kind", "word")
     transcript = _recent_transcript(messages)
     if not transcript:
         return []
 
+    learning_language = _LANGUAGE_NAMES.get(lang_code, lang_code)
+    if kind == "word":
+        # Vocabulary nouns/concepts (e.g. breakfast items, colors, animals) — the
+        # pedagogical goal is building a full sentence around the word, so a bare
+        # word or fragment answer is not yet "complete".
+        completion_rule = (
+            "A word counts as complete ONLY if there is a clear back-and-forth about that "
+            "SPECIFIC word: Teddy asks or prompts about it by name, AND the child's reply "
+            "right after that specifically responds to it with at least an attempted full "
+            "sentence (a bare single word or fragment does NOT count). A word Teddy merely "
+            "mentions in passing — e.g. as part of a personal share, an example, or "
+            "alongside other words — does NOT count unless the child was actually asked "
+            "about that exact word and then responded to it."
+        )
+    else:
+        # Phrases (e.g. greetings), numbers, or single letters — the item itself IS the
+        # complete correct utterance. Demanding a longer sentence here is wrong and
+        # causes an infinite loop, since there is nothing further to "expand" into.
+        completion_rule = (
+            "A word counts as complete if Teddy asked/prompted about it by name AND the "
+            "child then said a reasonable attempt at THAT EXACT target phrase/word/number "
+            "right after — accept close or imperfect pronunciation attempts. Do NOT require "
+            "a longer sentence around it; the target item itself is already the full "
+            "correct answer."
+        )
     system = (
-        "You are grading a young child's Arabic vocabulary drill. You will be given an "
-        "ordered list of target words and a conversation transcript between Teddy (the "
-        "teacher) and the child. A word counts as complete ONLY if there is a clear "
-        "back-and-forth about that SPECIFIC word: Teddy asks or prompts about it by name, "
-        "AND the child's reply right after that specifically responds to it with at least "
-        "an attempted full sentence (a bare single word or fragment does NOT count). "
-        "A word Teddy merely mentions in passing — e.g. as part of a personal share, an "
-        "example, or alongside other words — does NOT count unless the child was actually "
-        "asked about that exact word and then responded to it. When in doubt, do NOT mark "
-        "a word complete.\n"
+        f"You are grading a young child's {learning_language} vocabulary drill. You will be given "
+        "an ordered list of target words and a conversation transcript between Teddy (the "
+        f"teacher) and the child. {completion_rule} When in doubt, do NOT mark a word complete.\n"
         "Reply with ONLY a JSON array of the completed words, copied EXACTLY as spelled in "
         "the target list, in the order they appear there. If none are complete, reply []."
     )
@@ -207,8 +251,46 @@ async def _judge_vocab_progress_ar(messages: list, set_key: str) -> list[str]:
         return [w for w in items if w in done_set]
     except Exception:
         logger.warning("vocab progress judge failed; falling back to heuristic", exc_info=True)
-        introduced, _ = _vocab_progress_ar(messages, set_key)
+        introduced, _ = _vocab_progress_heuristic(messages, lang_code, set_key)
         return introduced
+
+
+# ── Judge result cache — keeps the judge off the reply's critical path ──────
+# Awaiting the judge synchronously in _build_prompt would add a full extra LLM
+# round trip in front of every reply (persona call can't start building its
+# answer until it knows the current word), roughly doubling perceived latency.
+# Instead, each turn uses the cached result from the PREVIOUS turn (instant),
+# while a background task refreshes the cache for the NEXT turn using this
+# turn's messages. One turn of staleness is invisible in practice: by the time
+# the child replies again, the background call (a single fast LLM call) has
+# almost always already finished.
+_judge_cache: dict[str, dict[str, list[str]]] = {}
+_judge_tasks: dict[tuple[str, str], asyncio.Task] = {}
+
+
+def _cached_vocab_done(thread_id: str, set_key: str) -> list[str] | None:
+    return _judge_cache.get(thread_id, {}).get(set_key)
+
+
+def _refresh_vocab_done_async(thread_id: str, lang_code: str, set_key: str, messages: list) -> None:
+    """Kick off a background judge call and store its result for next turn.
+    Fire-and-forget by design — never awaited from _build_prompt."""
+    if not thread_id:
+        return
+    key = (thread_id, set_key)
+    existing = _judge_tasks.get(key)
+    if existing and not existing.done():
+        return  # a refresh for this exact card is already in flight
+
+    async def _run() -> None:
+        try:
+            done = await _judge_vocab_progress(messages, lang_code, set_key)
+            _judge_cache.setdefault(thread_id, {})[set_key] = done
+        except Exception:
+            logger.warning("background vocab judge refresh failed", exc_info=True)
+
+    task = asyncio.create_task(_run())
+    _judge_tasks[key] = task
 
 
 def _asked_questions(messages: list) -> list[str]:
@@ -267,12 +349,14 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
 
     # 3. Vocab-card drilling: exactly ONE deterministic word at a time (chosen
     # by code, not left to the model to pick from a list), full-sentence
-    # correction, judged completion, full coverage before moving on. Arabic
-    # only — no vocab data exists for other learn languages yet.
-    if lang_code == "ar":
-        active_set = _active_vocab_set_ar(all_messages)
+    # correction, judged completion, full coverage before moving on. Applies
+    # to any learn language that has vocab data (see vocab_data.json).
+    vocab_sets = _VOCAB_DATA.get(lang_code, {})
+    active_set = None
+    if vocab_sets:
+        active_set = _active_vocab_set(all_messages, lang_code)
         used_default = False
-        if not active_set:
+        if not active_set and "greetings" in vocab_sets:
             # No card explicitly selected — default the very first lesson to
             # greetings/introductions (hello, how are you, name, age, where
             # from, job/school) so a brand-new learner gets a structured start
@@ -280,18 +364,30 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
             active_set = "greetings"
             used_default = True
 
-        items = _VOCAB_SETS_AR.get(active_set, {}).get("items", [])
-        done = await _judge_vocab_progress_ar(all_messages, active_set)
-        remaining = [w for w in items if w not in done]
+        if active_set:
+            items = vocab_sets.get(active_set, {}).get("items", [])
+            thread_id = configurable.get("thread_id", "")
+            cached_done = _cached_vocab_done(thread_id, active_set)
+            if cached_done is not None:
+                done = cached_done
+            else:
+                # First turn this card is active this session — no cached judge
+                # result yet, so use the instant heuristic rather than block this
+                # reply on an extra LLM call.
+                done, _ = _vocab_progress_heuristic(all_messages, lang_code, active_set)
+            # Refresh in the background using this turn's messages — ready in
+            # time for the NEXT turn's _build_prompt call, never blocking this one.
+            _refresh_vocab_done_async(thread_id, lang_code, active_set, all_messages)
+            remaining = [w for w in items if w not in done]
 
-        if used_default and not remaining:
-            # Greetings already fully completed and nothing else was
-            # explicitly selected — release into free chat instead of
-            # re-drilling greetings forever.
-            active_set = None
+            if used_default and not remaining:
+                # Greetings already fully completed and nothing else was
+                # explicitly selected — release into free chat instead of
+                # re-drilling greetings forever.
+                active_set = None
 
-    if lang_code == "ar" and active_set:
-        title = _VOCAB_SETS_AR[active_set]["titleAr"]
+    if active_set:
+        title = vocab_sets[active_set]["title"]
 
         try:
             from langgraph.config import get_stream_writer
@@ -304,6 +400,29 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
 
         if remaining:
             current_word = remaining[0]
+            kind = vocab_sets[active_set].get("kind", "word")
+            if kind == "word":
+                # Nouns/concepts: the pedagogical goal is building a sentence around the
+                # word, so a bare word/fragment answer needs expanding before moving on.
+                grammar_hint = _SENTENCE_GRAMMAR_HINTS.get(lang_code, _DEFAULT_SENTENCE_GRAMMAR_HINT)
+                correction_rule = (
+                    "CORRECTION RULE — critical, follow every time: if the child answers with only a single "
+                    f"word or a short fragment instead of a complete sentence about '{current_word}', do NOT "
+                    f"move to a new word. First say the correct complete {learning_language} sentence they should "
+                    "say, then ask the SAME question again so they can try the full sentence themselves. Only "
+                    f"move on once they attempt a full sentence (it does not need to be perfect). {grammar_hint}"
+                )
+            else:
+                # Phrases/greetings, numbers, or single letters: the target IS the whole
+                # answer — do not ask for more than that, or it becomes an unwinnable loop.
+                correction_rule = (
+                    "CORRECTION RULE — critical, follow every time: the target itself "
+                    f"('{current_word}') is the complete correct answer — do NOT ask the child to expand it "
+                    "into a longer sentence. If the child's attempt is wrong or very unclear, say the "
+                    f"correct '{current_word}' once yourself, then ask them to try again. The moment they say "
+                    "a reasonable, recognizable attempt at it (even imperfect pronunciation), treat it as "
+                    "correct and move on to the next word — do not keep re-asking a correct answer."
+                )
             prompt += (
                 f"\n\nVOCAB CARD DRILL — current card: {title}\n"
                 f"Words already completed: {', '.join(done) if done else '(none yet)'}\n"
@@ -311,24 +430,21 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
                 "Do not ask about, mention, or move on to any other word from this card until this exact "
                 "word has been properly answered — you have no choice in which word to use, it is decided "
                 "for you above.\n"
-                "CORRECTION RULE — critical, follow every time: if the child answers with only a single "
-                f"word or a short fragment instead of a complete sentence about '{current_word}', do NOT "
-                "move to a new word. First say the correct complete Arabic sentence they should say (e.g. "
-                "'قل: أحب الخبز'), then ask the SAME question again so they can try the full sentence "
-                "themselves. Only move on once they attempt a full sentence (it does not need to be perfect).\n"
+                f"{correction_rule}\n"
                 "STAY ON TOPIC — critical: this card is the lesson right now. If the child brings up "
                 "something unrelated to it, react warmly to what they said in ONE short breath (like a "
                 "real friend would), then gently bring them back to the current word or card — do not "
                 "just ignore them, and do not abandon the card. Only leave the card early if the child "
                 "clearly and repeatedly says they want to stop or do something else.\n"
-                "DO NOT let a single ambiguous word pull you onto a new subject — e.g. if the child says "
-                "'حلو' (which can just mean 'cool!'/'nice!'), do not assume they mean dessert and start "
-                "asking about sweets or cake. Only follow a new subject if the child clearly and directly "
-                "asks about it in a full sentence.\n"
-                "NATIVE-LANGUAGE ANSWERS COUNT: if the child answers in their native language instead of "
-                "Arabic (e.g. says the English word for the current word), treat that as their attempt at "
-                "THIS word, not a new topic — confirm it's right, give the correct Arabic word/sentence, "
-                "and apply the CORRECTION RULE above (model it, then re-ask) rather than changing subject."
+                "DO NOT let a single ambiguous word pull you onto a new subject — a word with more than one "
+                "possible meaning should be interpreted as being about the CURRENT word/card whenever "
+                "reasonably possible, not as a request to talk about something else. Only follow a new "
+                "subject if the child clearly and directly asks about it in a full sentence.\n"
+                f"NATIVE-LANGUAGE ANSWERS COUNT: if the child answers in {native_language} instead of "
+                f"{learning_language} (e.g. says the {native_language} word for the current word), treat that "
+                "as their attempt at THIS word, not a new topic — confirm it's right, give the correct "
+                f"{learning_language} word/sentence, and apply the CORRECTION RULE above (model it, then "
+                "re-ask) rather than changing subject."
             )
         else:
             prompt += (

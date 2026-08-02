@@ -18,12 +18,13 @@ from livekit.agents.tts import AudioEmitter
 
 logger = logging.getLogger(__name__)
 
-# Native Edge TTS voices per language — multilingual variants preferred for
-# German and English because they handle code-switching (e.g. German teacher
-# giving an English translation) more naturally.
+# Native Edge TTS voices per language. de-DE-KatjaNeural is a standard
+# (non-multilingual) German voice widely regarded as very natural and clearly
+# pronounced — switched from the Multilingual variant, which is optimized for
+# code-switching rather than pure native German clarity.
 EDGE_TTS_VOICES: dict[str, str] = {
     "en": "en-US-JennyNeural",
-    "de": "de-DE-SeraphinaMultilingualNeural",
+    "de": "de-DE-KatjaNeural",
     "hi": "hi-IN-SwaraNeural",
     "ar": "ar-SA-ZariyahNeural",
 }

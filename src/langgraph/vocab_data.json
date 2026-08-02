@@ -1,0 +1,980 @@
+{
+  "de": {
+    "colors": {
+      "title": "Farben",
+      "trigger": "Lass uns Farben üben! Was ist deine Lieblingsfarbe?",
+      "kind": "word",
+      "items": [
+        "Rot",
+        "Blau",
+        "Grün",
+        "Gelb",
+        "Orange",
+        "Lila",
+        "Rosa",
+        "Schwarz",
+        "Weiß",
+        "Braun"
+      ]
+    },
+    "breakfast": {
+      "title": "Frühstück",
+      "trigger": "Lass uns über Frühstück sprechen! Was isst du morgens?",
+      "kind": "word",
+      "items": [
+        "Ei",
+        "Brot",
+        "Milch",
+        "Waffeln",
+        "Müsli",
+        "Rührei",
+        "Croissant",
+        "Honig",
+        "Butter",
+        "Beeren"
+      ]
+    },
+    "fruits": {
+      "title": "Obst",
+      "trigger": "Lass uns Obst lernen! Was ist deine Lieblingsfrucht?",
+      "kind": "word",
+      "items": [
+        "Apfel",
+        "Banane",
+        "Erdbeere",
+        "Orange",
+        "Trauben",
+        "Pfirsich",
+        "Kirsche",
+        "Zitrone",
+        "Mango",
+        "Ananas"
+      ]
+    },
+    "animals": {
+      "title": "Tiere",
+      "trigger": "Lass uns Tiere lernen! Hast du ein Haustier?",
+      "kind": "word",
+      "items": [
+        "Hund",
+        "Katze",
+        "Löwe",
+        "Elefant",
+        "Giraffe",
+        "Pinguin",
+        "Fuchs",
+        "Bär",
+        "Delphin",
+        "Affe"
+      ]
+    },
+    "sports": {
+      "title": "Sport & Spiele",
+      "trigger": "Lass uns über Sport sprechen! Was spielst du gerne?",
+      "kind": "word",
+      "items": [
+        "Fußball",
+        "Basketball",
+        "Tennis",
+        "Schwimmen",
+        "Radfahren",
+        "Videospiele",
+        "Laufen",
+        "Malen",
+        "Musik",
+        "Puzzle"
+      ]
+    },
+    "family": {
+      "title": "Familie",
+      "trigger": "Lass uns über Familie sprechen! Hast du Geschwister?",
+      "kind": "word",
+      "items": [
+        "Vater",
+        "Mutter",
+        "Bruder",
+        "Schwester",
+        "Opa",
+        "Oma",
+        "Baby",
+        "Hund"
+      ]
+    },
+    "school": {
+      "title": "Schule",
+      "trigger": "Lass uns über Schule sprechen! Was ist dein Lieblingsfach?",
+      "kind": "word",
+      "items": [
+        "Bücher",
+        "Bleistift",
+        "Lineal",
+        "Rucksack",
+        "Mathe",
+        "Kunst",
+        "Geografie",
+        "Biologie",
+        "Lesen"
+      ]
+    },
+    "seasons": {
+      "title": "Jahreszeiten",
+      "trigger": "Lass uns über Jahreszeiten sprechen! Was ist deine Lieblingszeit?",
+      "kind": "word",
+      "items": [
+        "Frühling",
+        "Sommer",
+        "Herbst",
+        "Winter",
+        "Regen",
+        "Schnee",
+        "Regenbogen",
+        "Sonne"
+      ]
+    },
+    "food": {
+      "title": "Lieblingsessen",
+      "trigger": "Lass uns über Lieblingsessen sprechen! Was ist dein Lieblingsessen?",
+      "kind": "word",
+      "items": [
+        "Pizza",
+        "Nudeln",
+        "Burger",
+        "Reis",
+        "Salat",
+        "Suppe",
+        "Hähnchen",
+        "Sandwich",
+        "Käse",
+        "Sushi"
+      ]
+    },
+    "vegetables": {
+      "title": "Gemüse",
+      "trigger": "Lass uns Gemüse lernen! Magst du Karotten?",
+      "kind": "word",
+      "items": [
+        "Karotte",
+        "Brokkoli",
+        "Tomate",
+        "Kartoffel",
+        "Mais",
+        "Gurke",
+        "Paprika",
+        "Zwiebel"
+      ]
+    },
+    "drinks": {
+      "title": "Getränke",
+      "trigger": "Lass uns Getränke lernen! Was trinkst du am liebsten?",
+      "kind": "word",
+      "items": [
+        "Milch",
+        "Saft",
+        "Wasser",
+        "Tee",
+        "Limo",
+        "Kakao"
+      ]
+    },
+    "icecream": {
+      "title": "Eis",
+      "trigger": "Lass uns Eissorten lernen! Welche Eissorte magst du am liebsten?",
+      "kind": "word",
+      "items": [
+        "Vanille",
+        "Schokolade",
+        "Erdbeere",
+        "Zitrone",
+        "Pfirsich",
+        "Blaubeere"
+      ]
+    },
+    "hobbies": {
+      "title": "Hobbys",
+      "trigger": "Lass uns über Hobbys sprechen! Was machst du gerne in der Freizeit?",
+      "kind": "word",
+      "items": [
+        "Lesen",
+        "Zeichnen",
+        "Singen",
+        "Tanzen",
+        "Zocken",
+        "Gärtnern",
+        "Kochen",
+        "Basteln"
+      ]
+    },
+    "superpower": {
+      "title": "Superkräfte",
+      "trigger": "Lass uns Superkräfte besprechen! Welche Superpower hättest du gerne?",
+      "kind": "word",
+      "items": [
+        "Fliegen",
+        "Unsichtbarkeit",
+        "Magie",
+        "Super-Stärke",
+        "Blitz",
+        "Wasser",
+        "Feuer",
+        "Gedankenlesen"
+      ]
+    },
+    "jobs": {
+      "title": "Berufe",
+      "trigger": "Lass uns Berufe lernen! Was möchtest du werden?",
+      "kind": "word",
+      "items": [
+        "Arzt",
+        "Lehrerin",
+        "Feuerwehrmann",
+        "Köchin",
+        "Astronaut",
+        "Künstlerin",
+        "Programmierer",
+        "Fußballer"
+      ]
+    },
+    "toys": {
+      "title": "Spielzeug",
+      "trigger": "Lass uns Spielzeug lernen! Was ist dein Lieblingsspielzeug?",
+      "kind": "word",
+      "items": [
+        "Puppe",
+        "Auto",
+        "Teddybär",
+        "Zelt",
+        "Jojo",
+        "Zielscheibe",
+        "Magnet",
+        "Schleuder"
+      ]
+    },
+    "greetings": {
+      "title": "Hallo! (Begrüßung)",
+      "trigger": "Lass uns Begrüßungen üben! Sag mir: Hallo!",
+      "kind": "phrase",
+      "items": [
+        "Hallo!",
+        "Tschüss!",
+        "Guten Morgen!",
+        "Gute Nacht!",
+        "Wie geht's?",
+        "Mir geht's gut!",
+        "Mir geht's nicht gut",
+        "Ich heiße…",
+        "Ich bin … Jahre alt",
+        "Woher kommst du?",
+        "Ich komme aus…",
+        "Ich bin Schüler(in)"
+      ]
+    },
+    "numbers1": {
+      "title": "Zahlen 1–10",
+      "trigger": "Lass uns die Zahlen 1 bis 10 lernen! Fang an: eins!",
+      "kind": "single",
+      "items": [
+        "eins",
+        "zwei",
+        "drei",
+        "vier",
+        "fünf",
+        "sechs",
+        "sieben",
+        "acht",
+        "neun",
+        "zehn"
+      ]
+    },
+    "numbers2": {
+      "title": "Zahlen 11–20",
+      "trigger": "Lass uns die Zahlen 11 bis 20 lernen! Kannst du elf sagen?",
+      "kind": "single",
+      "items": [
+        "elf",
+        "zwölf",
+        "dreizehn",
+        "vierzehn",
+        "fünfzehn",
+        "sechzehn",
+        "siebzehn",
+        "achtzehn",
+        "neunzehn",
+        "zwanzig"
+      ]
+    },
+    "alphabet": {
+      "title": "Das ABC",
+      "trigger": "Lass uns das ABC lernen! A wie Apfel — sag es nach!",
+      "kind": "single",
+      "items": [
+        "wie Apfel",
+        "wie Ball",
+        "wie Computer",
+        "wie Delfin",
+        "wie Elefant",
+        "wie Fisch",
+        "wie Giraffe",
+        "wie Hund",
+        "wie Igel",
+        "wie Joghurt",
+        "wie Katze",
+        "wie Löwe",
+        "wie Maus",
+        "wie Nase",
+        "wie Orange",
+        "wie Papagei",
+        "wie Qualle",
+        "wie Regenbogen",
+        "wie Sonne",
+        "wie Tiger",
+        "wie Uhr",
+        "wie Vogel",
+        "wie Wolke",
+        "wie Xylofon",
+        "wie Yak",
+        "wie Zebra"
+      ]
+    },
+    "body": {
+      "title": "Mein Körper",
+      "trigger": "Lass uns den Körper lernen! Zeig mir deinen Kopf!",
+      "kind": "word",
+      "items": [
+        "Kopf",
+        "Augen",
+        "Nase",
+        "Mund",
+        "Ohren",
+        "Hände",
+        "Füße",
+        "Bauch",
+        "Beine",
+        "Haare"
+      ]
+    },
+    "rooms": {
+      "title": "Das Haus (Räume)",
+      "trigger": "Lass uns die Zimmer im Haus lernen! In welchem Zimmer bist du gerade?",
+      "kind": "word",
+      "items": [
+        "Wohnzimmer",
+        "Schlafzimmer",
+        "Badezimmer",
+        "Küche",
+        "Garten",
+        "Flur",
+        "Kinderzimmer",
+        "Esszimmer"
+      ]
+    },
+    "bedroom": {
+      "title": "Schlafzimmer",
+      "trigger": "Lass uns das Schlafzimmer erkunden! Was steht in deinem Zimmer?",
+      "kind": "word",
+      "items": [
+        "Bett",
+        "Lampe",
+        "Fenster",
+        "Tür",
+        "Regal",
+        "Spiegel",
+        "Teppich",
+        "Teddybär"
+      ]
+    },
+    "bathroom": {
+      "title": "Badezimmer",
+      "trigger": "Lass uns das Badezimmer lernen! Welche Farbe hat deine Zahnbürste?",
+      "kind": "word",
+      "items": [
+        "Zahnbürste",
+        "Seife",
+        "Shampoo",
+        "Dusche",
+        "Badewanne",
+        "Spiegel",
+        "Toilette",
+        "Handtuch"
+      ]
+    },
+    "living_room": {
+      "title": "Wohnzimmer",
+      "trigger": "Lass uns das Wohnzimmer erkunden! Habt ihr ein Sofa?",
+      "kind": "word",
+      "items": [
+        "Sofa",
+        "Fernseher",
+        "Stuhl",
+        "Tisch",
+        "Bücherregal",
+        "Pflanze",
+        "Bild",
+        "Fenster"
+      ]
+    },
+    "kitchen": {
+      "title": "Küche",
+      "trigger": "Lass uns die Küche lernen! Wer kocht bei euch?",
+      "kind": "word",
+      "items": [
+        "Herd",
+        "Kühlschrank",
+        "Teller",
+        "Löffel",
+        "Gabel",
+        "Messer",
+        "Glas",
+        "Tasse"
+      ]
+    },
+    "garden": {
+      "title": "Garten",
+      "trigger": "Lass uns den Garten erkunden! Habt ihr einen Baum im Garten?",
+      "kind": "word",
+      "items": [
+        "Baum",
+        "Blume",
+        "Gras",
+        "Biene",
+        "Schmetterling",
+        "Vogel",
+        "Hase",
+        "Regenwurm"
+      ]
+    },
+    "weather": {
+      "title": "Wetter",
+      "trigger": "Lass uns über das Wetter sprechen! Wie ist das Wetter heute?",
+      "kind": "word",
+      "items": [
+        "Sonne",
+        "Regen",
+        "Schnee",
+        "Wind",
+        "Wolke",
+        "Regenbogen",
+        "Gewitter",
+        "Temperatur"
+      ]
+    },
+    "transport": {
+      "title": "Transport & Verkehr",
+      "trigger": "Lass uns Transport lernen! Wie fährst du zur Schule?",
+      "kind": "word",
+      "items": [
+        "Auto",
+        "Bus",
+        "Zug",
+        "Fahrrad",
+        "Flugzeug",
+        "Schiff",
+        "Motorrad",
+        "LKW"
+      ]
+    },
+    "clothes": {
+      "title": "Kleidung",
+      "trigger": "Lass uns Kleidung lernen! Was trägst du heute?",
+      "kind": "word",
+      "items": [
+        "T-Shirt",
+        "Hose",
+        "Schuhe",
+        "Socken",
+        "Jacke",
+        "Hut",
+        "Kleid",
+        "Schal"
+      ]
+    }
+  },
+  "ar": {
+    "colors": {
+      "title": "الألوان",
+      "trigger": "لنتدرب على الألوان! ما هو لونك المفضل؟",
+      "kind": "word",
+      "items": [
+        "أحمر",
+        "أزرق",
+        "أخضر",
+        "أصفر",
+        "برتقالي",
+        "بنفسجي",
+        "وردي",
+        "أسود",
+        "أبيض",
+        "بني"
+      ]
+    },
+    "breakfast": {
+      "title": "الفطور",
+      "trigger": "لنتحدث عن الفطور! ماذا تأكل في الصباح؟",
+      "kind": "word",
+      "items": [
+        "بيضة",
+        "خبز",
+        "حليب",
+        "وافل",
+        "موزلي",
+        "بيض مخفوق",
+        "كرواسون",
+        "عسل",
+        "زبدة",
+        "توت"
+      ]
+    },
+    "fruits": {
+      "title": "الفواكه",
+      "trigger": "لنتعلم الفواكه! ما هي فاكهتك المفضلة؟",
+      "kind": "word",
+      "items": [
+        "تفاحة",
+        "موزة",
+        "فراولة",
+        "برتقالة",
+        "عنب",
+        "خوخ",
+        "كرز",
+        "ليمون",
+        "مانجو",
+        "أناناس"
+      ]
+    },
+    "animals": {
+      "title": "الحيوانات",
+      "trigger": "لنتعلم الحيوانات! هل لديك حيوان أليف؟",
+      "kind": "word",
+      "items": [
+        "كلب",
+        "قطة",
+        "أسد",
+        "فيل",
+        "زرافة",
+        "بطريق",
+        "ثعلب",
+        "دب",
+        "دولفين",
+        "قرد"
+      ]
+    },
+    "sports": {
+      "title": "الرياضة والألعاب",
+      "trigger": "لنتحدث عن الرياضة! ما الذي تحب أن تلعبه؟",
+      "kind": "word",
+      "items": [
+        "كرة القدم",
+        "كرة السلة",
+        "التنس",
+        "السباحة",
+        "ركوب الدراجة",
+        "ألعاب الفيديو",
+        "الجري",
+        "الرسم",
+        "الموسيقى",
+        "أحجية"
+      ]
+    },
+    "family": {
+      "title": "العائلة",
+      "trigger": "لنتحدث عن العائلة! هل لديك إخوة؟",
+      "kind": "word",
+      "items": [
+        "أب",
+        "أم",
+        "أخ",
+        "أخت",
+        "جد",
+        "جدة",
+        "طفل",
+        "كلب"
+      ]
+    },
+    "school": {
+      "title": "المدرسة",
+      "trigger": "لنتحدث عن المدرسة! ما هي مادتك المفضلة؟",
+      "kind": "word",
+      "items": [
+        "كتب",
+        "قلم رصاص",
+        "مسطرة",
+        "حقيبة ظهر",
+        "الرياضيات",
+        "الفن",
+        "الجغرافيا",
+        "الأحياء",
+        "القراءة"
+      ]
+    },
+    "seasons": {
+      "title": "الفصول",
+      "trigger": "لنتحدث عن الفصول! ما هو فصلك المفضل؟",
+      "kind": "word",
+      "items": [
+        "الربيع",
+        "الصيف",
+        "الخريف",
+        "الشتاء",
+        "المطر",
+        "الثلج",
+        "قوس قزح",
+        "الشمس"
+      ]
+    },
+    "food": {
+      "title": "الطعام المفضل",
+      "trigger": "لنتحدث عن الطعام المفضل! ما هو طعامك المفضل؟",
+      "kind": "word",
+      "items": [
+        "بيتزا",
+        "معكرونة",
+        "برغر",
+        "أرز",
+        "سلطة",
+        "شوربة",
+        "دجاج",
+        "ساندويتش",
+        "جبن",
+        "سوشي"
+      ]
+    },
+    "vegetables": {
+      "title": "الخضروات",
+      "trigger": "لنتعلم الخضروات! هل تحب الجزر؟",
+      "kind": "word",
+      "items": [
+        "جزرة",
+        "بروكلي",
+        "طماطم",
+        "بطاطا",
+        "ذرة",
+        "خيار",
+        "فلفل",
+        "بصلة"
+      ]
+    },
+    "drinks": {
+      "title": "المشروبات",
+      "trigger": "لنتعلم المشروبات! ماذا تحب أن تشرب؟",
+      "kind": "word",
+      "items": [
+        "حليب",
+        "عصير",
+        "ماء",
+        "شاي",
+        "مشروب غازي",
+        "كاكاو"
+      ]
+    },
+    "icecream": {
+      "title": "الآيس كريم",
+      "trigger": "لنتعلم نكهات الآيس كريم! ما هي نكهتك المفضلة؟",
+      "kind": "word",
+      "items": [
+        "فانيليا",
+        "شوكولاتة",
+        "فراولة",
+        "ليمون",
+        "خوخ",
+        "توت أزرق"
+      ]
+    },
+    "hobbies": {
+      "title": "الهوايات",
+      "trigger": "لنتحدث عن الهوايات! ماذا تحب أن تفعل في وقت فراغك؟",
+      "kind": "word",
+      "items": [
+        "القراءة",
+        "الرسم",
+        "الغناء",
+        "الرقص",
+        "الألعاب الإلكترونية",
+        "البستنة",
+        "الطبخ",
+        "الأشغال اليدوية"
+      ]
+    },
+    "superpower": {
+      "title": "القوى الخارقة",
+      "trigger": "لنتحدث عن القوى الخارقة! أي قوة خارقة تريدها؟",
+      "kind": "word",
+      "items": [
+        "الطيران",
+        "الاختفاء",
+        "السحر",
+        "القوة الخارقة",
+        "البرق",
+        "التحكم بالماء",
+        "النار",
+        "قراءة الأفكار"
+      ]
+    },
+    "jobs": {
+      "title": "المهن",
+      "trigger": "لنتعلم المهن! ماذا تريد أن تصبح؟",
+      "kind": "word",
+      "items": [
+        "طبيب",
+        "معلمة",
+        "رجل إطفاء",
+        "طاهية",
+        "رائد فضاء",
+        "فنانة",
+        "مبرمج",
+        "لاعب كرة قدم"
+      ]
+    },
+    "toys": {
+      "title": "الألعاب",
+      "trigger": "لنتعلم الألعاب! ما هي لعبتك المفضلة؟",
+      "kind": "word",
+      "items": [
+        "دمية",
+        "سيارة",
+        "دبدوب",
+        "خيمة",
+        "يويو",
+        "هدف",
+        "مغناطيس",
+        "مقلاع"
+      ]
+    },
+    "greetings": {
+      "title": "مرحباً! (التحية)",
+      "trigger": "لنتدرب على التحية! قل: مرحباً!",
+      "kind": "phrase",
+      "items": [
+        "مرحباً!",
+        "مع السلامة!",
+        "صباح الخير!",
+        "تصبح على خير!",
+        "كيف حالك؟",
+        "أنا بخير!",
+        "أنا لست بخير",
+        "اسمي…",
+        "عمري … سنوات",
+        "من أين أنت؟",
+        "أنا من…",
+        "أنا طالب"
+      ]
+    },
+    "numbers1": {
+      "title": "الأرقام ١–١٠",
+      "trigger": "لنتعلم الأرقام من واحد إلى عشرة! ابدأ: واحد!",
+      "kind": "single",
+      "items": [
+        "واحد",
+        "اثنان",
+        "ثلاثة",
+        "أربعة",
+        "خمسة",
+        "ستة",
+        "سبعة",
+        "ثمانية",
+        "تسعة",
+        "عشرة"
+      ]
+    },
+    "numbers2": {
+      "title": "الأرقام ١١–٢٠",
+      "trigger": "لنتعلم الأرقام من أحد عشر إلى عشرين! هل يمكنك قول أحد عشر؟",
+      "kind": "single",
+      "items": [
+        "أحد عشر",
+        "اثنا عشر",
+        "ثلاثة عشر",
+        "أربعة عشر",
+        "خمسة عشر",
+        "ستة عشر",
+        "سبعة عشر",
+        "ثمانية عشر",
+        "تسعة عشر",
+        "عشرون"
+      ]
+    },
+    "alphabet": {
+      "title": "الحروف العربية",
+      "trigger": "لنتعلم الحروف العربية! أ مثل أرنب — كررها!",
+      "kind": "single",
+      "items": [
+        "أرنب (أ)",
+        "باب (ب)",
+        "تفاحة (ت)",
+        "ثعلب (ث)",
+        "جمل (ج)",
+        "حصان (ح)",
+        "خروف (خ)",
+        "دب (د)",
+        "ذئب (ذ)",
+        "رمان (ر)",
+        "زرافة (ز)",
+        "سمكة (س)",
+        "شمس (ش)",
+        "صقر (ص)",
+        "ضفدع (ض)",
+        "طائرة (ط)",
+        "ظرف (ظ)",
+        "عصفور (ع)",
+        "غزال (غ)",
+        "فيل (ف)",
+        "قطة (ق)",
+        "كتاب (ك)",
+        "ليمون (ل)",
+        "موز (م)",
+        "نجمة (ن)",
+        "هدهد (ه)"
+      ]
+    },
+    "body": {
+      "title": "جسمي",
+      "trigger": "لنتعلم أجزاء الجسم! أرني رأسك!",
+      "kind": "word",
+      "items": [
+        "رأس",
+        "عيون",
+        "أنف",
+        "فم",
+        "أذنان",
+        "يدين",
+        "أقدام",
+        "بطن",
+        "أرجل",
+        "شعر"
+      ]
+    },
+    "rooms": {
+      "title": "غرف المنزل",
+      "trigger": "لنتعلم غرف المنزل! في أي غرفة أنت الآن؟",
+      "kind": "word",
+      "items": [
+        "غرفة المعيشة",
+        "غرفة النوم",
+        "الحمام",
+        "المطبخ",
+        "الحديقة",
+        "الممر",
+        "غرفة الأطفال",
+        "غرفة الطعام"
+      ]
+    },
+    "bedroom": {
+      "title": "غرفة النوم",
+      "trigger": "لنكتشف غرفة النوم! ماذا يوجد في غرفتك؟",
+      "kind": "word",
+      "items": [
+        "سرير",
+        "مصباح",
+        "نافذة",
+        "باب",
+        "رف",
+        "مرآة",
+        "سجادة",
+        "دبدوب"
+      ]
+    },
+    "bathroom": {
+      "title": "الحمام",
+      "trigger": "لنتعلم عن الحمام! ما لون فرشاة أسنانك؟",
+      "kind": "word",
+      "items": [
+        "فرشاة أسنان",
+        "صابون",
+        "شامبو",
+        "دش",
+        "حوض استحمام",
+        "مرآة",
+        "مرحاض",
+        "منشفة"
+      ]
+    },
+    "living_room": {
+      "title": "غرفة المعيشة",
+      "trigger": "لنكتشف غرفة المعيشة! هل لديكم أريكة؟",
+      "kind": "word",
+      "items": [
+        "أريكة",
+        "تلفاز",
+        "كرسي",
+        "طاولة",
+        "مكتبة",
+        "نبات",
+        "صورة",
+        "نافذة"
+      ]
+    },
+    "kitchen": {
+      "title": "المطبخ",
+      "trigger": "لنتعلم عن المطبخ! من يطبخ عندكم؟",
+      "kind": "word",
+      "items": [
+        "موقد",
+        "ثلاجة",
+        "طبق",
+        "ملعقة",
+        "شوكة",
+        "سكين",
+        "كوب",
+        "فنجان"
+      ]
+    },
+    "garden": {
+      "title": "الحديقة",
+      "trigger": "لنكتشف الحديقة! هل لديكم شجرة في الحديقة؟",
+      "kind": "word",
+      "items": [
+        "شجرة",
+        "زهرة",
+        "عشب",
+        "نحلة",
+        "فراشة",
+        "عصفور",
+        "أرنب",
+        "دودة الأرض"
+      ]
+    },
+    "weather": {
+      "title": "الطقس",
+      "trigger": "لنتحدث عن الطقس! كيف هو الطقس اليوم؟",
+      "kind": "word",
+      "items": [
+        "الشمس",
+        "المطر",
+        "الثلج",
+        "الرياح",
+        "غيمة",
+        "قوس قزح",
+        "عاصفة رعدية",
+        "درجة الحرارة"
+      ]
+    },
+    "transport": {
+      "title": "المواصلات",
+      "trigger": "لنتعلم المواصلات! كيف تذهب إلى المدرسة؟",
+      "kind": "word",
+      "items": [
+        "سيارة",
+        "حافلة",
+        "قطار",
+        "دراجة",
+        "طائرة",
+        "سفينة",
+        "دراجة نارية",
+        "شاحنة"
+      ]
+    },
+    "clothes": {
+      "title": "الملابس",
+      "trigger": "لنتعلم الملابس! ماذا ترتدي اليوم؟",
+      "kind": "word",
+      "items": [
+        "قميص",
+        "بنطال",
+        "حذاء",
+        "جوارب",
+        "سترة",
+        "قبعة",
+        "فستان",
+        "وشاح"
+      ]
+    }
+  }
+}

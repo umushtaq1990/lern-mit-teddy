@@ -316,7 +316,10 @@ def _build_pipeline_session(
             langfuse_handler=tracer.get_langchain_handler(),
             on_caption=_publish_caption if cfg.language == "ar" else None,
             on_turn=_log_turn,
-            on_progress=_publish_vocab_progress if cfg.language == "ar" else None,
+            # Generic — the graph only emits vocab_progress when the active learn
+            # language actually has vocab-card data (see vocab_data.json), so this
+            # is a harmless no-op for languages without it.
+            on_progress=_publish_vocab_progress,
         ),
         tts=tts,
         turn_handling=_TURN_HANDLING,

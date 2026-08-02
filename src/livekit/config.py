@@ -49,10 +49,12 @@ TTS_SPEED_OVERRIDES: dict[str, float] = {}
 # Force Edge TTS (native regional neural voice + real prosody-based rate control)
 # for these languages regardless of the globally configured TTS_PROVIDER — a
 # beginner needs a natural, unhurried accent, not OpenAI's audio-stretched "speed".
-TTS_PROVIDER_OVERRIDES: dict[str, str] = {"ar": "edge_tts"}
+# German added because OpenAI's "nova" voice reads German quite fast for a
+# beginner child; de-DE-KatjaNeural is clearer and its rate is controllable.
+TTS_PROVIDER_OVERRIDES: dict[str, str] = {"ar": "edge_tts", "de": "edge_tts"}
 
 # Edge TTS speech-rate override per language (SSML-style percentage, e.g. "-15%").
-EDGE_TTS_RATE_OVERRIDES: dict[str, str] = {"ar": "-15%"}
+EDGE_TTS_RATE_OVERRIDES: dict[str, str] = {"ar": "-15%", "de": "-12%"}
 
 # faster-whisper model size to use when falling back from Deepgram (see
 # DEEPGRAM_UNSUPPORTED_LANGUAGES above). "base" is fast but weak on accented or
