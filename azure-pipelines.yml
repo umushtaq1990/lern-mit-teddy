@@ -14,7 +14,7 @@ trigger:
 pr: none
 
 variables:
-  azureServiceConnection: "sc-lern-mit-teddy-azure"
+  azureServiceConnection: "sc-lern-mit-teddy-azure-v2"
   acrName: "acrlernmitteddy"
   acrLoginServer: "acrlernmitteddy.azurecr.io"
   resourceGroup: "rg-lern-mit-teddy"
