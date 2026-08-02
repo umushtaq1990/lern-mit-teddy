@@ -1,0 +1,97 @@
+# CI/CD pipeline for Lern mit Teddy.
+#
+# On every push to main: builds the frontend and worker Docker images, pushes
+# them to Azure Container Registry tagged with the build ID (and floats
+# `latest`), then rolls each Container App to a new revision pointing at that
+# tag. There is one environment today (rg-lern-mit-teddy) — this intentionally
+# does not fan out to dev/staging/prod until those environments exist.
+
+trigger:
+  branches:
+    include:
+      - main
+
+pr: none
+
+variables:
+  azureServiceConnection: "sc-lern-mit-teddy-azure"
+  acrName: "acrlernmitteddy"
+  acrLoginServer: "acrlernmitteddy.azurecr.io"
+  resourceGroup: "rg-lern-mit-teddy"
+  imageTag: "$(Build.BuildId)"
+
+stages:
+  - stage: BuildAndPush
+    displayName: Build and push images
+    jobs:
+      - job: BuildAndPush
+        displayName: Build and push frontend + worker images
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: AzureCLI@2
+            displayName: az acr build (frontend)
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                set -euo pipefail
+                az acr build \
+                  --registry $(acrName) \
+                  --image lern-mit-teddy-frontend:$(imageTag) \
+                  --image lern-mit-teddy-frontend:latest \
+                  --file Dockerfile.frontend \
+                  .
+
+          - task: AzureCLI@2
+            displayName: az acr build (worker)
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                set -euo pipefail
+                az acr build \
+                  --registry $(acrName) \
+                  --image lern-mit-teddy-worker:$(imageTag) \
+                  --image lern-mit-teddy-worker:latest \
+                  --file Dockerfile.worker \
+                  .
+
+  - stage: Deploy
+    displayName: Deploy to rg-lern-mit-teddy
+    dependsOn: BuildAndPush
+    jobs:
+      - job: Deploy
+        displayName: Roll Container Apps to new image
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: AzureCLI@2
+            displayName: Deploy frontend
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                set -euo pipefail
+                az containerapp update \
+                  --name frontend \
+                  --resource-group $(resourceGroup) \
+                  --image $(acrLoginServer)/lern-mit-teddy-frontend:$(imageTag) \
+                  --revision-suffix build$(imageTag)
+
+          - task: AzureCLI@2
+            displayName: Deploy worker
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                set -euo pipefail
+                az containerapp update \
+                  --name worker \
+                  --resource-group $(resourceGroup) \
+                  --image $(acrLoginServer)/lern-mit-teddy-worker:$(imageTag) \
+                  --revision-suffix build$(imageTag)

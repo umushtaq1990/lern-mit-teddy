@@ -346,4 +346,16 @@ async def _publish_trace_info(
 
 
 if __name__ == "__main__":
-    cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint, prewarm_fnc=prewarm))
+    # WorkerOptions defaults num_idle_processes to the host's CPU count, not the
+    # container's cgroup limit. On a 1 vCPU / 2GiB Azure Container App this caused
+    # several prewarm processes to spawn at once and all time out during init
+    # (each loads faster-whisper/silero/torch), so pin it to what the container
+    # actually has.
+    cli.run_app(
+        WorkerOptions(
+            entrypoint_fnc=entrypoint,
+            prewarm_fnc=prewarm,
+            num_idle_processes=1,
+            initialize_process_timeout=30,
+        )
+    )
