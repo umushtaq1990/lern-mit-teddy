@@ -20,6 +20,7 @@ const chatInput        = document.getElementById("chat-input");
 const agentAudioEl     = document.getElementById("agent-audio");
 
 // Config controls
+const inputUserName    = document.getElementById("input-user-name");
 const selLearnLang     = document.getElementById("sel-learn-lang");
 const selNativeLang    = document.getElementById("sel-native-lang");
 const selModel         = document.getElementById("sel-model");
@@ -801,11 +802,11 @@ function getVoiceConfig() {
 }
 
 // ── Connection ─────────────────────────────────────────────────────────────
-async function fetchConnectionDetails(voiceConfig) {
+async function fetchConnectionDetails(voiceConfig, userName) {
   const res = await fetch("/api/connection-details", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ voice_config: voiceConfig }),
+    body: JSON.stringify({ voice_config: voiceConfig, user_name: userName || null }),
   });
   if (!res.ok) throw new Error((await res.text()) || `HTTP ${res.status}`);
   return res.json();
@@ -962,9 +963,12 @@ async function startCall() {
   btnStart.disabled = true;
   setStatus("Connecting…");
 
+  const userName = (inputUserName?.value || "").trim();
+  if (userName) localStorage.setItem("teddy_user_name", userName);
+
   try {
     const voiceConfig = getVoiceConfig();
-    const details = await fetchConnectionDetails(voiceConfig);
+    const details = await fetchConnectionDetails(voiceConfig, userName);
     currentRoomName  = details.roomName;
     currentSessionId = details.roomName;
 
@@ -1064,6 +1068,12 @@ btnSkipFeedback.addEventListener("click", () => closeFeedback());
 // On the welcome screen the selection is stored and triggered when the session
 // starts (see TrackSubscribed handler). Nothing visual happens pre-session.
 // If the user somehow changes it while connected (shouldn't happen), switch live.
+
+// Restore last-used name so returning users keep the same user_id
+if (inputUserName) {
+  const savedName = localStorage.getItem("teddy_user_name");
+  if (savedName) inputUserName.value = savedName;
+}
 
 // ── Wire up main buttons ───────────────────────────────────────────────────
 btnStart.addEventListener("click", startCall);

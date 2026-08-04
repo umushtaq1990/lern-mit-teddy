@@ -208,6 +208,18 @@ class VoiceSessionTracer:
         except Exception:
             return _NoopSpan()
 
+    def turn_event(self, *, role: str, text: str) -> None:
+        """Record one ground-truth conversation turn (from the real STT/TTS pipeline,
+        not reconstructed from LangGraph's internal message state — those can include
+        injected non-speech messages and don't reliably map to who actually said what).
+        """
+        if not self._enabled or not self._root_span or not text:
+            return
+        try:
+            self._root_span.create_event(name="turn", metadata={"role": role, "text": text})
+        except Exception:
+            logger.debug("Unable to record Langfuse turn event", exc_info=True)
+
     def flush(self) -> None:
         if not self._enabled or not self._lf:
             return

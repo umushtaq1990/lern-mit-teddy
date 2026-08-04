@@ -274,6 +274,7 @@ def _build_pipeline_session(
 
     async def _log_turn(role: str, text: str) -> None:
         session_logger.log(role, text)
+        tracer.turn_event(role=role, text=text)
 
     async def _publish_vocab_progress(progress: dict) -> None:
         """Forward vocab-card drill progress (current word, completed words) to the

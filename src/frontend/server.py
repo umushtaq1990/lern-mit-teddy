@@ -54,6 +54,7 @@ class VoiceConfig(BaseModel):
 class ConnectionDetailsRequest(BaseModel):
     room_config: RoomConfigBody | None = None
     voice_config: VoiceConfig | None = None
+    user_name: str | None = None
 
 
 class FeedbackRequest(BaseModel):
@@ -87,6 +88,7 @@ def connection_details(body: ConnectionDetailsRequest | None = None) -> dict[str
             agent_name=agent_name,
             room_config=room_config,
             voice_config=voice_cfg,
+            user_name=body.user_name if body else None,
         )
         return details.to_dict()
     except RuntimeError as exc:

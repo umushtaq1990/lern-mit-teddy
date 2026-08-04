@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import random
+import re
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import Any
@@ -40,11 +41,18 @@ def _livekit_env() -> tuple[str, str, str]:
     return url, api_key, api_secret
 
 
+def _sanitize_user_id(user_name: str) -> str:
+    """Turn a free-typed name into a stable identity: lowercase, alphanumeric/underscore only."""
+    slug = re.sub(r"[^a-z0-9_]+", "_", user_name.strip().lower()).strip("_")
+    return slug[:40]
+
+
 def create_connection_details(
     *,
     agent_name: str | None = None,
     room_config: dict[str, Any] | None = None,
     voice_config: dict[str, Any] | None = None,
+    user_name: str | None = None,
 ) -> ConnectionDetails:
     """Issue a participant JWT for a fresh voice-assistant room."""
     server_url, api_key, api_secret = _livekit_env()
@@ -54,8 +62,13 @@ def create_connection_details(
         if agents and agents[0].get("agent_name"):
             agent_name = agents[0]["agent_name"]
 
-    participant_name = "user"
-    participant_identity = f"voice_assistant_user_{random.randint(0, 9_999):04d}"
+    user_slug = _sanitize_user_id(user_name) if user_name else ""
+    if user_slug:
+        participant_name = user_name.strip()[:200]
+        participant_identity = user_slug
+    else:
+        participant_name = "user"
+        participant_identity = f"voice_assistant_user_{random.randint(0, 9_999):04d}"
     room_name = f"voice_assistant_room_{random.randint(0, 9_999):04d}"
 
     token = api.AccessToken(api_key, api_secret)
