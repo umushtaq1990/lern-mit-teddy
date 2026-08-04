@@ -7,14 +7,15 @@ if (!LiveKit) {
 const { Room, RoomEvent, Track } = LiveKit;
 
 // ── DOM refs ───────────────────────────────────────────────────────────────
+const nameGateEl       = document.getElementById("name-gate");
 const welcomeEl        = document.getElementById("welcome");
 const sessionEl        = document.getElementById("session");
 const statusEl         = document.getElementById("status");
 const langLabelEl      = document.getElementById("lang-label");
-const modeLabelEl      = document.getElementById("mode-label");
 const messagesEl       = document.getElementById("messages");
 const btnStart         = document.getElementById("btn-start");
 const btnEnd           = document.getElementById("btn-end");
+const btnNameContinue  = document.getElementById("btn-name-continue");
 const chatForm         = document.getElementById("chat-form");
 const chatInput        = document.getElementById("chat-input");
 const agentAudioEl     = document.getElementById("agent-audio");
@@ -23,7 +24,6 @@ const agentAudioEl     = document.getElementById("agent-audio");
 const inputUserName    = document.getElementById("input-user-name");
 const selLearnLang     = document.getElementById("sel-learn-lang");
 const selNativeLang    = document.getElementById("sel-native-lang");
-const selModel         = document.getElementById("sel-model");
 
 // Section / curriculum selector (visible during active session)
 const selSection       = document.getElementById("sel-section");
@@ -753,12 +753,6 @@ const LANGUAGE_NAMES = {
   en: "English", hi: "Hindi", de: "German", ar: "Arabic",
 };
 
-const MODEL_LABELS = {
-  pipeline: "OpenAI (GPT)",
-  gemini_live: "Gemini",
-  nvidia: "NVIDIA (Free)",
-};
-
 const room = new Room();
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -795,7 +789,7 @@ function addMessage(who, text, kind = "system") {
 // ── Build voice config from UI selections ──────────────────────────────────
 function getVoiceConfig() {
   return {
-    voice_mode: selModel.value,
+    voice_mode: "pipeline",
     language: selLearnLang.value,
     native_language: selNativeLang.value,
   };
@@ -978,10 +972,8 @@ async function startCall() {
 
     const learnName  = LANGUAGE_NAMES[learnLang]  || learnLang;
     const nativeName = LANGUAGE_NAMES[nativeLang] || nativeLang;
-    const modelLabel = MODEL_LABELS[selModel.value] || selModel.value;
 
     langLabelEl.textContent = `${learnName} ← ${nativeName}`;
-    modeLabelEl.textContent = modelLabel;
 
     _pendingSection = selSection ? (selSection.value || null) : null;
     addMessage("", `Teddy lernt ${learnName} mit dir! Er begrüßt dich gleich…`, "system");
@@ -1069,11 +1061,29 @@ btnSkipFeedback.addEventListener("click", () => closeFeedback());
 // starts (see TrackSubscribed handler). Nothing visual happens pre-session.
 // If the user somehow changes it while connected (shouldn't happen), switch live.
 
-// Restore last-used name so returning users keep the same user_id
+// ── Name gate ───────────────────────────────────────────────────────────────
+// Pre-fill with the last-used name so returning users can just hit Continue,
+// but always show the gate first — the rest of the app stays hidden until then.
 if (inputUserName) {
   const savedName = localStorage.getItem("teddy_user_name");
   if (savedName) inputUserName.value = savedName;
 }
+
+function continueFromNameGate() {
+  const userName = (inputUserName?.value || "").trim();
+  if (!userName) {
+    inputUserName?.focus();
+    return;
+  }
+  localStorage.setItem("teddy_user_name", userName);
+  nameGateEl.classList.add("hidden");
+  welcomeEl.classList.remove("hidden");
+}
+
+btnNameContinue.addEventListener("click", continueFromNameGate);
+inputUserName?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") continueFromNameGate();
+});
 
 // ── Wire up main buttons ───────────────────────────────────────────────────
 btnStart.addEventListener("click", startCall);

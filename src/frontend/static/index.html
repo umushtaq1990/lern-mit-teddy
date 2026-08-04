@@ -17,14 +17,19 @@
         <p class="subtitle">Sprich mit Teddy und lern eine neue Sprache — einfach und Spaß!</p>
       </header>
 
-      <!-- WELCOME / CONFIG PANEL -->
-      <section id="welcome" class="panel">
-
-        <!-- Name — used to group your sessions/progress across visits -->
+      <!-- NAME GATE — shown first; frontend only appears after a name is given -->
+      <section id="name-gate" class="panel">
         <div class="config-section">
           <label class="config-label" for="input-user-name">What's your name?</label>
           <input type="text" id="input-user-name" class="full-select" placeholder="e.g. Emma" maxlength="40" autocomplete="given-name" />
         </div>
+        <div class="actions">
+          <button id="btn-name-continue" class="primary start-btn">Continue</button>
+        </div>
+      </section>
+
+      <!-- WELCOME / CONFIG PANEL -->
+      <section id="welcome" class="panel hidden">
 
         <div class="config-row">
           <!-- Language to learn -->
@@ -48,16 +53,6 @@
               <option value="ar">🇸🇦 Arabic</option>
             </select>
           </div>
-        </div>
-
-        <!-- AI Model -->
-        <div class="config-section">
-          <label class="config-label" for="sel-model">AI Model</label>
-          <select id="sel-model" class="full-select">
-            <option value="pipeline" selected>OpenAI (GPT) ⚡</option>
-            <option value="gemini_live">Gemini (Google)</option>
-            <option value="nvidia">NVIDIA (slow)</option>
-          </select>
         </div>
 
         <!-- Section / theme selector — choose what to learn before starting -->
@@ -147,7 +142,6 @@
         <div class="session-header">
           <div class="session-meta">
             <span id="lang-label" class="badge lang-badge"></span>
-            <span id="mode-label" class="badge mode-badge"></span>
           </div>
           <button id="btn-end" class="danger">End Session</button>
         </div>

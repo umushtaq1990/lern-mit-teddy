@@ -102,6 +102,34 @@ def build_transcript(trace: dict[str, Any]) -> list[dict[str, str]]:
     return turns
 
 
+def summarize_usage(trace: dict[str, Any]) -> dict[str, Any]:
+    """Sum token/cost usage across every GENERATION observation (main persona call,
+    translator call, and judge call all show up here separately)."""
+    input_tokens = output_tokens = total_tokens = 0
+    cost = 0.0
+    for o in trace.get("observations", []):
+        if o.get("type") != "GENERATION":
+            continue
+        input_tokens += o.get("promptTokens") or 0
+        output_tokens += o.get("completionTokens") or 0
+        total_tokens += o.get("totalTokens") or 0
+        cost += (o.get("calculatedTotalCost") or 0.0)
+    return {
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": total_tokens,
+        "estimated_cost_usd": round(cost, 6),
+    }
+
+
+def find_feedback(trace: dict[str, Any]) -> tuple[int | None, str | None]:
+    for score in trace.get("scores") or []:
+        if score.get("name") == "user-feedback":
+            value = score.get("value")
+            return (int(value) if value is not None else None, score.get("comment"))
+    return None, None
+
+
 # ── SQL ──────────────────────────────────────────────────────────────────────
 
 def get_last_run_until(conn: pymssql.Connection) -> str | None:
@@ -152,20 +180,33 @@ def upsert_session(conn: pymssql.Connection, row: dict[str, Any]) -> None:
         WHEN MATCHED THEN UPDATE SET
             user_id = %s, room = %s, language = %s, native_language = %s,
             started_at = %s, ended_at = %s, turn_count = %s,
-            langfuse_trace_url = %s, blob_path = %s, exported_at = SYSUTCDATETIME()
+            langfuse_trace_url = %s, blob_path = %s,
+            llm_model = %s, stt_model = %s, tts_model = %s,
+            input_tokens = %s, output_tokens = %s, total_tokens = %s, estimated_cost_usd = %s,
+            duration_seconds = %s, feedback_rating = %s, feedback_comment = %s,
+            exported_at = SYSUTCDATETIME()
         WHEN NOT MATCHED THEN INSERT
             (session_id, user_id, room, language, native_language, started_at, ended_at,
-             turn_count, langfuse_trace_url, blob_path)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+             turn_count, langfuse_trace_url, blob_path,
+             llm_model, stt_model, tts_model,
+             input_tokens, output_tokens, total_tokens, estimated_cost_usd,
+             duration_seconds, feedback_rating, feedback_comment)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
         """,
         (
             row["session_id"],
             row["user_id"], row["room"], row["language"], row["native_language"],
             row["started_at"], row["ended_at"], row["turn_count"],
             row["langfuse_trace_url"], row["blob_path"],
+            row["llm_model"], row["stt_model"], row["tts_model"],
+            row["input_tokens"], row["output_tokens"], row["total_tokens"], row["estimated_cost_usd"],
+            row["duration_seconds"], row["feedback_rating"], row["feedback_comment"],
             row["session_id"], row["user_id"], row["room"], row["language"], row["native_language"],
             row["started_at"], row["ended_at"], row["turn_count"],
             row["langfuse_trace_url"], row["blob_path"],
+            row["llm_model"], row["stt_model"], row["tts_model"],
+            row["input_tokens"], row["output_tokens"], row["total_tokens"], row["estimated_cost_usd"],
+            row["duration_seconds"], row["feedback_rating"], row["feedback_comment"],
         ),
     )
     conn.commit()
@@ -206,9 +247,14 @@ def main() -> None:
         started_at = trace.get("timestamp")
         ended_at = trace.get("updatedAt") or started_at
         transcript = build_transcript(trace)
+        usage = summarize_usage(trace)
+        feedback_rating, feedback_comment = find_feedback(trace)
 
-        dt = datetime.fromisoformat(started_at.replace("Z", "+00:00"))
-        blob_name = f"{dt.year:04d}/{dt.month:02d}/{dt.day:02d}/{user_id}__{session_id}.json"
+        start_dt = datetime.fromisoformat(started_at.replace("Z", "+00:00"))
+        end_dt = datetime.fromisoformat(ended_at.replace("Z", "+00:00"))
+        duration_seconds = max(0, round((end_dt - start_dt).total_seconds()))
+
+        blob_name = f"{start_dt.year:04d}/{start_dt.month:02d}/{start_dt.day:02d}/{user_id}__{session_id}.json"
         trace_url = f"{LANGFUSE_HOST}/project/{trace.get('projectId')}/traces/{trace_id}"
 
         payload = {
@@ -219,7 +265,14 @@ def main() -> None:
             "native_language": metadata.get("native_language"),
             "started_at": started_at,
             "ended_at": ended_at,
+            "duration_seconds": duration_seconds,
             "langfuse_trace_url": trace_url,
+            "llm_model": metadata.get("llm_model"),
+            "stt_model": metadata.get("stt_model"),
+            "tts_model": metadata.get("tts_model"),
+            "usage": usage,
+            "feedback_rating": feedback_rating,
+            "feedback_comment": feedback_comment,
             "turns": transcript,
         }
         container.upload_blob(name=blob_name, data=json.dumps(payload, ensure_ascii=False, indent=2), overwrite=True)
@@ -236,6 +289,16 @@ def main() -> None:
             "turn_count": len(transcript),
             "langfuse_trace_url": trace_url,
             "blob_path": blob_name,
+            "llm_model": payload["llm_model"],
+            "stt_model": payload["stt_model"],
+            "tts_model": payload["tts_model"],
+            "input_tokens": usage["input_tokens"],
+            "output_tokens": usage["output_tokens"],
+            "total_tokens": usage["total_tokens"],
+            "estimated_cost_usd": usage["estimated_cost_usd"],
+            "duration_seconds": duration_seconds,
+            "feedback_rating": feedback_rating,
+            "feedback_comment": feedback_comment,
         })
 
         processed += 1
