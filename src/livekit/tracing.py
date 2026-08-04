@@ -6,62 +6,29 @@ Two tracer classes cover the two runtime modes:
 
 Both classes gracefully no-op when LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY
 are absent, so the agent works in environments without observability configured.
+
+The Langfuse client bootstrap itself (get_client/start_trace/start_span/
+get_langchain_handler) lives in ai_platform_shared.langfuse_client — shared
+with any other project that needs the same tracing plumbing. Only the
+voice-pipeline-specific span shapes (stt/tts/turn) and the realtime
+AgentSession event wiring stay here.
 """
 
 from __future__ import annotations
 
 import logging
-import os
 from typing import Any
 
+from ai_platform_shared.langfuse_client import (
+    get_client,
+    get_langchain_handler as _shared_get_langchain_handler,
+    get_trace_url,
+    noop_span,
+    start_span,
+    start_trace,
+)
+
 logger = logging.getLogger("voice-tracer")
-
-
-# ── Span wrappers ──────────────────────────────────────────────────────────────
-
-class _NoopSpan:
-    """Returned when Langfuse is disabled — every call is a silent no-op."""
-
-    def end(self, **_: Any) -> None:
-        pass
-
-    def update(self, **_: Any) -> None:
-        pass
-
-
-class _Span:
-    """Wraps a Langfuse v4 observation to support end(output=…, level=…) kwargs.
-
-    Langfuse v4 moved those kwargs from end() into update(); this adapter bridges
-    callers that use the old API without requiring changes at each call site.
-    """
-
-    def __init__(self, span: Any) -> None:
-        self._span = span
-
-    def end(self, *, output: Any = None, level: Any = None, status_message: Any = None, **_: Any) -> None:
-        kw: dict[str, Any] = {}
-        if output is not None:
-            kw["output"] = output
-        if level is not None:
-            kw["level"] = level
-        if status_message is not None:
-            kw["status_message"] = status_message
-        if kw:
-            try:
-                self._span.update(**kw)
-            except Exception:
-                pass
-        try:
-            self._span.end()
-        except Exception:
-            pass
-
-    def update(self, **kwargs: Any) -> None:
-        try:
-            self._span.update(**kwargs)
-        except Exception:
-            pass
 
 
 # ── Private helpers for realtime transcript parsing ────────────────────────────
@@ -119,24 +86,14 @@ class VoiceSessionTracer:
         self._trace_id: str | None = None
         self._root_span: Any = None
 
-        pk = os.getenv("LANGFUSE_PUBLIC_KEY")
-        sk = os.getenv("LANGFUSE_SECRET_KEY")
-        if not (pk and sk):
+        self._lf = get_client()
+        if self._lf is None:
             logger.info("Langfuse keys not set — pipeline tracing disabled")
             return
 
         try:
-            from langfuse import Langfuse  # noqa: PLC0415
-
-            host = (
-                os.getenv("LANGFUSE_HOST")
-                or os.getenv("LANGFUSE_BASE_URL")
-                or "https://cloud.langfuse.com"
-            )
-            self._lf = Langfuse(public_key=pk, secret_key=sk, host=host)
-            self._trace_id = self._lf.create_trace_id()
-            self._root_span = self._lf.start_observation(
-                trace_context={"trace_id": self._trace_id},
+            self._trace_id, self._root_span = start_trace(
+                self._lf,
                 name="voice-session",
                 as_type="span",
                 input={
@@ -155,7 +112,7 @@ class VoiceSessionTracer:
             logger.info(
                 "Langfuse pipeline tracing enabled — session=%s url=%s",
                 session_id,
-                self._lf.get_trace_url(trace_id=self._trace_id),
+                get_trace_url(self._lf, self._trace_id),
             )
         except Exception as exc:
             logger.warning("Langfuse init failed — tracing disabled: %s", exc)
@@ -164,13 +121,7 @@ class VoiceSessionTracer:
         """Return a LangChain callback that links every LLM call to this trace."""
         if not self._enabled or not self._trace_id:
             return None
-        try:
-            from langfuse.langchain import CallbackHandler  # noqa: PLC0415
-
-            return CallbackHandler(trace_context={"trace_id": self._trace_id})
-        except Exception as exc:
-            logger.warning("get_langchain_handler failed: %s", exc)
-            return None
+        return _shared_get_langchain_handler(self._trace_id)
 
     def stt_span(
         self,
@@ -178,35 +129,27 @@ class VoiceSessionTracer:
         audio_duration_s: float,
         model: str = "faster-whisper/base",
         language: str = "en",
-    ) -> _NoopSpan | _Span:
+    ) -> Any:
         if not self._enabled or not self._trace_id:
-            return _NoopSpan()
-        try:
-            raw = self._lf.start_observation(
-                trace_context={"trace_id": self._trace_id},
-                name="stt",
-                as_type="span",
-                input={"audio_duration_seconds": round(audio_duration_s, 3)},
-                metadata={"model": model, "language": language},
-            )
-            return _Span(raw)
-        except Exception:
-            return _NoopSpan()
+            return noop_span()
+        return start_span(
+            self._lf,
+            self._trace_id,
+            name="stt",
+            input={"audio_duration_seconds": round(audio_duration_s, 3)},
+            metadata={"model": model, "language": language},
+        )
 
-    def tts_span(self, *, text: str, model: str = "hume") -> _NoopSpan | _Span:
+    def tts_span(self, *, text: str, model: str = "hume") -> Any:
         if not self._enabled or not self._trace_id:
-            return _NoopSpan()
-        try:
-            raw = self._lf.start_observation(
-                trace_context={"trace_id": self._trace_id},
-                name="tts",
-                as_type="span",
-                input={"text": text, "char_count": len(text)},
-                metadata={"model": model},
-            )
-            return _Span(raw)
-        except Exception:
-            return _NoopSpan()
+            return noop_span()
+        return start_span(
+            self._lf,
+            self._trace_id,
+            name="tts",
+            input={"text": text, "char_count": len(text)},
+            metadata={"model": model},
+        )
 
     def turn_event(self, *, role: str, text: str) -> None:
         """Record one ground-truth conversation turn (from the real STT/TTS pipeline,
@@ -258,30 +201,25 @@ class RealtimeLangfuseTracer:
         self._voice_mode = voice_mode
         self._metadata = metadata
 
-        pk = os.getenv("LANGFUSE_PUBLIC_KEY")
-        sk = os.getenv("LANGFUSE_SECRET_KEY")
-        if not (pk and sk):
+        self.client = get_client()
+        if self.client is None:
             logger.info("Langfuse keys not set — realtime tracing disabled")
             return
 
-        host = os.getenv("LANGFUSE_BASE_URL") or os.getenv("LANGFUSE_HOST")
         try:
-            from langfuse import Langfuse  # noqa: PLC0415
-
-            self.client = Langfuse(public_key=pk, secret_key=sk, base_url=host)
-            trace_id = self.client.create_trace_id()
-            self.span = self.client.start_observation(
-                trace_context={"trace_id": trace_id},
+            trace_id, span = start_trace(
+                self.client,
                 name=f"realtime_voice_session:{voice_mode}",
                 as_type="agent",
                 input={"session": self._session_snapshot(), "user_transcript": []},
-                output={"agent_transcript": [], "full_transcript": [], "usage": None},
                 metadata=metadata,
             )
+            span.update(output={"agent_transcript": [], "full_transcript": [], "usage": None})
+            self.span = span
             self.enabled = True
             logger.info(
                 "Langfuse realtime trace started — %s",
-                self.client.get_trace_url(trace_id=trace_id),
+                get_trace_url(self.client, trace_id),
             )
         except Exception as exc:
             logger.warning("Unable to start Langfuse realtime trace: %s", exc)

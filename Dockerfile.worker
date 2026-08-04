@@ -5,7 +5,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
+# git is needed for uv to install the ai-platform-shared dependency from GitHub.
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg git && rm -rf /var/lib/apt/lists/*
 
 # Pinned to the same uv version the committed uv.lock was generated with, so
 # `--frozen` installs reproduce it exactly instead of `pip install .` silently

@@ -26,8 +26,12 @@ dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
     "edge-tts>=7.2.8",
+    "ai-platform-shared",
 ]
 
 [project.scripts]
 voice-frontend = "src.frontend.server:main"
 voice-frontend-native = "src.frontend.native_client:main"
+
+[tool.uv.sources]
+ai-platform-shared = { git = "https://github.com/umushtaq1990/ai-platform-shared.git", rev = "v0.1.1" }

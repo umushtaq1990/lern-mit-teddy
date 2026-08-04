@@ -9,6 +9,7 @@ from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import AIMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
+from ai_platform_shared.llm_client import get_chat_model
 from .prompts import build_prompt as _build_lingua_prompt
 
 logger = logging.getLogger(__name__)
@@ -56,18 +57,6 @@ _DEFAULT_SENTENCE_GRAMMAR_HINT = (
     "Use correct, natural grammar for the target language when you model the sentence — "
     "not just the bare word inserted into a template."
 )
-
-
-def get_langfuse_config() -> dict:
-    """Enable Langfuse tracing when local Langfuse keys are configured."""
-    if not os.getenv("LANGFUSE_PUBLIC_KEY") or not os.getenv("LANGFUSE_SECRET_KEY"):
-        return {}
-    if os.getenv("LANGFUSE_HOST") and not os.getenv("LANGFUSE_BASE_URL"):
-        os.environ["LANGFUSE_BASE_URL"] = os.environ["LANGFUSE_HOST"]
-    from langfuse.langchain import CallbackHandler
-    return {"callbacks": [CallbackHandler()]}
-
-
 
 
 _MAX_RECENT = 16  # messages passed as context; full history is scanned separately for topic tracking
@@ -157,14 +146,8 @@ def _vocab_progress_heuristic(messages: list, lang_code: str, set_key: str) -> t
     return introduced, remaining
 
 
-_judge_llm: ChatOpenAI | None = None
-
-
 def _get_judge_llm() -> ChatOpenAI:
-    global _judge_llm
-    if _judge_llm is None:
-        _judge_llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
-    return _judge_llm
+    return get_chat_model(LLM_MODEL, temperature=0)
 
 
 def _recent_transcript(messages: list, limit: int = 24) -> str:
@@ -462,17 +445,12 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
     return [SystemMessage(content=prompt)] + recent
 
 
-langfuse_config = get_langfuse_config()
-
 agent = create_react_agent(
-    model=ChatOpenAI(model=LLM_MODEL),
+    model=get_chat_model(LLM_MODEL),
     tools=[],
     prompt=_build_prompt,
     name="lingua_ai_agent",
     checkpointer=MemorySaver(),
 )
-
-if langfuse_config:
-    agent = agent.with_config(langfuse_config)
 
 
