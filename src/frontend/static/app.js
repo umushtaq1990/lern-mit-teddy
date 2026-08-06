@@ -16,6 +16,9 @@ const messagesEl       = document.getElementById("messages");
 const btnStart         = document.getElementById("btn-start");
 const btnEnd           = document.getElementById("btn-end");
 const btnNameContinue  = document.getElementById("btn-name-continue");
+const linkLogin        = document.getElementById("link-login");
+const loginDivider     = document.getElementById("login-divider");
+const loginStatusEl    = document.getElementById("login-status");
 const chatForm         = document.getElementById("chat-form");
 const chatInput        = document.getElementById("chat-input");
 const agentAudioEl     = document.getElementById("agent-audio");
@@ -1061,9 +1064,10 @@ btnSkipFeedback.addEventListener("click", () => closeFeedback());
 // starts (see TrackSubscribed handler). Nothing visual happens pre-session.
 // If the user somehow changes it while connected (shouldn't happen), switch live.
 
-// ── Name gate ───────────────────────────────────────────────────────────────
+// ── Name gate / login ───────────────────────────────────────────────────────
 // Pre-fill with the last-used name so returning users can just hit Continue,
-// but always show the gate first — the rest of the app stays hidden until then.
+// but always show the gate first — the rest of the app stays hidden until
+// either a name is typed or the user is (or becomes) logged in.
 if (inputUserName) {
   const savedName = localStorage.getItem("teddy_user_name");
   if (savedName) inputUserName.value = savedName;
@@ -1084,6 +1088,34 @@ btnNameContinue.addEventListener("click", continueFromNameGate);
 inputUserName?.addEventListener("keydown", (e) => {
   if (e.key === "Enter") continueFromNameGate();
 });
+
+async function checkLoginStatus() {
+  try {
+    const res = await fetch("/api/me");
+    const data = await res.json();
+    if (data.login_available && linkLogin) {
+      linkLogin.classList.remove("hidden");
+      loginDivider?.classList.remove("hidden");
+    }
+    if (data.user) {
+      // Already logged in — skip the name gate entirely.
+      nameGateEl.classList.add("hidden");
+      welcomeEl.classList.remove("hidden");
+      if (loginStatusEl) {
+        loginStatusEl.innerHTML = `Logged in as <strong>${escapeHtml(data.user.display_name)}</strong> — <a href="#" id="link-logout">log out</a>`;
+        loginStatusEl.classList.remove("hidden");
+        document.getElementById("link-logout")?.addEventListener("click", async (e) => {
+          e.preventDefault();
+          await fetch("/auth/logout", { method: "POST" });
+          window.location.reload();
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("Could not check login status:", err);
+  }
+}
+checkLoginStatus();
 
 // ── Wire up main buttons ───────────────────────────────────────────────────
 btnStart.addEventListener("click", startCall);

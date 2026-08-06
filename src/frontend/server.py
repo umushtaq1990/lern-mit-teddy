@@ -7,15 +7,18 @@ from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, Field
 
-from .token import ConnectionDetails, create_connection_details
+load_dotenv()  # must run before importing .auth, which reads env vars at module load time
 
-load_dotenv()
+from fastapi import FastAPI, HTTPException, Request  # noqa: E402
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
+from fastapi.responses import FileResponse  # noqa: E402
+from fastapi.staticfiles import StaticFiles  # noqa: E402
+from pydantic import BaseModel, Field  # noqa: E402
+from starlette.middleware.sessions import SessionMiddleware  # noqa: E402
+
+from . import auth  # noqa: E402
+from .token import ConnectionDetails, create_connection_details  # noqa: E402
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 DEFAULT_PORT = int(os.getenv("FRONTEND_PORT", "8080"))
@@ -31,6 +34,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("AUTH_SESSION_SECRET", "dev-only-insecure-secret"),
+    max_age=30 * 24 * 3600,  # 30 days — logged-in users stay logged in across visits
+    same_site="lax",
+    https_only=os.getenv("SESSION_COOKIE_SECURE", "true").lower() in ("1", "true", "yes"),
+)
+app.include_router(auth.router)
 
 
 class RoomAgentConfig(BaseModel):
@@ -68,8 +79,21 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.get("/api/me")
+def me(request: Request) -> dict[str, Any]:
+    """Current logged-in user (if any), for the frontend to skip the name gate
+    and show a logged-in state. Returns {"user": null} when not logged in."""
+    user = auth.current_user(request)
+    if not user:
+        return {"user": None, "login_available": auth.is_configured()}
+    return {
+        "user": {"user_id": user.user_id, "display_name": user.display_name, "email": user.email},
+        "login_available": True,
+    }
+
+
 @app.post("/api/connection-details")
-def connection_details(body: ConnectionDetailsRequest | None = None) -> dict[str, str]:
+def connection_details(request: Request, body: ConnectionDetailsRequest | None = None) -> dict[str, str]:
     """Same contract as the Next.js POST /api/connection-details route."""
     try:
         room_config: dict[str, Any] | None = None
@@ -84,11 +108,15 @@ def connection_details(body: ConnectionDetailsRequest | None = None) -> dict[str
             if body.voice_config:
                 voice_cfg = {k: v for k, v in body.voice_config.model_dump().items() if v is not None}
 
+        logged_in = auth.current_user(request)
+
         details: ConnectionDetails = create_connection_details(
             agent_name=agent_name,
             room_config=room_config,
             voice_config=voice_cfg,
             user_name=body.user_name if body else None,
+            auth_user_id=logged_in.user_id if logged_in else None,
+            auth_display_name=logged_in.display_name if logged_in else None,
         )
         return details.to_dict()
     except RuntimeError as exc:
@@ -188,6 +216,12 @@ def main() -> None:
         host=os.getenv("FRONTEND_HOST", "127.0.0.1"),
         port=DEFAULT_PORT,
         reload=os.getenv("FRONTEND_RELOAD", "true").lower() in ("1", "true", "yes"),
+        # Azure Container Apps terminates TLS at its ingress and forwards to this
+        # container over plain HTTP — without trusting X-Forwarded-Proto, uvicorn
+        # (and anything building absolute URLs, like the OAuth redirect_uri) sees
+        # every request as http://, not https://.
+        proxy_headers=True,
+        forwarded_allow_ips="*",
     )
 
 
