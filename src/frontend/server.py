@@ -196,6 +196,16 @@ def index() -> FileResponse:
     return FileResponse(STATIC_DIR / "index.html", headers=_NO_CACHE)
 
 
+@app.get("/about")
+def about_page() -> FileResponse:
+    return FileResponse(STATIC_DIR / "about.html", headers=_NO_CACHE)
+
+
+@app.get("/contact")
+def contact_page() -> FileResponse:
+    return FileResponse(STATIC_DIR / "contact.html", headers=_NO_CACHE)
+
+
 @app.get("/static/{filename:path}")
 def static_file(filename: str) -> FileResponse:
     path = STATIC_DIR / filename

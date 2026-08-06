@@ -18,12 +18,28 @@ body {
   font-family: "Segoe UI", system-ui, sans-serif;
   background: radial-gradient(circle at top, #0f2d1f, var(--bg) 60%);
   color: var(--text);
+  overflow-x: hidden;
 }
 
 .shell {
   max-width: 680px;
   margin: 0 auto;
   padding: 2.5rem 1.25rem 3rem;
+}
+
+/* Tablet and small laptop: a bit more breathing room than phone, still
+   comfortably narrower than the 680px desktop/reading-width cap. */
+@media (min-width: 481px) and (max-width: 900px) {
+  .shell { padding: 2rem 1.5rem 2.5rem; }
+}
+
+/* Phone: tighten padding and shrink type that would otherwise wrap awkwardly */
+@media (max-width: 480px) {
+  .shell { padding: 1.5rem 0.85rem 2rem; }
+  header h1 { font-size: 1.7rem; }
+  .logo-icon { font-size: 1.8rem; }
+  .subtitle { font-size: 0.85rem; }
+  .panel { padding: 1.1rem; border-radius: 14px; }
 }
 
 /* ── Header ──────────────────────────────────────── */
@@ -168,15 +184,6 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
   font-size: 0.82rem;
 }
 
-.mode-badge {
-  background: #1e2a42;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.15rem 0.5rem;
-  font-size: 0.78rem;
-  color: #7dd3fc;
-}
-
 /* ── Teddy bear — absolute upper-right of session panel ── */
 #character-wrap {
   position: absolute;
@@ -217,6 +224,13 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
 #char-state-label.speaking  { color: #34d399; }
 #char-state-label.listening { color: #a5b4fc; }
 #char-state-label.thinking  { color: #fbbf24; }
+
+@media (max-width: 480px) {
+  .session-header { padding-right: 56px; }
+  #character-wrap { top: 0.5rem; right: 0.5rem; }
+  #lingua-bear { width: 44px; height: 40px; }
+  #char-state-label { font-size: 0.48rem; }
+}
 
 /* ── Section / curriculum selector (welcome panel) ── */
 .section-label {
@@ -469,6 +483,10 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
 
 .chat-form button:hover { background: var(--accent-hover); }
 
+@media (max-width: 380px) {
+  .chat-form { flex-direction: column; }
+}
+
 /* ── Feedback modal ──────────────────────────────── */
 .overlay {
   position: fixed;
@@ -532,5 +550,57 @@ button.ghost:hover { border-color: var(--accent); color: var(--text); }
   resize: vertical;
   margin-bottom: 1.25rem;
 }
+
+/* ── Site footer nav (Home / About / Contact) ────── */
+.site-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.site-footer a {
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.site-footer a:hover,
+.site-footer a.active { color: var(--accent); }
+
+/* ── Static content pages (About / Contact) ──────── */
+.content-page h2 {
+  font-size: 1.25rem;
+  margin: 1.5rem 0 0.6rem;
+  color: #34d399;
+}
+
+.content-page h2:first-child { margin-top: 0; }
+
+.content-page p, .content-page li {
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.content-page ul { padding-left: 1.3rem; margin: 0.5rem 0; }
+
+.content-page a { color: #7dd3fc; }
+
+.contact-email {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  background: var(--accent);
+  color: white !important;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.contact-email:hover { background: var(--accent-hover); }
 
 .modal-actions { display: flex; gap: 0.75rem; justify-content: center; }
