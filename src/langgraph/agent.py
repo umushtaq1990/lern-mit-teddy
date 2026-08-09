@@ -267,13 +267,57 @@ def _refresh_vocab_done_async(thread_id: str, lang_code: str, set_key: str, mess
 
     async def _run() -> None:
         try:
-            done = await _judge_vocab_progress(messages, lang_code, set_key)
-            _judge_cache.setdefault(thread_id, {})[set_key] = done
+            fresh = await _judge_vocab_progress(messages, lang_code, set_key)
+            # Union with whatever was already cached, never shrink it: the judge
+            # only sees the last 24 messages (_recent_transcript), so if a card
+            # was completed early in a long conversation and the topic moves on
+            # for a while, the evidence scrolls out of that window — re-judging
+            # from scratch would then "forget" a word that was already verified
+            # correct and re-drill it.
+            items = _VOCAB_DATA.get(lang_code, {}).get(set_key, {}).get("items", [])
+            existing = set(_judge_cache.get(thread_id, {}).get(set_key, []))
+            merged = [w for w in items if w in existing | set(fresh)]
+            _judge_cache.setdefault(thread_id, {})[set_key] = merged
         except Exception:
             logger.warning("background vocab judge refresh failed", exc_info=True)
 
     task = asyncio.create_task(_run())
     _judge_tasks[key] = task
+
+
+# ── Attempt limit — force progress past a word the child is stuck on ───────
+# The correction rule below has no natural exit: without this, a child who
+# can never quite land one word would keep Teddy re-asking it forever.
+_MAX_WORD_ATTEMPTS = 3
+_word_attempts: dict[str, int] = {}
+
+
+def _bump_word_attempts(thread_id: str, set_key: str, word: str) -> int:
+    key = f"{thread_id}:{set_key}:{word}"
+    _word_attempts[key] = _word_attempts.get(key, 0) + 1
+    return _word_attempts[key]
+
+
+# Detected in code (not just left to the persona LLM to "comply" with in the
+# prompt) so a skip is never merely acknowledged in speech while the code
+# keeps presenting the same word next turn — that mismatch is its own bug.
+_SKIP_PHRASES = [
+    "next", "skip", "move on", "go further",
+    "weiter", "nächste", "naechste", "überspring", "ueberspring",
+    "التالي", "تخطي",
+    "अगला", "आगे बढ़", "छोड़",
+]
+
+
+def _child_requested_skip(messages: list) -> bool:
+    for m in reversed(messages):
+        if isinstance(m, AIMessage):
+            continue
+        text = _plain_text(getattr(m, "content", None)).strip().lower()
+        if not text:
+            continue
+        return any(phrase in text for phrase in _SKIP_PHRASES)
+    return False
 
 
 def _asked_questions(messages: list) -> list[str]:
@@ -363,6 +407,16 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
             _refresh_vocab_done_async(thread_id, lang_code, active_set, all_messages)
             remaining = [w for w in items if w not in done]
 
+            just_skipped_word: str | None = None
+            skipped_by_request = False
+            if remaining:
+                attempts = _bump_word_attempts(thread_id, active_set, remaining[0])
+                skipped_by_request = _child_requested_skip(all_messages)
+                if attempts > _MAX_WORD_ATTEMPTS or skipped_by_request:
+                    just_skipped_word = remaining.pop(0)
+                    done = done + [just_skipped_word]
+                    _judge_cache.setdefault(thread_id, {})[active_set] = [w for w in items if w in set(done)]
+
             if used_default and not remaining:
                 # Greetings already fully completed and nothing else was
                 # explicitly selected — release into free chat instead of
@@ -406,14 +460,32 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
                     "a reasonable, recognizable attempt at it (even imperfect pronunciation), treat it as "
                     "correct and move on to the next word — do not keep re-asking a correct answer."
                 )
+            skip_notice = ""
+            if just_skipped_word and skipped_by_request:
+                skip_notice = (
+                    f"\nThe child just asked to move on from '{just_skipped_word}'. In this reply, say the "
+                    f"correct answer for '{just_skipped_word}' ONCE for reference, then move straight on to "
+                    "the word below — do not make them try again, they already asked to skip it."
+                )
+            elif just_skipped_word:
+                skip_notice = (
+                    f"\nThe child has already tried '{just_skipped_word}' {_MAX_WORD_ATTEMPTS} times without "
+                    f"landing it — enough. In this reply, briefly and warmly say the correct answer for "
+                    f"'{just_skipped_word}' ONE more time for reference, tell them you'll practice it again "
+                    "another day, then move straight on to the word below. Do not make them try again."
+                )
             prompt += (
                 f"\n\nVOCAB CARD DRILL — current card: {title}\n"
                 f"Words already completed: {', '.join(done) if done else '(none yet)'}\n"
                 f"THE WORD TO ASK ABOUT RIGHT NOW, AND ONLY THIS WORD: {current_word}\n"
                 "Do not ask about, mention, or move on to any other word from this card until this exact "
                 "word has been properly answered — you have no choice in which word to use, it is decided "
-                "for you above.\n"
+                f"for you above.{skip_notice}\n"
                 f"{correction_rule}\n"
+                "SKIP REQUESTS — if the child explicitly asks to move on, skip this word, or says something "
+                "like 'next', 'let's move on', 'weiter', 'nächstes' (in either language), comply immediately: "
+                "say the correct answer once for reference, then move to the next word or card — do not "
+                "insist on correcting them first just because they asked to skip.\n"
                 "STAY ON TOPIC — critical: this card is the lesson right now. If the child brings up "
                 "something unrelated to it, react warmly to what they said in ONE short breath (like a "
                 "real friend would), then gently bring them back to the current word or card — do not "
