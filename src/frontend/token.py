@@ -52,16 +52,13 @@ def create_connection_details(
     agent_name: str | None = None,
     room_config: dict[str, Any] | None = None,
     voice_config: dict[str, Any] | None = None,
-    user_name: str | None = None,
-    auth_user_id: str | None = None,
-    auth_display_name: str | None = None,
+    auth_user_id: str,
+    auth_display_name: str,
 ) -> ConnectionDetails:
     """Issue a participant JWT for a fresh voice-assistant room.
 
-    `auth_user_id` (from a logged-in Entra External ID session) takes
-    priority as the stable identity when present — it's already durable and
-    unique, unlike a free-typed name that could collide or change. Falls back
-    to the free-typed `user_name` gate, then to a random anonymous identity.
+    Login is mandatory, so `auth_user_id` (from a logged-in Entra External ID
+    session) is always present — it's the durable, unique participant identity.
     """
     server_url, api_key, api_secret = _livekit_env()
 
@@ -70,17 +67,8 @@ def create_connection_details(
         if agents and agents[0].get("agent_name"):
             agent_name = agents[0]["agent_name"]
 
-    if auth_user_id:
-        participant_identity = _sanitize_user_id(auth_user_id)
-        participant_name = (auth_display_name or auth_user_id).strip()[:200]
-    else:
-        user_slug = _sanitize_user_id(user_name) if user_name else ""
-        if user_slug:
-            participant_name = user_name.strip()[:200]
-            participant_identity = user_slug
-        else:
-            participant_name = "user"
-            participant_identity = f"voice_assistant_user_{random.randint(0, 9_999):04d}"
+    participant_identity = _sanitize_user_id(auth_user_id)
+    participant_name = (auth_display_name or auth_user_id).strip()[:200]
     room_name = f"voice_assistant_room_{random.randint(0, 9_999):04d}"
 
     token = api.AccessToken(api_key, api_secret)

@@ -65,7 +65,6 @@ class VoiceConfig(BaseModel):
 class ConnectionDetailsRequest(BaseModel):
     room_config: RoomConfigBody | None = None
     voice_config: VoiceConfig | None = None
-    user_name: str | None = None
 
 
 class FeedbackRequest(BaseModel):
@@ -94,7 +93,15 @@ def me(request: Request) -> dict[str, Any]:
 
 @app.post("/api/connection-details")
 def connection_details(request: Request, body: ConnectionDetailsRequest | None = None) -> dict[str, str]:
-    """Same contract as the Next.js POST /api/connection-details route."""
+    """Same contract as the Next.js POST /api/connection-details route.
+
+    Login is mandatory: this endpoint is the actual enforcement point (not
+    just the frontend gate), since a direct API call could otherwise bypass it.
+    """
+    logged_in = auth.current_user(request)
+    if not logged_in:
+        raise HTTPException(status_code=401, detail="Login required")
+
     try:
         room_config: dict[str, Any] | None = None
         agent_name = os.getenv("LIVEKIT_AGENT_NAME") or None
@@ -108,15 +115,12 @@ def connection_details(request: Request, body: ConnectionDetailsRequest | None =
             if body.voice_config:
                 voice_cfg = {k: v for k, v in body.voice_config.model_dump().items() if v is not None}
 
-        logged_in = auth.current_user(request)
-
         details: ConnectionDetails = create_connection_details(
             agent_name=agent_name,
             room_config=room_config,
             voice_config=voice_cfg,
-            user_name=body.user_name if body else None,
-            auth_user_id=logged_in.user_id if logged_in else None,
-            auth_display_name=logged_in.display_name if logged_in else None,
+            auth_user_id=logged_in.user_id,
+            auth_display_name=logged_in.display_name,
         )
         return details.to_dict()
     except RuntimeError as exc:

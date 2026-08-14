@@ -15,16 +15,14 @@ const langLabelEl      = document.getElementById("lang-label");
 const messagesEl       = document.getElementById("messages");
 const btnStart         = document.getElementById("btn-start");
 const btnEnd           = document.getElementById("btn-end");
-const btnNameContinue  = document.getElementById("btn-name-continue");
 const linkLogin        = document.getElementById("link-login");
-const loginDivider     = document.getElementById("login-divider");
+const loginErrorEl     = document.getElementById("login-error");
 const loginStatusEl    = document.getElementById("login-status");
 const chatForm         = document.getElementById("chat-form");
 const chatInput        = document.getElementById("chat-input");
 const agentAudioEl     = document.getElementById("agent-audio");
 
 // Config controls
-const inputUserName    = document.getElementById("input-user-name");
 const selLearnLang     = document.getElementById("sel-learn-lang");
 const selNativeLang    = document.getElementById("sel-native-lang");
 
@@ -799,11 +797,11 @@ function getVoiceConfig() {
 }
 
 // ── Connection ─────────────────────────────────────────────────────────────
-async function fetchConnectionDetails(voiceConfig, userName) {
+async function fetchConnectionDetails(voiceConfig) {
   const res = await fetch("/api/connection-details", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ voice_config: voiceConfig, user_name: userName || null }),
+    body: JSON.stringify({ voice_config: voiceConfig }),
   });
   if (!res.ok) throw new Error((await res.text()) || `HTTP ${res.status}`);
   return res.json();
@@ -960,12 +958,9 @@ async function startCall() {
   btnStart.disabled = true;
   setStatus("Connecting…");
 
-  const userName = (inputUserName?.value || "").trim();
-  if (userName) localStorage.setItem("teddy_user_name", userName);
-
   try {
     const voiceConfig = getVoiceConfig();
-    const details = await fetchConnectionDetails(voiceConfig, userName);
+    const details = await fetchConnectionDetails(voiceConfig);
     currentRoomName  = details.roomName;
     currentSessionId = details.roomName;
 
@@ -1064,41 +1059,21 @@ btnSkipFeedback.addEventListener("click", () => closeFeedback());
 // starts (see TrackSubscribed handler). Nothing visual happens pre-session.
 // If the user somehow changes it while connected (shouldn't happen), switch live.
 
-// ── Name gate / login ───────────────────────────────────────────────────────
-// Pre-fill with the last-used name so returning users can just hit Continue,
-// but always show the gate first — the rest of the app stays hidden until
-// either a name is typed or the user is (or becomes) logged in.
-if (inputUserName) {
-  const savedName = localStorage.getItem("teddy_user_name");
-  if (savedName) inputUserName.value = savedName;
-}
-
-function continueFromNameGate() {
-  const userName = (inputUserName?.value || "").trim();
-  if (!userName) {
-    inputUserName?.focus();
-    return;
-  }
-  localStorage.setItem("teddy_user_name", userName);
-  nameGateEl.classList.add("hidden");
-  welcomeEl.classList.remove("hidden");
-}
-
-btnNameContinue.addEventListener("click", continueFromNameGate);
-inputUserName?.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") continueFromNameGate();
-});
-
+// ── Login gate ───────────────────────────────────────────────────────────────
+// Login is mandatory — the gate stays up until /api/me confirms a session.
 async function checkLoginStatus() {
   try {
     const res = await fetch("/api/me");
     const data = await res.json();
-    if (data.login_available && linkLogin) {
-      linkLogin.classList.remove("hidden");
-      loginDivider?.classList.remove("hidden");
+    if (!data.login_available) {
+      if (linkLogin) linkLogin.classList.add("hidden");
+      if (loginErrorEl) {
+        loginErrorEl.textContent = "Login is temporarily unavailable — please check back shortly.";
+        loginErrorEl.classList.remove("hidden");
+      }
+      return;
     }
     if (data.user) {
-      // Already logged in — skip the name gate entirely.
       nameGateEl.classList.add("hidden");
       welcomeEl.classList.remove("hidden");
       if (loginStatusEl) {
