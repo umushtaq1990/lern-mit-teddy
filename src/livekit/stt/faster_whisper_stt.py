@@ -123,9 +123,17 @@ class FasterWhisperSTT(stt.STT):
             language=language,
             beam_size=5,
             vad_filter=False,  # VAD is handled upstream by Silero
+            # Defaults here are tuned for English and too eager to decide a short
+            # clip is "no speech" — on non-English languages (esp. lower-resource
+            # ones like Arabic on the smaller model sizes) that discards real
+            # speech as silence far more often, producing a blank transcript.
+            no_speech_threshold=0.3,
+            condition_on_previous_text=False,
         )
         text = " ".join(seg.text.strip() for seg in segments).strip()
-        logger.info("Transcription: %r (lang=%s, prob=%.2f)", text, info.language, info.language_probability)
+        log = logger.info if text else logger.warning  # empty result is worth flagging, not just noting
+        log("Transcription: %r (lang=%s, prob=%.2f, audio_duration_s=%.2f)",
+            text, info.language, info.language_probability, len(audio) / WHISPER_SAMPLE_RATE)
 
         return SpeechEvent(
             type=SpeechEventType.FINAL_TRANSCRIPT,
