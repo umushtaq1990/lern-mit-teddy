@@ -11,6 +11,7 @@ from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
 from ai_platform_shared.llm_client import get_chat_model
 from .prompts import build_prompt as _build_lingua_prompt
+from .prompts import build_conversation_helper_prompt as _build_conversation_helper_prompt
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +34,7 @@ _LANGUAGE_NAMES: dict[str, str] = {
     "ru": "Russian",
     "tr": "Turkish",
     "hi": "Hindi",
+    "ur": "Urdu",
 }
 
 # Language-specific grammar reminder used only when building a full sentence
@@ -350,12 +352,24 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
     configurable = config.get("configurable") or {}
     lang_code   = configurable.get("language", "de")   # default German
     native_code = configurable.get("native_language", "en")
+    lesson_mode = configurable.get("lesson_mode", "vocab")
     learning_language = _LANGUAGE_NAMES.get(lang_code, "German")
     native_language   = _LANGUAGE_NAMES.get(native_code, "English")
-    logger.info("_build_prompt: lang=%s native=%s configurable=%s", lang_code, native_code, configurable)
-    prompt = _build_lingua_prompt(lang_code, native_code)
+    logger.info("_build_prompt: lang=%s native=%s mode=%s configurable=%s", lang_code, native_code, lesson_mode, configurable)
 
     all_messages = state["messages"]
+
+    if lesson_mode == "conversation_helper" and lang_code == "ar":
+        # A phrase-lookup coach, not the vocab-card drill: the user asks (in
+        # their own native language) how to say something in Arabic, Teddy
+        # answers entirely in simple Arabic. None of the vocab-card/topic-
+        # tracking logic below applies to this mode.
+        prompt = _build_conversation_helper_prompt(lang_code, native_code)
+        prompt += f"\n\nREMINDER: Your NEXT reply must be in {learning_language} only. Not one word of {native_language}."
+        recent = all_messages[-_MAX_RECENT:] if len(all_messages) > _MAX_RECENT else all_messages
+        return [SystemMessage(content=prompt)] + recent
+
+    prompt = _build_lingua_prompt(lang_code, native_code)
 
     # 1. Keyword-based topic summary (8 fixed topics)
     covered = _covered_topics(all_messages)

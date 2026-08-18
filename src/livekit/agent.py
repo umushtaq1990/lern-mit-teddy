@@ -158,6 +158,7 @@ async def entrypoint(ctx: JobContext) -> None:
             "thread_id": thread_id,
             "language": cfg.language,
             "native_language": cfg.native_language,
+            "lesson_mode": cfg.lesson_mode,
         },
         "metadata": {
             "session_id": session_id,
@@ -288,21 +289,25 @@ def _build_pipeline_session(
     inner_tts = create_tts(cfg, _SETTINGS)
     tts = TracedTTS(inner_tts, tracer, model_name=cfg.tts_label) if tracer._enabled else inner_tts
 
-    # Build STT — Deepgram cloud (low latency) or local faster-whisper
-    use_deepgram = cfg.stt_provider == "deepgram" and cfg.language not in DEEPGRAM_UNSUPPORTED_LANGUAGES
+    # Build STT — Deepgram cloud (low latency) or local faster-whisper.
+    # Uses cfg.stt_language, not cfg.language: normally the same (the child
+    # practices producing the target language), but Conversation Helper mode
+    # expects questions asked in the user's own native language instead.
+    stt_language = cfg.stt_language
+    use_deepgram = cfg.stt_provider == "deepgram" and stt_language not in DEEPGRAM_UNSUPPORTED_LANGUAGES
     if cfg.stt_provider == "deepgram" and not use_deepgram:
         logger.warning(
             "Deepgram model=%s rejects language=%s; falling back to local faster-whisper",
-            cfg.stt_model, cfg.language,
+            cfg.stt_model, stt_language,
         )
     if use_deepgram:
-        logger.info("Deepgram STT — model=%s language=%s", cfg.stt_model, cfg.language)
-        stt = deepgram_plugin.STT(model=cfg.stt_model, language=cfg.language, detect_language=False)
+        logger.info("Deepgram STT — model=%s language=%s", cfg.stt_model, stt_language)
+        stt = deepgram_plugin.STT(model=cfg.stt_model, language=stt_language, detect_language=False)
     else:
-        fallback_model = FASTER_WHISPER_FALLBACK_MODEL.get(cfg.language, FASTER_WHISPER_FALLBACK_DEFAULT)
+        fallback_model = FASTER_WHISPER_FALLBACK_MODEL.get(stt_language, FASTER_WHISPER_FALLBACK_DEFAULT)
         stt = FasterWhisperSTT(
             model=cfg.stt_model if cfg.stt_provider != "deepgram" else fallback_model,
-            language=cfg.language,
+            language=stt_language,
             device="cpu",
             compute_type="int8",
             tracer=tracer,

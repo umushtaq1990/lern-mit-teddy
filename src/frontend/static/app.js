@@ -25,6 +25,7 @@ const agentAudioEl     = document.getElementById("agent-audio");
 // Config controls
 const selLearnLang     = document.getElementById("sel-learn-lang");
 const selNativeLang    = document.getElementById("sel-native-lang");
+const arabicModeSection = document.getElementById("arabic-mode-section");
 
 // Section / curriculum selector (visible during active session)
 const selSection       = document.getElementById("sel-section");
@@ -789,12 +790,25 @@ function addMessage(who, text, kind = "system") {
 
 // ── Build voice config from UI selections ──────────────────────────────────
 function getVoiceConfig() {
-  return {
+  const cfg = {
     voice_mode: "pipeline",
     language: selLearnLang.value,
     native_language: selNativeLang.value,
   };
+  if (selLearnLang.value === "ar") {
+    const modeInput = document.querySelector('input[name="arabic-mode"]:checked');
+    cfg.lesson_mode = modeInput ? modeInput.value : "vocab";
+  }
+  return cfg;
 }
+
+// Show the Arabic-only lesson-style toggle only when Arabic is selected.
+function updateArabicModeVisibility() {
+  if (!arabicModeSection) return;
+  arabicModeSection.classList.toggle("hidden", selLearnLang.value !== "ar");
+}
+selLearnLang.addEventListener("change", updateArabicModeVisibility);
+updateArabicModeVisibility();
 
 // ── Connection ─────────────────────────────────────────────────────────────
 async function fetchConnectionDetails(voiceConfig) {

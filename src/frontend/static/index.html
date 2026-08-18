@@ -37,8 +37,6 @@
             <label class="config-label" for="sel-learn-lang">I want to learn</label>
             <select id="sel-learn-lang" class="full-select">
               <option value="de" selected>🇩🇪 German</option>
-              <option value="en">🇬🇧 English</option>
-              <option value="hi">🇮🇳 Hindi</option>
               <option value="ar">🇸🇦 Arabic</option>
             </select>
           </div>
@@ -49,10 +47,29 @@
             <select id="sel-native-lang" class="full-select">
               <option value="en">🇬🇧 English</option>
               <option value="hi">🇮🇳 Hindi</option>
+              <option value="ur">🇵🇰 Urdu</option>
               <option value="de">🇩🇪 German</option>
               <option value="ar">🇸🇦 Arabic</option>
             </select>
           </div>
+        </div>
+
+        <!-- Arabic-only: choose between vocab-card drilling and the phrase
+             lookup coach ("how do I say X in Arabic?"). Hidden for German. -->
+        <div id="arabic-mode-section" class="config-section hidden">
+          <label class="config-label">Arabic lesson style</label>
+          <div class="config-row">
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+              <input type="radio" name="arabic-mode" value="vocab" checked /> Vocab Practice
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+              <input type="radio" name="arabic-mode" value="conversation_helper" /> Conversation Helper
+            </label>
+          </div>
+          <p class="status" style="text-align: left; margin-top: 0.4rem;">
+            Conversation Helper: ask Teddy (in your native language) how to say something in Arabic —
+            e.g. "how do I say how are you?" — and Teddy answers in simple Arabic with the reply too.
+          </p>
         </div>
 
         <!-- Section / theme selector — choose what to learn before starting -->

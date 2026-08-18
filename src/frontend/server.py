@@ -60,6 +60,7 @@ class VoiceConfig(BaseModel):
     tts_provider: str | None = None
     tts_voice: str | None = None
     tts_model: str | None = None
+    lesson_mode: str | None = None      # "vocab" | "conversation_helper" (Arabic only)
 
 
 class ConnectionDetailsRequest(BaseModel):

@@ -33,12 +33,14 @@ SUPPORTED_LANGUAGES: dict[str, str] = {
     "ru": "Russian",
     "tr": "Turkish",
     "hi": "Hindi",
+    "ur": "Urdu",
 }
 
 # Languages the configured Deepgram model (nova-2) rejects outright (HTTP 400 on
 # connect). Confirmed for Arabic: https://developers.deepgram.com/docs/models-languages-overview
-# — sessions using these must fall back to local faster-whisper instead.
-DEEPGRAM_UNSUPPORTED_LANGUAGES: frozenset[str] = frozenset({"ar"})
+# — sessions using these must fall back to local faster-whisper instead. Urdu isn't
+# confirmed rejected, but isn't a Deepgram nova-2 language either — same fallback.
+DEEPGRAM_UNSUPPORTED_LANGUAGES: frozenset[str] = frozenset({"ar", "ur"})
 
 # Slower OpenAI TTS playback (0.25-4.0, default 1.0) for beginner learners in
 # languages where kids need more time to follow along. Not used for languages
@@ -60,7 +62,7 @@ EDGE_TTS_RATE_OVERRIDES: dict[str, str] = {"ar": "-15%", "de": "-12%"}
 # DEEPGRAM_UNSUPPORTED_LANGUAGES above). "base" is fast but weak on accented or
 # imperfect beginner pronunciation; Arabic gets "small" for meaningfully better
 # accuracy at some added CPU latency.
-FASTER_WHISPER_FALLBACK_MODEL: dict[str, str] = {"ar": "small"}
+FASTER_WHISPER_FALLBACK_MODEL: dict[str, str] = {"ar": "small", "ur": "small"}
 FASTER_WHISPER_FALLBACK_DEFAULT = "base"
 
 _LANG_NAME_TO_CODE: dict[str, str] = {v: k for k, v in SUPPORTED_LANGUAGES.items()}
@@ -202,10 +204,21 @@ class CallConfig:
     tts_model: str
     tts_voice: str
     tts_base_url: str | None  # always from VoiceSettings — not overridable per call
+    lesson_mode: str = "vocab"  # "vocab" | "conversation_helper" (Arabic only)
 
     @property
     def is_realtime(self) -> bool:
         return self.voice_mode in REALTIME_MODES
+
+    @property
+    def stt_language(self) -> str:
+        """Language STT should listen for. Normally the target learning language
+        (the child is practicing producing it), but Conversation Helper mode
+        expects the user to ask questions in their OWN native language instead
+        (e.g. "how do I say X in Arabic?"), so STT needs to listen for that."""
+        if self.lesson_mode == "conversation_helper":
+            return self.native_language
+        return self.language
 
     @property
     def tts_label(self) -> str:
@@ -260,6 +273,9 @@ class CallConfig:
         language = raw_lang if raw_lang in SUPPORTED_LANGUAGES else defaults.language
         raw_native = (meta.get("native_language") or "en").strip().lower().split("-")[0]
         native_language = raw_native if raw_native in SUPPORTED_LANGUAGES else "en"
+        lesson_mode = (meta.get("lesson_mode") or "vocab").strip().lower()
+        if lesson_mode not in ("vocab", "conversation_helper"):
+            lesson_mode = "vocab"
         return cls(
             voice_mode=meta.get("voice_mode", defaults.voice_mode).lower(),
             language=language,
@@ -270,4 +286,5 @@ class CallConfig:
             tts_model=meta.get("tts_model") or defaults.tts_model,
             tts_voice=meta.get("tts_voice") or defaults.tts_voice,
             tts_base_url=defaults.tts_base_url,
+            lesson_mode=lesson_mode,
         )

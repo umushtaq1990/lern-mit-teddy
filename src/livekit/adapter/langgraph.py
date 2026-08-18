@@ -15,6 +15,7 @@ References:
 """
 
 from typing import Any, Awaitable, Callable, Optional
+import asyncio
 import base64
 from httpx import HTTPStatusError
 from livekit.agents import llm
@@ -113,6 +114,7 @@ class LangGraphStream(llm.LLMStream):
         # enough to let the frontend tell captions from different turns apart.
         self._turn_id = shortuuid()
         self._spoken_parts: list[str] = []  # accumulates the full reply for translation
+        self._bg_tasks: set[asyncio.Task] = set()  # keeps fire-and-forget tasks alive
 
     @staticmethod
     def _plain_text(content: Any) -> str:
@@ -212,7 +214,13 @@ class LangGraphStream(llm.LLMStream):
                 self._spoken_parts.append(content)
 
         await self._log_turn("assistant", "".join(self._spoken_parts).strip())
-        await self._dispatch_translation(native_language)
+        # Fire-and-forget: the translation is a full extra LLM round trip that
+        # was previously awaited here, delaying every turn just to produce a
+        # silent on-screen caption. Nothing downstream needs it before the turn
+        # can be considered done — the caption arriving a beat later is fine.
+        task = asyncio.create_task(self._dispatch_translation(native_language))
+        self._bg_tasks.add(task)
+        task.add_done_callback(self._bg_tasks.discard)
 
     def _forward(self, msg: BaseMessageChunk | str | None) -> None:
         """Extract content from a stream chunk, forward it to TTS, and keep a
