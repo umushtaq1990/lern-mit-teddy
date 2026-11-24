@@ -1,0 +1,184 @@
+{
+  "title": {
+    "ur": "کلاس 19 — جملہ اسمیہ/فعلیہ، ملکیتی ضمیر اور تنوین، عِندی بمقابلہ لی، مَع کے ساتھ ضمیر، خاندان، تاء التانیث، ممنوع من الصرف، نفی",
+    "en": "Class 19 — Jumla Ismiyya/Fi'liyya, Possessive Pronouns & Tanween, 'Indi vs Li, Ma'a+Pronoun, Family, Ta' al-Ta'nith, Mamnu' min al-Sarf, Negation"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "جملہ اسمیہ اور جملہ فعلیہ",
+        "en": "Jumla Ismiyya and Jumla Fi'liyya"
+      },
+      "arabic_example": "جملة اسمية / جملة فعلية",
+      "sentences": [
+        {
+          "ur": "جو جملہ اسم سے شروع ہو اسے 'جملہ اسمیہ' کہتے ہیں۔",
+          "en": "A sentence that begins with a noun is called a 'jumla ismiyya' (nominal sentence)."
+        },
+        {
+          "ur": "جو جملہ فعل سے شروع ہو اسے 'جملہ فعلیہ' کہتے ہیں۔",
+          "en": "A sentence that begins with a verb is called a 'jumla fi'liyya' (verbal sentence)."
+        },
+        {
+          "ur": "جملہ اسمیہ میں پہلے اسم کو 'مبتدا' اور اس کے بارے میں بتانے والے حصے کو 'خبر' کہتے ہیں۔",
+          "en": "In a nominal sentence, the first noun is called the 'mubtada' (subject), and the part that gives information about it is called the 'khabar' (predicate)."
+        }
+      ],
+      "question": {
+        "ur": "جملہ اسمیہ میں پہلے اسم کو کیا کہتے ہیں؟",
+        "en": "What is the first noun in a nominal sentence called?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ملکیت کی ضمیر لگنے پر تنوین ختم",
+        "en": "Tanween Drops When a Possessive Pronoun Is Attached"
+      },
+      "arabic_example": "كتابي",
+      "sentences": [
+        {
+          "ur": "جب کسی اسم کے ساتھ ملکیت بتانے والی ضمیر لگائی جائے تو اس کی تنوین ختم ہو جاتی ہے۔",
+          "en": "When a possessive pronoun is attached to a noun, its tanween is dropped."
+        },
+        {
+          "ur": "مثال کے طور پر 'كتاب' سے 'كتابي' یعنی 'میری کتاب' بنتا ہے، اور تنوین ہٹ جاتی ہے۔",
+          "en": "For example, 'kitab' becomes 'kitabi', meaning 'my book', and the tanween is removed."
+        }
+      ],
+      "question": {
+        "ur": "'كتابي' کا کیا مطلب ہے؟",
+        "en": "What does 'kitabi' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "عِندی اور لی میں فرق",
+        "en": "The Difference Between 'Indi and Li"
+      },
+      "arabic_example": "عندي / لي",
+      "sentences": [
+        {
+          "ur": "'عِندی' عام طور پر کسی چیز کے پاس ہونے کے لیے استعمال ہوتا ہے، جیسے 'عندي كتاب' یعنی 'میرے پاس کتاب ہے'۔",
+          "en": "''Indi' is generally used for having something, as in ''indi kitab', meaning 'I have a book'."
+        },
+        {
+          "ur": "'لي' زیادہ تر قریبی رشتہ داروں کے لیے استعمال ہوتا ہے، جیسے 'لي أخ' یعنی 'میرا بھائی ہے'۔",
+          "en": "'Li' is mostly used for close relatives, as in 'li akh', meaning 'I have a brother'."
+        }
+      ],
+      "question": {
+        "ur": "قریبی رشتہ داروں کے لیے کون سا لفظ استعمال ہوتا ہے؟",
+        "en": "Which word is used for close relatives?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مَع کے ساتھ ضمیر: مَعَهُ، مَعَهَا",
+        "en": "Pronoun Attached to Ma'a: Ma'ahu, Ma'aha"
+      },
+      "arabic_example": "معه / معها",
+      "sentences": [
+        {
+          "ur": "'معه' کا مطلب ہے 'اس کے ساتھ' (مذکر کے لیے)۔",
+          "en": "'Ma'ahu' means 'with him' (for the masculine)."
+        },
+        {
+          "ur": "'معها' کا مطلب ہے 'اس کے ساتھ' (مؤنث کے لیے)۔",
+          "en": "'Ma'aha' means 'with her' (for the feminine)."
+        }
+      ],
+      "question": {
+        "ur": "'معها' مؤنث کے لیے ہے یا مذکر کے لیے؟",
+        "en": "Is 'ma'aha' for the feminine or the masculine?"
+      }
+    },
+    {
+      "title": {
+        "ur": "خاندان کے الفاظ: بھائی، بہن",
+        "en": "Family Words: Brother, Sister"
+      },
+      "arabic_example": "أخ، أخت",
+      "sentences": [
+        {
+          "ur": "'أخ' بھائی کو کہتے ہیں، اور 'أخت' بہن کو۔",
+          "en": "'Akh' means brother, and 'ukht' means sister."
+        },
+        {
+          "ur": "'أختي' کا مطلب ہے 'میری بہن'۔",
+          "en": "'Ukhti' means 'my sister'."
+        }
+      ],
+      "question": {
+        "ur": "'أخت' کا کیا مطلب ہے؟",
+        "en": "What does 'ukht' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "پیشوں میں تاء التانیث: مدرسة، مدیرہ",
+        "en": "Ta' al-Ta'nith in Professions: Mudarrisa, Mudira"
+      },
+      "arabic_example": "مُدَرِّسة، مُديرة",
+      "sentences": [
+        {
+          "ur": "جب کسی پیشے کے لفظ کے آخر میں 'ة' لگے تو وہ اس پیشے کی خاتون کو ظاہر کرتا ہے۔",
+          "en": "When a 'ta marbuta' (ة) is added to the end of a profession word, it indicates the female holder of that profession."
+        },
+        {
+          "ur": "مثال کے طور پر 'مدرس' استاد (مرد) ہے اور 'مدرسة' استانی (عورت) ہے۔",
+          "en": "For example, 'mudarris' is a (male) teacher and 'mudarrisa' is a (female) teacher."
+        },
+        {
+          "ur": "اسی طرح 'مدير' پرنسیپل (مرد) ہے اور 'مديرة' پرنسیپل (عورت) ہے۔",
+          "en": "Likewise, 'mudir' is a (male) principal and 'mudira' is a (female) principal."
+        }
+      ],
+      "question": {
+        "ur": "پیشے کے لفظ میں 'ة' لگنے کا کیا مطلب ہوتا ہے؟",
+        "en": "What does adding 'ta marbuta' (ة) to a profession word signify?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ممنوع من الصرف: کن ناموں پر تنوین نہیں آتی",
+        "en": "Mamnu' min al-Sarf: Which Names Do Not Take Tanween"
+      },
+      "arabic_example": "ممنوع من الصرف",
+      "sentences": [
+        {
+          "ur": "مذکر جمع کے کچھ نام، معزز القاب، اور تاء پر ختم ہونے والے مؤنث نام تنوین قبول نہیں کرتے۔",
+          "en": "Certain masculine plural names, honorific titles, and feminine names ending in ta marbuta do not take tanween."
+        },
+        {
+          "ur": "ان سب کو 'ممنوع من الصرف' کہا جاتا ہے۔",
+          "en": "All of these are called 'mamnu' min al-sarf' (diptotes)."
+        }
+      ],
+      "question": {
+        "ur": "تاء پر ختم ہونے والے مؤنث نام تنوین قبول کرتے ہیں یا نہیں؟",
+        "en": "Do feminine names ending in ta marbuta take tanween or not?"
+      }
+    },
+    {
+      "title": {
+        "ur": "نفی کرنا: ما عندي",
+        "en": "Negation: Ma 'Indi"
+      },
+      "arabic_example": "ما عندي",
+      "sentences": [
+        {
+          "ur": "'ما عندي' کا مطلب ہے 'میرے پاس نہیں ہے'۔",
+          "en": "'Ma 'indi' means 'I do not have'."
+        },
+        {
+          "ur": "یہ کسی چیز کے نہ ہونے کی نفی کرنے کے لیے استعمال ہوتا ہے، جیسے 'ما عندي سيارة' یعنی 'میرے پاس گاڑی نہیں ہے'۔",
+          "en": "It is used to negate the existence of something, as in 'ma 'indi sayyara', meaning 'I do not have a car'."
+        }
+      ],
+      "question": {
+        "ur": "'ما عندي' کا کیا مطلب ہے؟",
+        "en": "What does 'ma 'indi' mean?"
+      }
+    }
+  ]
+}

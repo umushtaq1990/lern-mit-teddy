@@ -1,0 +1,421 @@
+{
+  "id": "lecture-08",
+  "title": {
+    "ur": "کلاس 8 — اسموں کی حالتیں، مبنی اور معرب، حروف جر، سوالیہ الفاظ",
+    "en": "Class 8 — I'rab States, Mabni vs Mu'rab, Prepositions, Question Words"
+  },
+  "parts": [
+    {
+      "id": "part-1",
+      "arabic_example": "رفع / نصب / جر",
+      "title": {
+        "ur": "اسموں کی حالتیں: رفع، نصب، جر",
+        "en": "Noun States: Raf', Nasb, Jarr"
+      },
+      "question": {
+        "ur": "اسم کی تین حالتیں کون سی ہیں؟",
+        "en": "What are the three states of a noun?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-1.mp3",
+          "sentences": [
+            {
+              "text": "عربی میں اسم تین حالتوں میں سے ایک میں ہو سکتا ہے: رفع، نصب، یا جر",
+              "start": 0.1,
+              "end": 5.0625
+            },
+            {
+              "text": "رفع کی علامت عام طور پر ضمہ ہوتی ہے، نصب کی فتحہ، اور جر کی کسرہ",
+              "start": 5.0125,
+              "end": 10.0875
+            },
+            {
+              "text": "فعل کی حالتیں اسم سے مختلف ہوتی ہیں: فعل جزم یا نصب ہوتا ہے، رفع نہیں",
+              "start": 10.0875,
+              "end": 15.575
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-1-en.mp3",
+          "sentences": [
+            {
+              "text": "In Arabic, a noun can be in one of three states (i'rab): raf' (nominative), nasb (accusative), or jarr (genitive).",
+              "start": 0.1,
+              "end": 8.5875
+            },
+            {
+              "text": "The marker for raf' is usually damma, for nasb it is fatha, and for jarr it is kasra.",
+              "start": 8.5375,
+              "end": 14.5
+            },
+            {
+              "text": "Verbs have different states from nouns: a verb is either jazm or nasb, not raf'.",
+              "start": 14.5,
+              "end": 20.0375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-2",
+      "arabic_example": "مبنی / معرب",
+      "title": {
+        "ur": "مبنی اور معرب الفاظ",
+        "en": "Mabni and Mu'rab Words"
+      },
+      "question": {
+        "ur": "ماضی کا فعل مبنی ہوتا ہے یا معرب؟",
+        "en": "Is the past-tense verb mabni or mu'rab?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-2.mp3",
+          "sentences": [
+            {
+              "text": "کچھ الفاظ 'مبنی' ہوتے ہیں، یعنی ان کا آخری حرف کبھی نہیں بدلتا",
+              "start": 0.1,
+              "end": 4.9125
+            },
+            {
+              "text": "ماضی کے افعال، ضمائر، اشارہ کرنے والے الفاظ، اور حروف سب مبنی ہوتے ہیں",
+              "start": 4.8625,
+              "end": 10.1375
+            },
+            {
+              "text": "اسم فاعل اور فعل مضارع 'معرب' ہوتے ہیں، یعنی ان کا آخری حرف جملے کے مطابق بدلتا ہے",
+              "start": 10.1375,
+              "end": 16.4125
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-2-en.mp3",
+          "sentences": [
+            {
+              "text": "Some words are 'mabni', meaning their last letter never changes.",
+              "start": 0.1,
+              "end": 4.4
+            },
+            {
+              "text": "Past-tense verbs, pronouns, demonstratives, and particles are all mabni.",
+              "start": 4.35,
+              "end": 9.6625
+            },
+            {
+              "text": "The active participle (ism fa'il) and the present-tense verb (fi'l mudari') are 'mu'rab', meaning their last letter changes according to their role in the sentence.",
+              "start": 9.6625,
+              "end": 20.0625
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-3",
+      "arabic_example": "في، على، إلى",
+      "title": {
+        "ur": "حروف جر",
+        "en": "Prepositions (Huruf Jarr)"
+      },
+      "question": {
+        "ur": "جب کوئی حرف جر کسی اسم سے پہلے آئے تو وہ اسم کیا بن جاتا ہے؟",
+        "en": "When a preposition precedes a noun, what does that noun become?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-3.mp3",
+          "sentences": [
+            {
+              "text": "عربی میں سولہ حروف جر ہیں، جیسے 'في' (میں)، 'على' (پر)، اور 'إلى' (کی طرف)",
+              "start": 0.1,
+              "end": 6.475
+            },
+            {
+              "text": "جب کوئی حرف جر کسی اسم سے پہلے آئے تو وہ اسم 'مجرور' بن جاتا ہے",
+              "start": 6.425,
+              "end": 11.3375
+            },
+            {
+              "text": "مجرور اسم عام طور پر کسرہ لیتا ہے",
+              "start": 11.3375,
+              "end": 14.3625
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-3-en.mp3",
+          "sentences": [
+            {
+              "text": "There are sixteen prepositions (huruf jarr) in Arabic, such as 'في' (in), 'على' (on), and 'إلى' (toward).",
+              "start": 0.1,
+              "end": 7.125
+            },
+            {
+              "text": "When a preposition comes before a noun, that noun becomes 'majrur' (in the genitive state).",
+              "start": 7.075,
+              "end": 13.025
+            },
+            {
+              "text": "A majrur noun usually takes kasra.",
+              "start": 13.025,
+              "end": 16.0375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-4",
+      "arabic_example": "ء (ہمزہ)",
+      "title": {
+        "ur": "ہمزة الوصل اور ہمزة القطع",
+        "en": "Hamzat al-Wasl and Hamzat al-Qat'"
+      },
+      "question": {
+        "ur": "ہمزة الوصل درمیان جملے میں بولا جاتا ہے یا خاموش رہتا ہے؟",
+        "en": "Is hamzat al-wasl pronounced in the middle of a sentence, or does it stay silent?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-4.mp3",
+          "sentences": [
+            {
+              "text": "عربی میں دو قسم کے ہمزے ہوتے ہیں: ہمزة الوصل اور ہمزة القطع",
+              "start": 0.1,
+              "end": 4.875
+            },
+            {
+              "text": "ہمزة القطع ہمیشہ بولا جاتا ہے، چاہے جملے کے شروع میں ہو یا درمیان",
+              "start": 4.825,
+              "end": 9.7875
+            },
+            {
+              "text": "ہمزة الوصل صرف جملے کے شروع میں بولا جاتا ہے، درمیان میں خاموش ہو جاتا ہے",
+              "start": 9.7875,
+              "end": 15.25
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-4-en.mp3",
+          "sentences": [
+            {
+              "text": "There are two kinds of hamza in Arabic: hamzat al-wasl and hamzat al-qat'.",
+              "start": 0.1,
+              "end": 5.475
+            },
+            {
+              "text": "Hamzat al-qat' is always pronounced, whether it occurs at the start of a sentence or in the middle.",
+              "start": 5.425,
+              "end": 11.2
+            },
+            {
+              "text": "Hamzat al-wasl is only pronounced at the start of a sentence; in the middle it becomes silent.",
+              "start": 11.2,
+              "end": 17.15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-5",
+      "arabic_example": "أين؟ / ما؟",
+      "title": {
+        "ur": "سوال کرنے کے الفاظ: أين، ما",
+        "en": "Question Words: 'Ayna, Ma"
+      },
+      "question": {
+        "ur": "'أين' کس چیز کے بارے میں سوال پوچھنے کے لیے استعمال ہوتا ہے؟",
+        "en": "What does 'أين' ask about?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-5.mp3",
+          "sentences": [
+            {
+              "text": "أين' کا مطلب ہے 'کہاں' اور یہ جگہ کے بارے میں پوچھنے کے لیے استعمال ہوتا ہے",
+              "start": 0.1,
+              "end": 5.2625
+            },
+            {
+              "text": "ما' کا مطلب ہے 'کیا' اور یہ چیز کے بارے میں پوچھنے کے لیے استعمال ہوتا ہے",
+              "start": 5.2125,
+              "end": 10.3125
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-5-en.mp3",
+          "sentences": [
+            {
+              "text": "means 'where' and is used to ask about a place.",
+              "start": 0.1,
+              "end": 3.4
+            },
+            {
+              "text": "means 'what' and is used to ask about a thing.",
+              "start": 3.35,
+              "end": 6.3875
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-6",
+      "arabic_example": "المدرسة، المسجد، الحمام",
+      "title": {
+        "ur": "جگہوں کے نام",
+        "en": "Names of Places"
+      },
+      "question": {
+        "ur": "'المدرسة' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'المدرسة' mean?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-6.mp3",
+          "sentences": [
+            {
+              "text": "المدرسة' سکول کو کہتے ہیں، اور 'المسجد' مسجد کو",
+              "start": 0.1,
+              "end": 4.15
+            },
+            {
+              "text": "الحمام' باتھ روم کو کہتے ہیں",
+              "start": 4.1,
+              "end": 6.825
+            },
+            {
+              "text": "السوق' بازار کو کہتے ہیں",
+              "start": 6.825,
+              "end": 9.475
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-6-en.mp3",
+          "sentences": [
+            {
+              "text": "means school, and 'المسجد' means mosque.",
+              "start": 0.1,
+              "end": 2.9625
+            },
+            {
+              "text": "means bathroom.",
+              "start": 2.9125,
+              "end": 4.7875
+            },
+            {
+              "text": "means market.",
+              "start": 4.7875,
+              "end": 6.6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-7",
+      "arabic_example": "اليابان، الهند، السعودية",
+      "title": {
+        "ur": "ملکوں کے نام",
+        "en": "Names of Countries"
+      },
+      "question": {
+        "ur": "'الهند' کس ملک کو کہتے ہیں؟",
+        "en": "Which country does 'الهند' refer to?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-7.mp3",
+          "sentences": [
+            {
+              "text": "اليابان' جاپان کو کہتے ہیں، اور 'الهند' انڈیا کو",
+              "start": 0.1,
+              "end": 4.2125
+            },
+            {
+              "text": "السعودية' سعودی عرب کو کہتے ہیں",
+              "start": 4.1625,
+              "end": 7.075
+            },
+            {
+              "text": "الصين' چین کو، اور 'الفلبين' فلپائن کو کہتے ہیں",
+              "start": 7.075,
+              "end": 11.1875
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-7-en.mp3",
+          "sentences": [
+            {
+              "text": "means Japan, and 'الهند' means India.",
+              "start": 0.1,
+              "end": 2.9875
+            },
+            {
+              "text": "means Saudi Arabia.",
+              "start": 2.9375,
+              "end": 5.0875
+            },
+            {
+              "text": "means China, and 'الفلبين' means the Philippines.",
+              "start": 5.0875,
+              "end": 8.3125
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-8",
+      "arabic_example": "المدير، التاجر",
+      "title": {
+        "ur": "پیشوں کے نام: المدير، التاجر",
+        "en": "Names of Professions: Al-Mudir, At-Tajir"
+      },
+      "question": {
+        "ur": "'التاجر' کس شخص کو کہتے ہیں؟",
+        "en": "Who does 'التاجر' refer to?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-08/part-8.mp3",
+          "sentences": [
+            {
+              "text": "المدير' پرنسپل یا منیجر کو کہتے ہیں",
+              "start": 0.1,
+              "end": 3.35
+            },
+            {
+              "text": "التاجر' تاجر یا کاروباری آدمی کو کہتے ہیں",
+              "start": 3.3,
+              "end": 6.8625
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-08/part-8-en.mp3",
+          "sentences": [
+            {
+              "text": "means principal or manager.",
+              "start": 0.1,
+              "end": 2.5625
+            },
+            {
+              "text": "means merchant or businessman.",
+              "start": 2.5125,
+              "end": 4.9875
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

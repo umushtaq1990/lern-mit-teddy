@@ -1,0 +1,79 @@
+{
+  "title": {
+    "ur": "پانچواں سبق — جملہ اسمیہ، تعین (معرفہ/نکرہ)، صفت کی موافقت",
+    "en": "Class 5 — The Nominal Sentence, Definiteness, Adjective Agreement"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "جملہ اسمیہ: مبتدا اور خبر",
+        "en": "The Nominal Sentence: Mubtada and Khabar"
+      },
+      "arabic_example": "جملة إسمية",
+      "sentences": [
+        {
+          "ur": "عربی میں اسمی جملے کے دو بنیادی حصے ہوتے ہیں۔",
+          "en": "A nominal sentence in Arabic has two basic parts."
+        },
+        {
+          "ur": "پہلا حصہ 'مبتدا' کہلاتا ہے، یعنی جس کے بارے میں بات کی جا رہی ہو۔",
+          "en": "The first part is called the 'mubtada' (subject), i.e. the thing being talked about."
+        },
+        {
+          "ur": "دوسرا حصہ 'خبر' کہلاتا ہے، یعنی مبتدا کے بارے میں بتائی گئی بات۔",
+          "en": "The second part is called the 'khabar' (predicate), i.e. what is said about the mubtada."
+        }
+      ],
+      "question": {
+        "ur": "جملہ اسمیہ کے دو بنیادی حصے کون سے ہیں؟",
+        "en": "What are the two basic parts of a nominal sentence?"
+      }
+    },
+    {
+      "title": {
+        "ur": "معرفہ اور نکرہ میں فرق",
+        "en": "The Difference Between Definite (Ma'rifa) and Indefinite (Nakira)"
+      },
+      "arabic_example": "ال / تنوين",
+      "sentences": [
+        {
+          "ur": "اگر کسی اسم کے شروع میں 'ال' لگا ہو تو وہ 'معرفہ' یعنی متعین اسم ہوتا ہے۔",
+          "en": "If a noun has 'al' attached at the start, it is 'ma'rifa', i.e. a definite noun."
+        },
+        {
+          "ur": "اگر اسم کے آخر میں تنوین ہو تو وہ 'نکرہ' یعنی غیر متعین اسم ہوتا ہے۔",
+          "en": "If a noun has tanween at the end, it is 'nakira', i.e. an indefinite noun."
+        },
+        {
+          "ur": "لوگوں کے نام ہمیشہ معرفہ ہوتے ہیں، چاہے ان پر 'ال' نہ بھی لگا ہو۔",
+          "en": "People's names are always definite, even if 'al' is not attached to them."
+        }
+      ],
+      "question": {
+        "ur": "کون سی علامت اسم کو 'معرفہ' بناتی ہے؟",
+        "en": "Which marker makes a noun 'ma'rifa' (definite)?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفت اور موصوف میں مطابقت",
+        "en": "Agreement Between the Adjective and the Noun It Describes"
+      },
+      "arabic_example": "الولد جالس",
+      "sentences": [
+        {
+          "ur": "صفت ہمیشہ اپنے موصوف کے مذکر، مؤنث، واحد، یا جمع ہونے کے مطابق آتی ہے۔",
+          "en": "An adjective always agrees with the noun it describes in being masculine, feminine, singular, or plural."
+        },
+        {
+          "ur": "مثلاً 'الولد جالس' کا مطلب ہے 'لڑکا بیٹھا ہوا ہے'۔",
+          "en": "For example, 'al-waladu jalisun' means 'the boy is sitting'."
+        }
+      ],
+      "question": {
+        "ur": "صفت کس چیز کے مطابق بدلتی ہے؟",
+        "en": "What does an adjective change in agreement with?"
+      }
+    }
+  ]
+}

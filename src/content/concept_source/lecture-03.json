@@ -1,0 +1,121 @@
+{
+  "title": {
+    "ur": "تیسرا سبق — فعل ماضی اور مضارع، مشتق افعال کے معانی",
+    "en": "Class 3 — Past vs Present Verbs, Derived Verb Meanings"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "فعل ماضی اور مضارع",
+        "en": "The Past Verb and the Present Verb"
+      },
+      "arabic_example": "فعل / مضارع",
+      "sentences": [
+        {
+          "ur": "'فعل' سے مراد وہ کام ہے جو ماضی میں ہوا۔",
+          "en": "'fi'l' (here, the past-tense verb) refers to an action that happened in the past."
+        },
+        {
+          "ur": "'مضارع' حال یا مستقبل کے فعل کو کہتے ہیں۔",
+          "en": "'mudari'' refers to a verb in the present or future tense."
+        },
+        {
+          "ur": "یہ دونوں عربی گرامر کی بنیادی اصطلاحات ہیں۔",
+          "en": "Both are fundamental terms in Arabic grammar."
+        }
+      ],
+      "question": {
+        "ur": "'مضارع' کس زمانے کے فعل کے لیے استعمال ہوتا ہے؟",
+        "en": "Which tense does 'mudari'' refer to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "فاعل: ماضی فعل کا کرنے والا",
+        "en": "Fa'il: The Doer of the Past-Tense Verb"
+      },
+      "arabic_example": "فاعل",
+      "sentences": [
+        {
+          "ur": "'فاعل' وہ ہے جو فعل کرتا ہے۔",
+          "en": "The 'fa'il' is the one who performs the action."
+        },
+        {
+          "ur": "ماضی کے فعل میں فاعل کی شناخت فعل کے آخر میں لگنے والی علامت سے ہوتی ہے۔",
+          "en": "In the past-tense verb, the fa'il (subject) is identified by the marker attached at the end of the verb."
+        }
+      ],
+      "question": {
+        "ur": "'فاعل' کسے کہتے ہیں؟",
+        "en": "What is meant by 'fa'il'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "نون نسوہ: مؤنث جمع کی علامت",
+        "en": "Noon Niswah: The Marker for Feminine Plural"
+      },
+      "arabic_example": "نون نسوہ",
+      "sentences": [
+        {
+          "ur": "جب فعل کا تعلق عورتوں کے ایک گروہ سے ہو تو خاص 'نون نسوہ' استعمال ہوتا ہے۔",
+          "en": "When a verb refers to a group of women, the special 'noon niswah' marker is used."
+        },
+        {
+          "ur": "یہ مذکر کی جمع کی علامتوں سے مختلف ہوتا ہے۔",
+          "en": "It is different from the markers used for the masculine plural."
+        }
+      ],
+      "question": {
+        "ur": "'نون نسوہ' کس گروہ کے لیے استعمال ہوتا ہے؟",
+        "en": "Which group is the 'noon niswah' marker used for?"
+      }
+    },
+    {
+      "title": {
+        "ur": "فعل میں حروف بڑھنے سے معنی کی تبدیلی",
+        "en": "How Adding Letters to a Verb Changes Its Meaning"
+      },
+      "arabic_example": "سمع / استماع",
+      "sentences": [
+        {
+          "ur": "'سمع' کا مطلب ہے سننا۔",
+          "en": "'sami'a' means to hear."
+        },
+        {
+          "ur": "جب اس میں اضافی حروف شامل کیے جائیں تو 'استماع' بنتا ہے، یعنی غور سے سننا۔",
+          "en": "When extra letters are added to it, it becomes 'istima'', meaning to listen carefully."
+        },
+        {
+          "ur": "یعنی فعل میں حروف بڑھانے سے معنی میں باریک فرق آ جاتا ہے۔",
+          "en": "So adding letters to a verb produces a subtle change in meaning."
+        }
+      ],
+      "question": {
+        "ur": "'استماع' کا مطلب 'سمع' سے کیسے مختلف ہے؟",
+        "en": "How does the meaning of 'istima'' differ from 'sami'a'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "فعل کے حروف کی تعداد",
+        "en": "The Number of Letters in a Verb"
+      },
+      "arabic_example": null,
+      "sentences": [
+        {
+          "ur": "زیادہ تر عربی افعال تین حروف پر مشتمل ہوتے ہیں۔",
+          "en": "Most Arabic verbs consist of three letters."
+        },
+        {
+          "ur": "کچھ افعال میں حروف بڑھا کر چار یا پانچ حروف کے فعل بھی بنائے جاتے ہیں۔",
+          "en": "In some verbs, extra letters are added to form verbs of four or five letters."
+        }
+      ],
+      "question": {
+        "ur": "زیادہ تر عربی افعال کتنے حروف پر مشتمل ہوتے ہیں؟",
+        "en": "How many letters do most Arabic verbs consist of?"
+      }
+    }
+  ]
+}

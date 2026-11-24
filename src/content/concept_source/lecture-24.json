@@ -1,0 +1,113 @@
+{
+  "title": {
+    "ur": "کلاس ۲۴ — جمع کی اقسام، اسم مقصور، پوشیدہ اعرابی علامتیں",
+    "en": "Class 24 — Types of Plurals, Isim Maqsur, Hidden I'rab Endings"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "جمع کی تین اقسام",
+        "en": "The three types of plural"
+      },
+      "arabic_example": "جمع",
+      "sentences": [
+        {
+          "ur": "عربی میں جمع کی تین بنیادی اقسام ہیں۔",
+          "en": "In Arabic there are three basic types of plural."
+        },
+        {
+          "ur": "ایک 'جمع سالم مذکر'، دوسری 'جمع سالم مؤنث'، اور تیسری 'جمع تکسیر' ہے۔",
+          "en": "They are: the sound masculine plural, the sound feminine plural, and the broken plural."
+        }
+      ],
+      "question": {
+        "ur": "عربی میں جمع کی کتنی اقسام ہیں؟",
+        "en": "How many types of plural are there in Arabic?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جمع تکسیر",
+        "en": "Broken plural (jam' taksir)"
+      },
+      "arabic_example": "جمع تکسیر",
+      "sentences": [
+        {
+          "ur": "'جمع تکسیر' وہ جمع ہے جس میں لفظ کی اصل شکل بدل جاتی ہے۔",
+          "en": "The 'broken plural' is a plural in which the original form of the word changes."
+        },
+        {
+          "ur": "اس کی ساخت سالم جمع سے مختلف ہوتی ہے۔",
+          "en": "Its structure is different from that of the sound plural."
+        }
+      ],
+      "question": {
+        "ur": "جمع تکسیر میں لفظ کی شکل کے ساتھ کیا ہوتا ہے؟",
+        "en": "What happens to the form of the word in a broken plural?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اسم مقصور: الف پر ختم ہونے والا اسم",
+        "en": "Isim maqsur: a noun ending in alif"
+      },
+      "arabic_example": "اسم مقصور",
+      "sentences": [
+        {
+          "ur": "'اسم مقصور' وہ اسم ہے جو الف پر ختم ہوتا ہے، جیسے 'الدنیا'۔",
+          "en": "The 'isim maqsur' is a noun that ends in an alif, such as 'al-dunya'."
+        },
+        {
+          "ur": "چونکہ الف پر حرکت نہیں لگائی جا سکتی، اس لیے اس کی حالت ہمیشہ پوشیدہ (مقدرہ) رہتی ہے۔",
+          "en": "Since a vowel marker cannot be placed on an alif, its case ending is always hidden (estimated/muqaddarah)."
+        }
+      ],
+      "question": {
+        "ur": "'اسم مقصور' کس حرف پر ختم ہوتا ہے؟",
+        "en": "Which letter does the 'isim maqsur' end in?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اسم مقصور کی پوشیدہ حالتیں",
+        "en": "The hidden case endings of isim maqsur"
+      },
+      "arabic_example": "الفتحة المقدرة",
+      "sentences": [
+        {
+          "ur": "اسم مقصور میں رفع، نصب اور جر تینوں حالتیں پوشیدہ ہوتی ہیں۔",
+          "en": "In the isim maqsur, all three case endings — nominative (rafa), accusative (nasb), and genitive (jarr) — are hidden."
+        },
+        {
+          "ur": "یعنی لکھنے میں ان کی کوئی علامت نظر نہیں آتی۔",
+          "en": "That is, no sign of them is visible in writing."
+        }
+      ],
+      "question": {
+        "ur": "اسم مقصور میں کتنی حالتیں پوشیدہ ہوتی ہیں؟",
+        "en": "How many case endings are hidden in the isim maqsur?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مبتدأ ہمیشہ رفع کی حالت میں",
+        "en": "The mubtada is always in the nominative case"
+      },
+      "arabic_example": "المبتدأ",
+      "sentences": [
+        {
+          "ur": "جملہ اسمیہ میں 'مبتدأ' ہمیشہ رفع کی حالت میں ہوتا ہے۔",
+          "en": "In a nominal sentence, the 'mubtada' (subject) is always in the nominative (rafa) case."
+        },
+        {
+          "ur": "یہ واحد، جمع سالم، یا جمع تکسیر کوئی بھی اسم ہو سکتا ہے۔",
+          "en": "It can be any kind of noun — singular, sound plural, or broken plural."
+        }
+      ],
+      "question": {
+        "ur": "جملہ اسمیہ میں مبتدأ کس حالت میں ہوتا ہے؟",
+        "en": "What case is the mubtada in, in a nominal sentence?"
+      }
+    }
+  ]
+}

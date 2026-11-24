@@ -1,0 +1,121 @@
+{
+  "title": {
+    "ur": "ساتواں سبق — اعراب بمقابلہ بناء، اعراب کی چار حالتیں",
+    "en": "Class 7 — I'rab vs Bina, The Four Grammatical States"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "اعراب اور بناء میں فرق",
+        "en": "The Difference Between I'rab and Bina"
+      },
+      "arabic_example": "إعراب / بناء",
+      "sentences": [
+        {
+          "ur": "'اعراب' سے مراد لفظ کے آخر میں وہ تبدیلی ہے جو بیرونی اثر سے ہوتی ہے۔",
+          "en": "'i'rab' refers to the change at the end of a word that is caused by an external factor."
+        },
+        {
+          "ur": "'بناء' سے مراد وہ الفاظ ہیں جن کی آخری شکل ہمیشہ ایک جیسی رہتی ہے۔",
+          "en": "'bina' refers to words whose final form always stays the same."
+        }
+      ],
+      "question": {
+        "ur": "'بناء' لفظ کس خصوصیت کو ظاہر کرتا ہے؟",
+        "en": "What property does the term 'bina' refer to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اعراب کی چار حالتیں",
+        "en": "The Four States of I'rab"
+      },
+      "arabic_example": "الرفع، النصب، الجر، الجزم",
+      "sentences": [
+        {
+          "ur": "عربی میں اعراب کی چار حالتیں ہوتی ہیں۔",
+          "en": "In Arabic, there are four states of i'rab."
+        },
+        {
+          "ur": "یہ ہیں: الرفع، النصب، الجر، اور الجزم۔",
+          "en": "These are: al-raf' (nominative), al-nasb (accusative), al-jarr (genitive), and al-jazm (jussive)."
+        },
+        {
+          "ur": "اسم میں عام طور پر صرف الرفع اور الجر آتے ہیں، جبکہ فعل میں چاروں حالتیں آ سکتی ہیں۔",
+          "en": "Nouns generally only take al-raf' and al-jarr, whereas verbs can take all four states."
+        }
+      ],
+      "question": {
+        "ur": "اسم میں عام طور پر اعراب کی کون سی حالتیں آتی ہیں؟",
+        "en": "Which i'rab states does a noun generally take?"
+      }
+    },
+    {
+      "title": {
+        "ur": "پہلی حالت: مرفوع",
+        "en": "The First State: Marfu'"
+      },
+      "arabic_example": "مرفوع",
+      "sentences": [
+        {
+          "ur": "اسم اور فعل دونوں کی اصل یا ڈیفالٹ حالت 'مرفوع' ہوتی ہے۔",
+          "en": "The original, or default, state of both nouns and verbs is 'marfu'' (nominative)."
+        },
+        {
+          "ur": "کوئی بیرونی سبب، جیسے حرف جر، اس حالت کو بدل سکتا ہے۔",
+          "en": "An external cause, such as a preposition, can change this default state."
+        }
+      ],
+      "question": {
+        "ur": "اسم کی اصل یا ڈیفالٹ حالت کون سی ہے؟",
+        "en": "What is the original, default state of a noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "حروف الجر اسم کو مجرور بناتے ہیں",
+        "en": "Prepositions (Huruf al-Jarr) Put a Noun in the Genitive"
+      },
+      "arabic_example": "حروف الجر",
+      "sentences": [
+        {
+          "ur": "حروف جر، جیسے 'في'، 'على'، اور 'إلى'، اسم کی حالت بدل دیتے ہیں۔",
+          "en": "Prepositions, such as 'fi', 'ala', and 'ila', change the state of a noun."
+        },
+        {
+          "ur": "ان حروف کے بعد آنے والا اسم 'مجرور' حالت میں چلا جاتا ہے۔",
+          "en": "A noun that follows these prepositions goes into the 'majrur' (genitive) state."
+        }
+      ],
+      "question": {
+        "ur": "حروف الجر اسم کو کس حالت میں بدل دیتے ہیں؟",
+        "en": "Into which state do prepositions (huruf al-jarr) put a noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمیشہ ثابت رہنے والے الفاظ: مبنی",
+        "en": "Words That Never Change: Mabni"
+      },
+      "arabic_example": "مبنی",
+      "sentences": [
+        {
+          "ur": "کچھ الفاظ کی آخری شکل کبھی نہیں بدلتی، انہیں 'مبنی' کہتے ہیں۔",
+          "en": "Some words never change their final form; these are called 'mabni'."
+        },
+        {
+          "ur": "تمام حروف، تمام ضمیریں، اور ماضی کے تمام افعال 'مبنی' ہوتے ہیں۔",
+          "en": "All particles, all pronouns, and all past-tense verbs are 'mabni'."
+        },
+        {
+          "ur": "جس لفظ پر 'ال' لگا ہو وہ بھی 'مبنی' کی طرح ثابت شکل اختیار کر لیتا ہے۔",
+          "en": "A word with 'al' attached to it also takes on a fixed form, like a 'mabni' word."
+        }
+      ],
+      "question": {
+        "ur": "کیا تمام ضمیریں 'مبنی' ہوتی ہیں؟",
+        "en": "Are all pronouns 'mabni'?"
+      }
+    }
+  ]
+}

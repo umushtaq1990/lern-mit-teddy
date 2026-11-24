@@ -1,0 +1,117 @@
+{
+  "title": {
+    "ur": "کلاس 11 — اضافت میں تعریف، حروف علت، التقاء الساکنین، نام پکارنا",
+    "en": "Class 11 — Idafah Definiteness, Huruf 'Illah, Talaqqi al-Sakinayn, Calling Names"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "اضافت میں مضاف الیہ کا معرفہ ہونا",
+        "en": "The Mudaf Ilayhi Being Definite in Idafah"
+      },
+      "arabic_example": "مضاف إليه",
+      "sentences": [
+        {
+          "ur": "اگر مضاف الیہ معرفہ ہو تو پوری اضافتی ترکیب بھی معرفہ بن جاتی ہے۔",
+          "en": "If the mudaf ilayhi is definite, the whole idafah construction also becomes definite."
+        },
+        {
+          "ur": "مضاف الیہ کبھی بھی 'ال' کے ساتھ نہیں آتا کیونکہ وہ خود ہی معرفہ بنا دیتا ہے۔",
+          "en": "The mudaf ilayhi never comes with 'ال' because it already makes the construction definite by itself."
+        },
+        {
+          "ur": "مضاف الیہ ہمیشہ مجرور کی حالت میں رہتا ہے۔",
+          "en": "The mudaf ilayhi always remains in the majrur (genitive) state."
+        }
+      ],
+      "question": {
+        "ur": "مضاف الیہ کی اعراب کی حالت ہمیشہ کیا ہوتی ہے؟",
+        "en": "What is the i'rab state of the mudaf ilayhi always?"
+      }
+    },
+    {
+      "title": {
+        "ur": "حروف علت: الف، واو، یاء",
+        "en": "The Weak Letters: Alif, Waw, Ya"
+      },
+      "arabic_example": "ا، و، ي",
+      "sentences": [
+        {
+          "ur": "تین حروف کو 'حروف علت' کہا جاتا ہے: الف، واو، اور یاء۔",
+          "en": "Three letters are called 'huruf 'illah' (weak letters): alif, waw, and ya."
+        },
+        {
+          "ur": "یہ حروف بعض اوقات تلفظ میں آسانی کے لیے گر جاتے ہیں۔",
+          "en": "These letters sometimes drop out to make pronunciation easier."
+        }
+      ],
+      "question": {
+        "ur": "حروف علت کون سے تین حروف ہیں؟",
+        "en": "Which three letters are the huruf 'illah?"
+      }
+    },
+    {
+      "title": {
+        "ur": "التقاء الساکنين کا اصول",
+        "en": "The Rule of Talaqqi al-Sakinayn (Meeting of Two Sakin Letters)"
+      },
+      "arabic_example": "التقاء الساكنين",
+      "sentences": [
+        {
+          "ur": "جب دو ساکن حروف آپس میں ملتے ہیں، تو عام طور پر آخری حرف پر کسرہ لگا دی جاتی ہے۔",
+          "en": "When two sakin (unvowelled) letters meet, a kasra is usually placed on the last letter."
+        },
+        {
+          "ur": "لیکن اگر پہلا ساکن حرف، حروف علت میں سے ہو تو وہ گر جاتا ہے۔",
+          "en": "But if the first sakin letter is one of the huruf 'illah, it drops out instead."
+        }
+      ],
+      "question": {
+        "ur": "اگر پہلا ساکن حرف، حرف علت ہو تو اس کے ساتھ کیا ہوتا ہے؟",
+        "en": "If the first sakin letter is a huruf 'illah, what happens to it?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمزة الوصل کا تلفظ",
+        "en": "The Pronunciation of Hamzat al-Wasl"
+      },
+      "arabic_example": "حمزة الوصل",
+      "sentences": [
+        {
+          "ur": "ہمزة الوصل صرف اس وقت بولا جاتا ہے جب جملہ اس سے شروع ہو۔",
+          "en": "Hamzat al-wasl is only pronounced when the sentence begins with it."
+        },
+        {
+          "ur": "جملے کے درمیان آنے پر یہ خاموش رہتا ہے اور پچھلے لفظ سے جڑ جاتا ہے۔",
+          "en": "When it occurs in the middle of a sentence, it stays silent and merges with the preceding word."
+        }
+      ],
+      "question": {
+        "ur": "ہمزة الوصل کب بولا جاتا ہے؟",
+        "en": "When is hamzat al-wasl pronounced?"
+      }
+    },
+    {
+      "title": {
+        "ur": "کسی کا نام پکارنا",
+        "en": "Calling Out Someone's Name"
+      },
+      "arabic_example": "يَا عَبْدَ اللّهِ",
+      "sentences": [
+        {
+          "ur": "کسی کا نام پکارتے وقت اس نام سے تنوین ختم کر دی جاتی ہے۔",
+          "en": "When calling out someone's name, the tanwin on that name is dropped."
+        },
+        {
+          "ur": "یعنی نام پکارتے وقت وہ ایک خاص انداز میں بولا جاتا ہے۔",
+          "en": "That is, when a name is called out, it is pronounced in a particular special manner."
+        }
+      ],
+      "question": {
+        "ur": "کسی کا نام پکارتے وقت اس سے کیا ختم ہو جاتا ہے؟",
+        "en": "When calling out someone's name, what is dropped from it?"
+      }
+    }
+  ]
+}

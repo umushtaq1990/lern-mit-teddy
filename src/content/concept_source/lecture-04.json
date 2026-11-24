@@ -1,0 +1,92 @@
+{
+  "title": {
+    "ur": "چوتھا سبق — الافعال الخمسہ، فعل کے ساتھ جڑی ضمیریں",
+    "en": "Class 4 — Al-Af'al al-Khamsah, Attached Pronouns on Verbs"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "الافعال الخمسہ: پانچ خاص فعل کی شکلیں",
+        "en": "Al-Af'al al-Khamsah: The Five Special Verb Forms"
+      },
+      "arabic_example": "الافعال الخمسة",
+      "sentences": [
+        {
+          "ur": "مضارع فعل کی کچھ خاص شکلوں کو 'الافعال الخمسہ' کہا جاتا ہے۔",
+          "en": "Certain special forms of the present-tense (mudari') verb are called 'al-af'al al-khamsah' (the five verbs)."
+        },
+        {
+          "ur": "یہ شکلیں تثنیہ اور جمع کے مخاطب اور غائب صیغوں سے متعلق ہیں۔",
+          "en": "These forms relate to the dual and plural, second-person and third-person conjugations."
+        }
+      ],
+      "question": {
+        "ur": "'الافعال الخمسہ' کس قسم کی فعل کی شکلوں کو کہتے ہیں؟",
+        "en": "What kind of verb forms are called 'al-af'al al-khamsah'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "فعل کے ساتھ جڑی ضمیر: رزقنا",
+        "en": "A Pronoun Attached to a Verb: razaqana"
+      },
+      "arabic_example": "رزقنا",
+      "sentences": [
+        {
+          "ur": "بعض اوقات ضمیر فعل کے ساتھ ہی جڑ جاتی ہے۔",
+          "en": "Sometimes a pronoun becomes attached directly to the verb."
+        },
+        {
+          "ur": "'رزقنا' کا مطلب ہے 'اس نے ہمیں رزق دیا'، جہاں 'نا' ضمیر فعل سے جڑی ہوئی ہے۔",
+          "en": "'razaqana' means 'He provided for us', where 'na' is the pronoun attached to the verb."
+        }
+      ],
+      "question": {
+        "ur": "'رزقنا' میں کون سا حصہ ضمیر ہے؟",
+        "en": "Which part of 'razaqana' is the pronoun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "نون النسوۃ: مضارع میں مؤنث جمع کی علامت",
+        "en": "Noon al-Niswah: The Feminine Plural Marker in the Present Tense"
+      },
+      "arabic_example": "نون النسوة",
+      "sentences": [
+        {
+          "ur": "جیسے ماضی میں نون نسوہ آتا ہے، ویسے ہی مضارع فعل میں بھی مؤنث جمع کے لیے خاص علامت آتی ہے۔",
+          "en": "Just as 'noon niswah' appears in the past tense, the present-tense verb also has a special marker for the feminine plural."
+        },
+        {
+          "ur": "اسے 'نون النسوۃ' کہا جاتا ہے۔",
+          "en": "It is called 'noon al-niswah'."
+        }
+      ],
+      "question": {
+        "ur": "مضارع فعل میں مؤنث جمع کی علامت کیا کہلاتی ہے؟",
+        "en": "What is the feminine plural marker called in the present-tense verb?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مضارع فعل کا زمانہ سیاق سے متعین ہوتا ہے",
+        "en": "The Tense of the Present Verb Is Determined by Context"
+      },
+      "arabic_example": "الآن / سوف",
+      "sentences": [
+        {
+          "ur": "مضارع فعل حال اور مستقبل دونوں کے لیے استعمال ہو سکتا ہے۔",
+          "en": "The present-tense (mudari') verb can be used for both the present and the future."
+        },
+        {
+          "ur": "جملے میں موجود الفاظ، جیسے 'الآن' یعنی ابھی، یا 'سوف' یعنی آئندہ، یہ بتاتے ہیں کہ مراد کون سا زمانہ ہے۔",
+          "en": "Words present in the sentence, such as 'al-an' (now) or 'sawfa' (will, in the future), indicate which tense is actually meant."
+        }
+      ],
+      "question": {
+        "ur": "کون سا لفظ ظاہر کرتا ہے کہ فعل کا تعلق مستقبل سے ہے؟",
+        "en": "Which word shows that a verb refers to the future?"
+      }
+    }
+  ]
+}

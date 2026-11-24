@@ -1,0 +1,159 @@
+{
+  "title": {
+    "ur": "کلاس 10 — جملہ اسمیہ اور فعلیہ، لفظ 'اللہ' بطور مضاف الیہ، خاندان کے الفاظ",
+    "en": "Class 10 — Nominal vs Verbal Sentences, Allah as Mudaf Ilayh, Family Vocabulary"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "دو قسم کے جملے: اسمیہ اور فعلیہ",
+        "en": "Two Kinds of Sentences: Nominal and Verbal"
+      },
+      "arabic_example": "جملة اسمية / جملة فعلية",
+      "sentences": [
+        {
+          "ur": "عربی میں جملے کی دو بڑی اقسام ہیں: جملہ اسمیہ اور جملہ فعلیہ۔",
+          "en": "There are two main types of sentences in Arabic: the nominal sentence (jumlah ismiyyah) and the verbal sentence (jumlah fi'liyyah)."
+        },
+        {
+          "ur": "جملہ اسمیہ کسی اسم سے شروع ہوتا ہے، اور جملہ فعلیہ کسی فعل سے۔",
+          "en": "A nominal sentence begins with a noun, while a verbal sentence begins with a verb."
+        }
+      ],
+      "question": {
+        "ur": "جملہ اسمیہ کس چیز سے شروع ہوتا ہے؟",
+        "en": "What does a nominal sentence begin with?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمیشہ مرفوع رہنے والے تین کردار",
+        "en": "The Three Roles That Are Always Marfu'"
+      },
+      "arabic_example": "مبتدأ، خبر، فاعل",
+      "sentences": [
+        {
+          "ur": "جملے میں تین کردار ہمیشہ مرفوع رہتے ہیں: مبتدأ، خبر، اور فاعل۔",
+          "en": "Three roles in a sentence are always marfu' (nominative): the subject (mubtada), the predicate (khabar), and the agent/doer (fa'il)."
+        },
+        {
+          "ur": "مبتدأ جملہ اسمیہ کا موضوع ہوتا ہے، اور خبر اس کے بارے میں خبر دیتا ہے۔",
+          "en": "The mubtada is the topic of a nominal sentence, and the khabar tells us about it."
+        },
+        {
+          "ur": "فاعل وہ ہے جو فعل کرتا ہے۔",
+          "en": "The fa'il is the one who performs the action."
+        }
+      ],
+      "question": {
+        "ur": "جملے میں کون سے تین کردار ہمیشہ مرفوع ہوتے ہیں؟",
+        "en": "Which three roles in a sentence are always marfu'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اضافت میں تنوین اور ال کا حذف",
+        "en": "Dropping Tanwin and 'Al' in Idafah"
+      },
+      "arabic_example": null,
+      "sentences": [
+        {
+          "ur": "جب کوئی اسم اضافت میں مضاف الیہ بنتا ہے، تو مضاف سے تنوین اور 'ال' دونوں ختم ہو جاتے ہیں۔",
+          "en": "When a noun becomes the mudaf ilayhi in an idafah construction, both the tanwin and the 'ال' are dropped from the mudaf."
+        },
+        {
+          "ur": "ایسا اس لیے ہوتا ہے کیونکہ دونوں الفاظ مل کر ایک اکائی بن جاتے ہیں۔",
+          "en": "This happens because the two words together form a single unit."
+        }
+      ],
+      "question": {
+        "ur": "اضافت میں مضاف سے کیا کیا ختم ہو جاتا ہے؟",
+        "en": "In idafah, what is dropped from the mudaf?"
+      }
+    },
+    {
+      "title": {
+        "ur": "لفظ 'اللہ' بطور مضاف الیہ",
+        "en": "The Word 'Allah' as Mudaf Ilayhi"
+      },
+      "arabic_example": "بيت الله، كتاب الله",
+      "sentences": [
+        {
+          "ur": "'بيت الله' اور 'كتاب الله' میں لفظ 'اللہ' دراصل مضاف الیہ ہے۔",
+          "en": "In 'بيت الله' and 'كتاب الله', the word 'اللہ' is actually the mudaf ilayhi."
+        },
+        {
+          "ur": "اس لیے یہ گرامر کے اعتبار سے 'مجرور' کی حالت میں ہے۔",
+          "en": "That is why, grammatically, it is in the 'majrur' (genitive) state."
+        }
+      ],
+      "question": {
+        "ur": "'بيت الله' میں 'اللہ' کس کردار میں ہے؟",
+        "en": "In 'بيت الله', what role does 'اللہ' play?"
+      }
+    },
+    {
+      "title": {
+        "ur": "خاندان کے رشتوں کے نام",
+        "en": "Names of Family Relations"
+      },
+      "arabic_example": "عمّ، عمّة، خال، خالة",
+      "sentences": [
+        {
+          "ur": "'عمّ' باپ کے بھائی یعنی چچا کو کہتے ہیں، اور 'عمّة' باپ کی بہن یعنی پھوپھی کو۔",
+          "en": "'عمّ' means the father's brother, i.e. paternal uncle, and 'عمّة' means the father's sister, i.e. paternal aunt."
+        },
+        {
+          "ur": "'خال' ماں کے بھائی یعنی ماموں کو کہتے ہیں، اور 'خالة' ماں کی بہن یعنی خالہ کو۔",
+          "en": "'خال' means the mother's brother, i.e. maternal uncle, and 'خالة' means the mother's sister, i.e. maternal aunt."
+        }
+      ],
+      "question": {
+        "ur": "'خال' کس رشتے کو کہتے ہیں؟",
+        "en": "Which relation does 'خال' refer to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "رشتہ بتانے کا صحیح طریقہ: خال حامد",
+        "en": "The Correct Way to Express a Relation: Khal Hamid"
+      },
+      "arabic_example": "خال حامد",
+      "sentences": [
+        {
+          "ur": "'حامد کا ماموں' کہنے کے لیے عربی میں 'خال حامد' کہا جاتا ہے۔",
+          "en": "To say 'Hamid's maternal uncle' in Arabic, one says 'خال حامد'."
+        },
+        {
+          "ur": "صرف 'خال' اور 'حامد' کو الگ الگ کہنا صحیح نہیں، اضافت کی ترکیب ضروری ہے۔",
+          "en": "Saying 'خال' and 'حامد' separately is not correct; the idafah construction is necessary."
+        }
+      ],
+      "question": {
+        "ur": "'حامد کا ماموں' کے لیے عربی میں کیا کہیں گے؟",
+        "en": "How would you say 'Hamid's maternal uncle' in Arabic?"
+      }
+    },
+    {
+      "title": {
+        "ur": "فعل لازم اور فعل متعدی",
+        "en": "Intransitive and Transitive Verbs"
+      },
+      "arabic_example": "لازم / متعدی",
+      "sentences": [
+        {
+          "ur": "فعل لازم وہ ہے جسے مفعول یعنی آبجیکٹ کی ضرورت نہیں ہوتی۔",
+          "en": "An intransitive verb (fi'l lazim) is one that does not need an object (maf'ul)."
+        },
+        {
+          "ur": "فعل متعدی وہ ہے جسے اپنا مطلب مکمل کرنے کے لیے ایک مفعول کی ضرورت ہوتی ہے۔",
+          "en": "A transitive verb (fi'l muta'addi) is one that needs an object to complete its meaning."
+        }
+      ],
+      "question": {
+        "ur": "کون سا فعل مفعول کے بغیر مکمل ہوتا ہے: لازم یا متعدی؟",
+        "en": "Which verb is complete without an object: intransitive or transitive?"
+      }
+    }
+  ]
+}

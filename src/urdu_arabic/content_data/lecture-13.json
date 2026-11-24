@@ -1,0 +1,229 @@
+{
+  "id": "lecture-13",
+  "title": {
+    "ur": "کلاس 13 — ہمزة الوصل بمقابلہ ہمزة القطع، تاء مربوطہ، حقیقی اور غیر حقیقی مؤنث اسم",
+    "en": "Class 13 — Hamzat al-Wasl vs Qat', Ta Marbuta, Real vs Abstract Feminine Nouns"
+  },
+  "parts": [
+    {
+      "id": "part-1",
+      "arabic_example": "حمزة الوصل / حمزة القطع",
+      "title": {
+        "ur": "همزة الوصل اور ہمزة القطع میں فرق",
+        "en": "The Difference Between Hamzat al-Wasl and Hamzat al-Qat'"
+      },
+      "question": {
+        "ur": "ہمزة القطع اور ہمزة الوصل میں بنیادی فرق کیا ہے؟",
+        "en": "What is the basic difference between hamzat al-qat' and hamzat al-wasl?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-13/part-1.mp3",
+          "sentences": [
+            {
+              "text": "ہمزة القطع ہمیشہ بولا جاتا ہے، چاہے جملے کے شروع میں ہو یا درمیان",
+              "start": 0.1,
+              "end": 5.0625
+            },
+            {
+              "text": "ہمزة الوصل صرف جملے کے شروع میں بولا جاتا ہے، ورنہ خاموش رہتا ہے",
+              "start": 5.0125,
+              "end": 10.0625
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-13/part-1-en.mp3",
+          "sentences": [
+            {
+              "text": "Hamzat al-qat' is always pronounced, whether it occurs at the start of a sentence or in the middle.",
+              "start": 0.1,
+              "end": 5.875
+            },
+            {
+              "text": "Hamzat al-wasl is only pronounced at the start of a sentence; otherwise it stays silent.",
+              "start": 5.825,
+              "end": 11.6375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-2",
+      "arabic_example": null,
+      "title": {
+        "ur": "ساکن حرف کے بعد ہمزة الوصل کا جڑنا",
+        "en": "Hamzat al-Wasl Merging After a Sakin Letter"
+      },
+      "question": {
+        "ur": "همزة الوصل اگلے لفظ سے کیوں جڑ جاتا ہے؟",
+        "en": "Why does hamzat al-wasl merge with the preceding word?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-13/part-2.mp3",
+          "sentences": [
+            {
+              "text": "جب کوئی لفظ ساکن حرف پر ختم ہو اور اگلا لفظ ہمزة الوصل سے شروع ہو، تو دونوں الفاظ آپس میں جڑ کر پڑھے جاتے ہیں",
+              "start": 0.1,
+              "end": 7.925
+            },
+            {
+              "text": "اس طرح تلفظ میں رکاوٹ نہیں آتی اور الفاظ آسانی سے مل جاتے ہیں",
+              "start": 7.875,
+              "end": 12.7125
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-13/part-2-en.mp3",
+          "sentences": [
+            {
+              "text": "When a word ends in a sakin (unvowelled) letter and the next word begins with hamzat al-wasl, the two words are read joined together.",
+              "start": 0.1,
+              "end": 8.225
+            },
+            {
+              "text": "This way, pronunciation is not interrupted, and the words flow together easily.",
+              "start": 8.175,
+              "end": 13.6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-3",
+      "arabic_example": "ة (تاء مربوطہ)",
+      "title": {
+        "ur": "تاء مربوطہ سے پہلے فتحہ کا اصول",
+        "en": "The Rule of Fatha Before Ta Marbuta"
+      },
+      "question": {
+        "ur": "تاء مربوطہ سے پہلے کون سی حرکت آتی ہے؟",
+        "en": "Which vowel mark comes before ta marbuta?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-13/part-3.mp3",
+          "sentences": [
+            {
+              "text": "تاء مربوطہ' وہ گول تاء ہے جو اکثر مؤنث الفاظ کے آخر میں آتی ہے",
+              "start": 0.1,
+              "end": 5.1125
+            },
+            {
+              "text": "تاء مربوطہ سے پہلے آنے والے حرف پر ہمیشہ فتحہ ہوتا ہے",
+              "start": 5.0625,
+              "end": 9.4
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-13/part-3-en.mp3",
+          "sentences": [
+            {
+              "text": "Ta marbuta' is the rounded ta that often appears at the end of feminine words.",
+              "start": 0.1,
+              "end": 5.125
+            },
+            {
+              "text": "The letter that comes before ta marbuta always carries a fatha.",
+              "start": 5.075,
+              "end": 9.4375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-4",
+      "arabic_example": "مؤنث غير حقيقي",
+      "title": {
+        "ur": "مؤنث حقیقی اور مؤنث غیر حقیقی",
+        "en": "Real Feminine and Abstract (Non-Real) Feminine"
+      },
+      "question": {
+        "ur": "ہفتے کے دنوں کو گرامر میں کیسا مانا جاتا ہے؟",
+        "en": "Grammatically, how are the days of the week treated?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-13/part-4.mp3",
+          "sentences": [
+            {
+              "text": "مؤنث حقیقی' سے مراد کوئی ایسی چیز ہے جو واقعی طور پر مؤنث ہو، جیسے کوئی عورت",
+              "start": 0.1,
+              "end": 5.9
+            },
+            {
+              "text": "مؤنث غیر حقیقی' ایسی تصوراتی چیزوں کو کہتے ہیں جنہیں مؤنث مانا جاتا ہے، جیسے ہفتے کے دن یا گنتی کے نام",
+              "start": 5.85,
+              "end": 13.5
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-13/part-4-en.mp3",
+          "sentences": [
+            {
+              "text": "Real feminine' (mu'annath haqiqi) refers to something that is genuinely feminine, such as a woman.",
+              "start": 0.1,
+              "end": 6.475
+            },
+            {
+              "text": "Abstract feminine' (mu'annath ghayr haqiqi) refers to conceptual things that are treated as feminine, such as the days of the week or the names of numbers.",
+              "start": 6.425,
+              "end": 15.4625
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-5",
+      "arabic_example": "المنديل",
+      "title": {
+        "ur": "تلفظ کی مشق: المنديل",
+        "en": "Pronunciation Practice: Al-Mindil"
+      },
+      "question": {
+        "ur": "'المنديل' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'المنديل' mean?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-13/part-5.mp3",
+          "sentences": [
+            {
+              "text": "المنديل' تولیے کو کہتے ہیں",
+              "start": 0.1,
+              "end": 2.75
+            },
+            {
+              "text": "یہ لفظ ہمزہ اور ساکن حروف کے صحیح تلفظ کی مشق کے طور پر استعمال ہوتا ہے",
+              "start": 2.7,
+              "end": 8.2875
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-13/part-5-en.mp3",
+          "sentences": [
+            {
+              "text": "means towel.",
+              "start": 0.1,
+              "end": 1.8
+            },
+            {
+              "text": "This word is used as practice for correctly pronouncing hamza and sakin letters.",
+              "start": 1.75,
+              "end": 6.9
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

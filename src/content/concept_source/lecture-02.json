@@ -1,0 +1,179 @@
+{
+  "title": {
+    "ur": "دوسرا سبق — قریب اور دور کے اشارے، ضمیروں کی اقسام، نئے الفاظ",
+    "en": "Class 2 — Demonstratives (near/far), Pronoun Categories, New Vocabulary"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "قریب اور دور کی طرف اشارہ: هذا، ذلك",
+        "en": "Pointing Near and Far: hadha, dhalika"
+      },
+      "arabic_example": "هذا / ذلك",
+      "sentences": [
+        {
+          "ur": "قریبی چیز کی طرف اشارہ کرنے کے لیے 'هذا' استعمال ہوتا ہے۔",
+          "en": "'hadha' is used to point to something nearby."
+        },
+        {
+          "ur": "دور کی چیز کی طرف اشارہ کرنے کے لیے 'ذلك' استعمال ہوتا ہے۔",
+          "en": "'dhalika' is used to point to something far away."
+        },
+        {
+          "ur": "مؤنث کے لیے قریب کی چیز کے لیے 'هذه' اور دور کی چیز کے لیے 'تلك' آتا ہے۔",
+          "en": "For feminine nouns, 'hadhihi' is used for something near and 'tilka' for something far."
+        }
+      ],
+      "question": {
+        "ur": "دور کی چیز کی طرف اشارہ کرنے کے لیے کون سا لفظ استعمال ہوگا؟",
+        "en": "Which word is used to point to something far away?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ضمیریں: منفصل اور متصل",
+        "en": "Pronouns: Separate and Attached"
+      },
+      "arabic_example": "منفصل / متصل",
+      "sentences": [
+        {
+          "ur": "عربی میں ضمیریں دو طرح کی ہوتی ہیں۔",
+          "en": "In Arabic, pronouns are of two kinds."
+        },
+        {
+          "ur": "'منفصل' ضمیر الگ لفظ کی صورت میں آتی ہے۔",
+          "en": "A 'munfasil' (separate) pronoun stands as its own independent word."
+        },
+        {
+          "ur": "'متصل' ضمیر کسی اسم یا فعل کے ساتھ جڑی ہوتی ہے۔",
+          "en": "A 'muttasil' (attached) pronoun is joined to a noun or a verb."
+        }
+      ],
+      "question": {
+        "ur": "'متصل' ضمیر کس طرح استعمال ہوتی ہے؟",
+        "en": "How is a 'muttasil' (attached) pronoun used?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ضمیروں کی چودہ شکلیں",
+        "en": "The Fourteen Forms of Pronouns"
+      },
+      "arabic_example": null,
+      "sentences": [
+        {
+          "ur": "عربی میں ضمیریں تین قسم کی ہوتی ہیں: متکلم، حاضر، اور غائب۔",
+          "en": "In Arabic, pronouns fall into three categories: first person (mutakallim), second person (hadir), and third person (gha'ib)."
+        },
+        {
+          "ur": "ہر قسم واحد، تثنیہ، اور جمع کی صورت میں آ سکتی ہے۔",
+          "en": "Each category can appear in singular, dual, and plural forms."
+        },
+        {
+          "ur": "ان سب کو ملا کر کل چودہ بنیادی شکلیں بنتی ہیں۔",
+          "en": "Together, these add up to fourteen basic forms."
+        }
+      ],
+      "question": {
+        "ur": "ضمیروں کی تین بنیادی اقسام کون سی ہیں؟",
+        "en": "What are the three basic categories of pronouns?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مذکر اور مؤنث",
+        "en": "Masculine and Feminine"
+      },
+      "arabic_example": "مذكّر / مؤنث",
+      "sentences": [
+        {
+          "ur": "عربی میں ہر اسم یا تو مذکر ہوتا ہے یا مؤنث۔",
+          "en": "In Arabic, every noun is either masculine or feminine."
+        },
+        {
+          "ur": "'مذکر' کا مطلب ہے مردانہ، اور 'مؤنث' کا مطلب ہے زنانہ۔",
+          "en": "'mudhakkar' means masculine, and 'mu'annath' means feminine."
+        },
+        {
+          "ur": "یہ فرق ضمیروں اور فعل کی شکل پر اثر ڈالتا ہے۔",
+          "en": "This distinction affects the form of pronouns and verbs."
+        }
+      ],
+      "question": {
+        "ur": "'مؤنث' کا کیا مطلب ہے؟",
+        "en": "What does 'mu'annath' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "واحد، تثنیہ، اور جمع",
+        "en": "Singular, Dual, and Plural"
+      },
+      "arabic_example": "واحد / ثنائي / جمع",
+      "sentences": [
+        {
+          "ur": "'واحد' کا مطلب ہے ایک۔",
+          "en": "'wahid' means one (singular)."
+        },
+        {
+          "ur": "'ثنائي' کا مطلب ہے دو، یعنی تثنیہ۔",
+          "en": "'thuna'i' means two, i.e. dual."
+        },
+        {
+          "ur": "'جمع' کا مطلب ہے دو سے زیادہ۔",
+          "en": "'jam'' means more than two (plural)."
+        }
+      ],
+      "question": {
+        "ur": "'ثنائي' کس تعداد کو ظاہر کرتا ہے؟",
+        "en": "What number does 'thuna'i' (dual) represent?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمزۃ الوصل کا تعارف",
+        "en": "Introduction to Hamzat al-Wasl"
+      },
+      "arabic_example": "حمزة",
+      "sentences": [
+        {
+          "ur": "لفظ کے شروع میں آنے والی بعض ہمزے صرف جوڑنے کے لیے ہوتی ہیں۔",
+          "en": "Some hamzas at the start of a word exist only to connect it to what comes before."
+        },
+        {
+          "ur": "ایسی ہمزہ کو 'ہمزۃ الوصل' کہتے ہیں۔",
+          "en": "Such a hamza is called 'hamzat al-wasl' (the connecting hamza)."
+        },
+        {
+          "ur": "یہ جملے کے دوران بولتے وقت اکثر خاموش ہو جاتی ہے۔",
+          "en": "It often becomes silent when spoken in the middle of a sentence."
+        }
+      ],
+      "question": {
+        "ur": "ہمزۃ الوصل جملے کے درمیان بولتے وقت عام طور پر کیسی ہوتی ہے؟",
+        "en": "What typically happens to hamzat al-wasl when spoken in the middle of a sentence?"
+      }
+    },
+    {
+      "title": {
+        "ur": "نئے الفاظ: مدرس، شیخ، لبن",
+        "en": "New Vocabulary: mudarris, shaykh, laban"
+      },
+      "arabic_example": "مدرس، شيخ، لبن",
+      "sentences": [
+        {
+          "ur": "'مدرس' استاد کو کہتے ہیں، اور 'شيخ' بڑے عالم یا بزرگ کو۔",
+          "en": "'mudarris' means teacher, and 'shaykh' refers to a senior scholar or elder."
+        },
+        {
+          "ur": "'لبن' دہی یا گاڑھے دودھ کو کہتے ہیں، جبکہ 'حليب' خالص دودھ کو۔",
+          "en": "'laban' refers to yogurt or thick milk, while 'halib' refers to pure milk."
+        }
+      ],
+      "question": {
+        "ur": "'شيخ' کس کے لیے استعمال ہوتا ہے؟",
+        "en": "Who is the word 'shaykh' used for?"
+      }
+    }
+  ]
+}

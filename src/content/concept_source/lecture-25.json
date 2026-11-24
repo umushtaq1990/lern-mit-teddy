@@ -1,0 +1,92 @@
+{
+  "title": {
+    "ur": "کلاس ۲۵ — جمع سالم مذکر کی اعرابی علامتیں، جمع تکسیر، جمع کے لیے اشارہ کرنے والا لفظ، لمبے/چھوٹے کے الفاظ",
+    "en": "Class 25 — Sound Masculine Plural Endings, Broken Plural, Plural Demonstrative, Tall/Short Vocabulary"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "جمع سالم مذکر کی حالتیں",
+        "en": "The case endings of the sound masculine plural"
+      },
+      "arabic_example": "ـونَ / ـینَ",
+      "sentences": [
+        {
+          "ur": "'جمع سالم مذکر' میں رفع کی حالت میں آخر میں 'ونَ' آتا ہے۔",
+          "en": "In the 'sound masculine plural', the ending '-una' is used in the nominative (rafa) case."
+        },
+        {
+          "ur": "نصب اور جر کی حالت میں آخر میں 'ینَ' آتا ہے۔",
+          "en": "In the accusative (nasb) and genitive (jarr) cases, the ending '-ina' is used."
+        }
+      ],
+      "question": {
+        "ur": "جمع سالم مذکر میں رفع کی علامت کیا ہے؟",
+        "en": "What is the nominative-case ending of the sound masculine plural?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جمع تکسیر کی حالت",
+        "en": "The case endings of the broken plural"
+      },
+      "arabic_example": "جمع تکسیر",
+      "sentences": [
+        {
+          "ur": "جمع تکسیر میں حالتیں واحد اسم کی طرح لگتی ہیں۔",
+          "en": "In the broken plural, the case endings look like those of a singular noun."
+        },
+        {
+          "ur": "لیکن اس کی ساخت سالم جمع سے مختلف ہوتی ہے۔",
+          "en": "But its structure is different from that of the sound plural."
+        }
+      ],
+      "question": {
+        "ur": "جمع تکسیر کی حالتیں کس سے ملتی جلتی ہیں؟",
+        "en": "What do the case endings of the broken plural resemble?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جمع کے لیے اشارہ کرنے والا لفظ: ہؤلاء",
+        "en": "The demonstrative for plural: ha'ula'"
+      },
+      "arabic_example": "هؤلاء",
+      "sentences": [
+        {
+          "ur": "واحد چیز کی طرف اشارہ کرنے کے لیے 'هذا' استعمال ہوتا ہے۔",
+          "en": "To point to a single thing, 'hadha' is used."
+        },
+        {
+          "ur": "جمع (کئی لوگوں یا چیزوں) کی طرف اشارہ کرنے کے لیے 'هؤلاء' استعمال ہوتا ہے۔",
+          "en": "To point to a plural (several people or things), 'ha'ula'' is used."
+        }
+      ],
+      "question": {
+        "ur": "جمع کی طرف اشارہ کرنے کے لیے کون سا لفظ استعمال ہوتا ہے؟",
+        "en": "Which word is used to point to a plural?"
+      }
+    },
+    {
+      "title": {
+        "ur": "قد اور قصر: لمبا اور چھوٹا",
+        "en": "Tall and short: tawil and qasir"
+      },
+      "arabic_example": "طویل / قصیر",
+      "sentences": [
+        {
+          "ur": "'طویل' کا مطلب ہے لمبا۔",
+          "en": "'Tawil' means tall/long."
+        },
+        {
+          "ur": "'قصیر' کا مطلب ہے چھوٹا یا پستہ قد۔",
+          "en": "'Qasir' means short/short in stature."
+        }
+      ],
+      "question": {
+        "ur": "'طویل' کا کیا مطلب ہے؟",
+        "en": "What does 'tawil' mean?"
+      }
+    }
+  ]
+}

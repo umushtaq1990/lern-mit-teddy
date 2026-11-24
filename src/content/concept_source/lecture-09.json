@@ -1,0 +1,146 @@
+{
+  "title": {
+    "ur": "کلاس 9 — اضافت: مضاف اور مضاف الیہ",
+    "en": "Class 9 — Idafah: Mudaf and Mudaf Ilayhi"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "اضافت کا تعارف: مضاف اور مضاف الیہ",
+        "en": "Introduction to Idafah: Mudaf and Mudaf Ilayhi"
+      },
+      "arabic_example": "مضاف / مضاف إليه",
+      "sentences": [
+        {
+          "ur": "جب دو اسم آپس میں جڑ کر ملکیت ظاہر کریں تو اسے 'اضافت' کہتے ہیں۔",
+          "en": "When two nouns are joined together to express possession, this is called 'idafah' (the possessive construction)."
+        },
+        {
+          "ur": "پہلے اسم کو 'مضاف' کہتے ہیں، اور دوسرے اسم کو 'مضاف الیہ' کہتے ہیں۔",
+          "en": "The first noun is called the 'mudaf', and the second noun is called the 'mudaf ilayhi'."
+        },
+        {
+          "ur": "مضاف الیہ دراصل مالک کو ظاہر کرتا ہے۔",
+          "en": "The mudaf ilayhi is actually what expresses the owner."
+        }
+      ],
+      "question": {
+        "ur": "اضافت میں پہلے اسم کو کیا کہتے ہیں؟",
+        "en": "In idafah, what is the first noun called?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مضاف کا پہلا اصول",
+        "en": "The First Rule of the Mudaf"
+      },
+      "arabic_example": null,
+      "sentences": [
+        {
+          "ur": "مضاف کبھی بھی 'ال' کے ساتھ نہیں آتا۔",
+          "en": "The mudaf never takes 'ال' (the definite article)."
+        },
+        {
+          "ur": "مضاف پر تشدید یا تنوین بھی نہیں لگتی۔",
+          "en": "The mudaf also never takes tanwin."
+        }
+      ],
+      "question": {
+        "ur": "کیا مضاف پر 'ال' لگ سکتا ہے؟",
+        "en": "Can the mudaf take 'ال'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مضاف الیہ کا اصول",
+        "en": "The Rule of the Mudaf Ilayhi"
+      },
+      "arabic_example": null,
+      "sentences": [
+        {
+          "ur": "مضاف الیہ ہمیشہ 'مجرور' کی حالت میں ہوتا ہے۔",
+          "en": "The mudaf ilayhi is always in the 'majrur' (genitive) state."
+        },
+        {
+          "ur": "مجرور کی علامت عام طور پر کسرہ ہوتی ہے۔",
+          "en": "The marker of majrur is usually kasra."
+        }
+      ],
+      "question": {
+        "ur": "مضاف الیہ ہمیشہ کس حالت میں ہوتا ہے؟",
+        "en": "What state is the mudaf ilayhi always in?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مضاف کی بدلتی ہوئی اعراب",
+        "en": "The Changing I'rab of the Mudaf"
+      },
+      "arabic_example": "مفتاح السيارة",
+      "sentences": [
+        {
+          "ur": "مضاف کی اعراب جملے میں اس کے کردار کے مطابق بدلتی رہتی ہے۔",
+          "en": "The i'rab (grammatical state) of the mudaf keeps changing according to its role in the sentence."
+        },
+        {
+          "ur": "اگر مضاف جملے کا فاعل ہو تو وہ 'مرفوع' بنے گا۔",
+          "en": "If the mudaf is the subject (fa'il) of the sentence, it will be 'marfu' (nominative)."
+        },
+        {
+          "ur": "اگر مضاف کسی حرف جر کے بعد آئے تو وہ 'مجرور' بنے گا۔",
+          "en": "If the mudaf comes after a preposition, it will be 'majrur' (genitive)."
+        }
+      ],
+      "question": {
+        "ur": "'مفتاح السيارة' میں 'مفتاح' کیا کہلاتا ہے؟",
+        "en": "In 'مفتاح السيارة', what is 'مفتاح' called?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اضافت کی مثالیں",
+        "en": "Examples of Idafah"
+      },
+      "arabic_example": "مفتاح السيارة، باب المسجد",
+      "sentences": [
+        {
+          "ur": "'مفتاح السيارة' کا مطلب ہے 'گاڑی کی چابی'۔",
+          "en": "'مفتاح السيارة' means 'the key of the car'."
+        },
+        {
+          "ur": "'باب المسجد' کا مطلب ہے 'مسجد کا دروازہ'۔",
+          "en": "'باب المسجد' means 'the door of the mosque'."
+        },
+        {
+          "ur": "'قلم محمد' کا مطلب ہے 'محمد کا قلم'۔",
+          "en": "'قلم محمد' means 'Muhammad's pen'."
+        }
+      ],
+      "question": {
+        "ur": "'باب المسجد' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'باب المسجد' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "نام کے ساتھ ندا کا اثر",
+        "en": "The Effect of the Vocative on a Name"
+      },
+      "arabic_example": "یَا",
+      "sentences": [
+        {
+          "ur": "جب کسی نام کو پکارنے کے لیے 'یَا' استعمال کیا جائے تو اس نام سے تنوین ختم ہو جاتی ہے۔",
+          "en": "When 'یَا' is used to call out a name, the tanwin on that name is dropped."
+        },
+        {
+          "ur": "یعنی نام پکارتے وقت وہ خاص طور پر معرفہ کی طرح برتا جاتا ہے۔",
+          "en": "That is, when a name is called out, it is treated specifically as definite."
+        }
+      ],
+      "question": {
+        "ur": "کسی نام کو پکارنے کے لیے کون سا حرف استعمال ہوتا ہے؟",
+        "en": "Which particle is used to call out a name?"
+      }
+    }
+  ]
+}

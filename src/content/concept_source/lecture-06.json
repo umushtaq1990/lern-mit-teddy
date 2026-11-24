@@ -1,0 +1,146 @@
+{
+  "title": {
+    "ur": "چھٹا سبق — حروف شمسیہ و قمریہ، ہمزۃ الوصل بمقابلہ ہمزۃ القطع، الفاظ",
+    "en": "Class 6 — Shamsi/Qamari Letters, Hamzat al-Wasl vs al-Qata', Vocabulary"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "حروف شمسیہ اور قمریہ",
+        "en": "Sun Letters and Moon Letters"
+      },
+      "arabic_example": "الشمس / القمر",
+      "sentences": [
+        {
+          "ur": "عربی حروف دو گروہوں میں تقسیم ہوتے ہیں: شمسی اور قمری۔",
+          "en": "Arabic letters are divided into two groups: sun letters (shamsi) and moon letters (qamari)."
+        },
+        {
+          "ur": "شمسی حروف سے پہلے 'ال' کا 'ل' نہیں بولا جاتا، جیسے 'الشمس'۔",
+          "en": "Before a sun letter, the 'l' of 'al' is not pronounced, as in 'ash-shams'."
+        },
+        {
+          "ur": "قمری حروف سے پہلے 'ال' کا 'ل' صاف بولا جاتا ہے، جیسے 'القمر'۔",
+          "en": "Before a moon letter, the 'l' of 'al' is pronounced clearly, as in 'al-qamar'."
+        }
+      ],
+      "question": {
+        "ur": "'الشمس' میں 'ال' کا 'ل' کیوں نہیں بولا جاتا؟",
+        "en": "Why is the 'l' of 'al' not pronounced in 'ash-shams'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمزۃ الوصل اور ہمزۃ القطع میں فرق",
+        "en": "The Difference Between Hamzat al-Wasl and Hamzat al-Qata'"
+      },
+      "arabic_example": "همزة الوصل / همزة القطع",
+      "sentences": [
+        {
+          "ur": "'ہمزۃ القطع' ہمیشہ بولی جاتی ہے، چاہے جملے میں کہیں بھی ہو۔",
+          "en": "'Hamzat al-qata'' is always pronounced, no matter where it occurs in a sentence."
+        },
+        {
+          "ur": "'ہمزۃ الوصل' صرف جملے کے شروع میں بولی جاتی ہے، درمیان میں خاموش ہو جاتی ہے۔",
+          "en": "'Hamzat al-wasl' is pronounced only at the start of a sentence; it becomes silent in the middle."
+        }
+      ],
+      "question": {
+        "ur": "'ہمزۃ القطع' اور 'ہمزۃ الوصل' میں بنیادی فرق کیا ہے؟",
+        "en": "What is the basic difference between 'hamzat al-qata'' and 'hamzat al-wasl'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "لوگوں کے الفاظ: تاجر، طبیب، مریض",
+        "en": "Words for People: tajir, tabib, marid"
+      },
+      "arabic_example": "التاجر، الطبيب، المريض",
+      "sentences": [
+        {
+          "ur": "'التاجر' کا مطلب ہے تاجر یا کاروباری شخص۔",
+          "en": "'at-tajir' means a merchant or businessman."
+        },
+        {
+          "ur": "'الطبيب' ڈاکٹر کو کہتے ہیں، اور 'المريض' مریض کو۔",
+          "en": "'at-tabib' means doctor, and 'al-marid' means patient."
+        }
+      ],
+      "question": {
+        "ur": "'الطبيب' کس کو کہتے ہیں؟",
+        "en": "Who does 'at-tabib' refer to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفات: غنی، فقیر، طویل، حلو",
+        "en": "Adjectives: ghani, faqir, tawil, hulw"
+      },
+      "arabic_example": "غني، فقير، طويل، الحلو",
+      "sentences": [
+        {
+          "ur": "'غني' کا مطلب ہے امیر، اور 'فقير' کا مطلب ہے غریب۔",
+          "en": "'ghani' means rich, and 'faqir' means poor."
+        },
+        {
+          "ur": "'طويل' لمبے یا اونچے کے لیے استعمال ہوتا ہے۔",
+          "en": "'tawil' is used for something long or tall."
+        },
+        {
+          "ur": "'الحلو' کا مطلب ہے میٹھا، جیسے 'التفاح' یعنی سیب میٹھا ہوتا ہے۔",
+          "en": "'al-hulw' means sweet, as in 'at-tuffah hulw', meaning the apple is sweet."
+        }
+      ],
+      "question": {
+        "ur": "'فقير' کا کیا مطلب ہے؟",
+        "en": "What does 'faqir' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جسم کے اعضا: عین، فم، شفہ",
+        "en": "Body Parts: 'ayn, fam, shafa"
+      },
+      "arabic_example": "العين، الفم، الشفة",
+      "sentences": [
+        {
+          "ur": "'العين' کا مطلب ہے آنکھ، اور بعض اوقات یہ چشمے یا جاسوس کے لیے بھی استعمال ہوتا ہے۔",
+          "en": "'al-'ayn' means eye, and it is sometimes also used for a spring/fountain or a spy."
+        },
+        {
+          "ur": "'الفم' منہ کو کہتے ہیں، اور 'الشفة' ہونٹ کو۔",
+          "en": "'al-fam' means mouth, and 'ash-shafa' means lip."
+        }
+      ],
+      "question": {
+        "ur": "'العين' کے کتنے مختلف معانی ہو سکتے ہیں؟",
+        "en": "How many different meanings can 'al-'ayn' have?"
+      }
+    },
+    {
+      "title": {
+        "ur": "نمازوں کے اوقات کے نام",
+        "en": "Names of the Prayer Times"
+      },
+      "arabic_example": "الفجر، الظهر، العصر، المغرب، العشاء",
+      "sentences": [
+        {
+          "ur": "'الفجر' کا مطلب ہے صبح کی نماز کا وقت۔",
+          "en": "'al-fajr' refers to the time of the dawn prayer."
+        },
+        {
+          "ur": "'الظهر' اور 'العصر' دن کے دو اوقات ہیں۔",
+          "en": "'adh-dhuhr' and 'al-'asr' are two times during the day."
+        },
+        {
+          "ur": "'المغرب' اور 'العشاء' شام اور رات کے اوقات ہیں۔",
+          "en": "'al-maghrib' and 'al-'isha'' are the evening and night times."
+        }
+      ],
+      "question": {
+        "ur": "'الفجر' کس وقت کی نماز کو کہتے ہیں؟",
+        "en": "Which prayer time does 'al-fajr' refer to?"
+      }
+    }
+  ]
+}

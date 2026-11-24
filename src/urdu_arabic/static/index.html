@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>اردو میں عربی سیکھیں</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main id="app">
+    <div id="language-picker" class="row"></div>
+
+    <section id="login-view">
+      <h1>اردو میں عربی سیکھیں</h1>
+      <p>اپنا فون نمبر یا ای میل درج کریں</p>
+      <input id="login-identifier" type="text" placeholder="phone or email">
+      <button id="request-otp-btn">کوڈ بھیجیں</button>
+
+      <div id="otp-box" hidden>
+        <p>کوڈ درج کریں (سرور لاگ میں دیکھیں)</p>
+        <input id="otp-code" type="text" placeholder="123456">
+        <button id="verify-otp-btn">تصدیق کریں</button>
+      </div>
+    </section>
+
+    <section id="lessons-view" hidden>
+      <h2>اسباق</h2>
+      <div id="lessons-list"></div>
+    </section>
+
+    <section id="slide-view" hidden>
+      <button id="back-to-lessons-btn" class="link-btn">&larr; اسباق کی فہرست</button>
+      <p class="progress" id="slide-progress"></p>
+
+      <div id="slide-card">
+        <div id="slide-icon" class="slide-icon"></div>
+        <p class="arabic" id="part-arabic"></p>
+        <h3 id="part-title"></h3>
+
+        <div id="sentence-box">
+          <p id="sentence-text" class="sentence fade"></p>
+        </div>
+
+        <button id="play-btn">&#9654; سنیں</button>
+        <audio id="part-audio"></audio>
+      </div>
+
+      <div id="question-box" hidden>
+        <h3>سوال</h3>
+        <p id="question-text-display"></p>
+        <textarea id="question-answer" placeholder="یہاں اپنا جواب لکھیں..."></textarea>
+        <div class="row">
+          <button id="record-btn">&#127908; ریکارڈ کریں</button>
+          <button id="stop-record-btn" hidden>&#9209; روکیں</button>
+          <button id="submit-answer-btn">جمع کروائیں</button>
+          <button id="skip-btn" class="link-btn">چھوڑ دیں</button>
+        </div>
+        <p id="answer-status"></p>
+        <div id="answer-reveal" hidden>
+          <p id="answer-reveal-text"></p>
+          <audio id="answer-reveal-audio" controls></audio>
+        </div>
+        <button id="next-part-btn" hidden>اگلا تصور &larr;</button>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

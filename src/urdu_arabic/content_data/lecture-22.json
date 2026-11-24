@@ -1,0 +1,249 @@
+{
+  "id": "lecture-22",
+  "title": {
+    "ur": "کلاس ۲۲ — سکول/ہسپتال کے الفاظ، لـ بمقابلہ عند کا دوبارہ جائزہ، اسم موصول کے جملے، دو کے لیے فعل",
+    "en": "Class 22 — School/Hospital Vocabulary, La vs Inda Recap, Relative Clauses, Dual Verbs"
+  },
+  "parts": [
+    {
+      "id": "part-1",
+      "arabic_example": "مدرسة ثانویة / مدرسة متوسطة",
+      "title": {
+        "ur": "سکول اور ہسپتال کے نام",
+        "en": "Names of school and hospital"
+      },
+      "question": {
+        "ur": "'مدرسة ثانویة' کس چیز کو کہتے ہیں؟",
+        "en": "What does 'madrasa thanawiyya' refer to?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-22/part-1.mp3",
+          "sentences": [
+            {
+              "text": "مدرسة ثانویة' کا مطلب ہے ثانوی سکول",
+              "start": 0.1,
+              "end": 3.325
+            },
+            {
+              "text": "مدرسة متوسطة' کا مطلب ہے درمیانے درجے کا سکول",
+              "start": 3.275,
+              "end": 7.275
+            },
+            {
+              "text": "مستشفى الولادة' زچگی کے ہسپتال کو کہتے ہیں",
+              "start": 7.275,
+              "end": 11.15
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-22/part-1-en.mp3",
+          "sentences": [
+            {
+              "text": "Madrasa thanawiyya' means secondary school.",
+              "start": 0.1,
+              "end": 3.5
+            },
+            {
+              "text": "Madrasa mutawassita' means middle school.",
+              "start": 3.45,
+              "end": 6.6875
+            },
+            {
+              "text": "Mustashfa al-wilada' refers to a maternity hospital.",
+              "start": 6.6875,
+              "end": 10.5375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-2",
+      "arabic_example": "لـ / عند",
+      "title": {
+        "ur": "'لـ' اور 'عند' میں مزید فرق",
+        "en": "Further distinction between 'li' and 'inda'"
+      },
+      "question": {
+        "ur": "قریبی رشتوں کے لیے کون سا لفظ استعمال ہوتا ہے؟",
+        "en": "Which word is used for close relatives?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-22/part-2.mp3",
+          "sentences": [
+            {
+              "text": "قریبی رشتوں اور جسمانی حصوں کے لیے 'لـ' استعمال ہوتا ہے",
+              "start": 0.1,
+              "end": 4.175
+            },
+            {
+              "text": "دیگر چیزوں اور ثانوی تعلقات کے لیے 'عند' استعمال ہوتا ہے",
+              "start": 4.125,
+              "end": 8.65
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-22/part-2-en.mp3",
+          "sentences": [
+            {
+              "text": "Li' is used for close relatives and body parts.",
+              "start": 0.1,
+              "end": 3.525
+            },
+            {
+              "text": "Inda' is used for other things and secondary relationships.",
+              "start": 3.475,
+              "end": 7.65
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-3",
+      "arabic_example": "القلم الذی",
+      "title": {
+        "ur": "موصول الفاظ: الذی اور التی",
+        "en": "Relative pronouns: al-ladhi and al-lati"
+      },
+      "question": {
+        "ur": "'الذی' کے بعد کیا آتا ہے؟",
+        "en": "What follows 'al-ladhi'?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-22/part-3.mp3",
+          "sentences": [
+            {
+              "text": "القلم الذی' کا مطلب ہے 'وہ قلم جو...'",
+              "start": 0.1,
+              "end": 3.5
+            },
+            {
+              "text": "الذی' کے بعد ایک مکمل جملہ آتا ہے جو اس کی وضاحت کرتا ہے",
+              "start": 3.45,
+              "end": 8.1375
+            },
+            {
+              "text": "مؤنث کے لیے 'التی' استعمال ہوتا ہے",
+              "start": 8.1375,
+              "end": 11.0875
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-22/part-3-en.mp3",
+          "sentences": [
+            {
+              "text": "Al-qalam al-ladhi' means 'the pen which...",
+              "start": 0.1,
+              "end": 3.225
+            },
+            {
+              "text": "A complete clause follows 'al-ladhi' which describes it (the relative clause).",
+              "start": 3.175,
+              "end": 8.1625
+            },
+            {
+              "text": "Al-lati' is used for the feminine.",
+              "start": 8.1625,
+              "end": 10.7375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-4",
+      "arabic_example": "ذہبا",
+      "title": {
+        "ur": "دو آدمیوں کے لیے فعل کی صورت: ذہبا",
+        "en": "The verb form for two men: dhahaba"
+      },
+      "question": {
+        "ur": "'ذہبا' کس کے لیے استعمال ہوتا ہے؟",
+        "en": "Who is the dual verb form 'dhahaba' used for?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-22/part-4.mp3",
+          "sentences": [
+            {
+              "text": "ذہبا' کا مطلب ہے 'وہ دونوں گئے'",
+              "start": 0.1,
+              "end": 3.1125
+            },
+            {
+              "text": "جب کام کرنے والے دو ہوں تو فعل کی ایک خاص صورت استعمال ہوتی ہے",
+              "start": 3.0625,
+              "end": 7.7125
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-22/part-4-en.mp3",
+          "sentences": [
+            {
+              "text": "Dhahaba' (dual form) means 'the two of them went'.",
+              "start": 0.1,
+              "end": 3.925
+            },
+            {
+              "text": "When there are two doers of an action, a special dual form of the verb is used.",
+              "start": 3.875,
+              "end": 8.625
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-5",
+      "arabic_example": "ذہبوا",
+      "title": {
+        "ur": "جمع مذکر کے لیے فعل: ذہبوا",
+        "en": "The verb for masculine plural: dhahabu"
+      },
+      "question": {
+        "ur": "'ذہبوا' کس کے لیے استعمال ہوتا ہے؟",
+        "en": "Who is the verb form 'dhahabu' used for?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-22/part-5.mp3",
+          "sentences": [
+            {
+              "text": "ذہبوا' کا مطلب ہے 'وہ (مرد) سب گئے'",
+              "start": 0.1,
+              "end": 4.0125
+            },
+            {
+              "text": "یہ فعل کی وہ صورت ہے جب کام کرنے والے ایک سے زیادہ مرد ہوں",
+              "start": 3.9625,
+              "end": 8.35
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-22/part-5-en.mp3",
+          "sentences": [
+            {
+              "text": "Dhahabu' means 'they (all the men) went'.",
+              "start": 0.1,
+              "end": 3.55
+            },
+            {
+              "text": "This is the verb form used when there is more than one male doer of the action.",
+              "start": 3.5,
+              "end": 8.0875
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

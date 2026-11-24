@@ -1,0 +1,184 @@
+{
+  "title": {
+    "ur": "کلاس 16 — اسم کے بعد آنے والی صفت، صفت کے الفاظ، اسم مقصور، ممنوع من الصرف، الذي، ترتیبی نمبر",
+    "en": "Class 16 — Post-Nominal Adjectives, Adjective Vocabulary, Ism Maqsur, Mamnu' min al-Sarf, Alladhi, Ordinals"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "عربی میں صفت اسم کے بعد آتی ہے",
+        "en": "In Arabic, the Adjective Comes After the Noun"
+      },
+      "arabic_example": "هذا التفاح لذيذ",
+      "sentences": [
+        {
+          "ur": "عربی گرامر میں صفت ہمیشہ اس اسم کے بعد آتی ہے جسے وہ بیان کرتی ہے۔",
+          "en": "In Arabic grammar, the adjective always comes after the noun it describes."
+        },
+        {
+          "ur": "مثال کے طور پر 'هذا التفاح لذيذ' یعنی 'یہ سیب لذیذ ہے'، یہاں 'لذیذ' اسم کے بعد آیا۔",
+          "en": "For example, 'hadha at-tuffah ladhidh' means 'this apple is delicious'; here 'ladhidh' comes after the noun."
+        },
+        {
+          "ur": "یہ انگریزی سے مختلف ہے جہاں صفت اسم سے پہلے آتی ہے۔",
+          "en": "This differs from English, where the adjective comes before the noun."
+        }
+      ],
+      "question": {
+        "ur": "عربی میں صفت اسم سے پہلے آتی ہے یا بعد میں؟",
+        "en": "In Arabic, does the adjective come before or after the noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفات: سستا، مہنگا، پرانا، نیا",
+        "en": "Adjectives: Cheap, Expensive, Old, New"
+      },
+      "arabic_example": "رخيص، غالِ، قديم، جديد",
+      "sentences": [
+        {
+          "ur": "'رخيص' سستے کو کہتے ہیں، اور 'غالِ' مہنگے کو۔",
+          "en": "'Rakhis' means cheap, and 'ghali' means expensive."
+        },
+        {
+          "ur": "'قديم' پرانے کو کہتے ہیں، اور 'جديد' نئے کو۔",
+          "en": "'Qadim' means old, and 'jadid' means new."
+        }
+      ],
+      "question": {
+        "ur": "'رخيص' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'rakhis' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفات: محنتی، سست، امیر، غریب",
+        "en": "Adjectives: Hardworking, Lazy, Rich, Poor"
+      },
+      "arabic_example": "مجتهد، كسلان، غني، فقير",
+      "sentences": [
+        {
+          "ur": "'مجتهد' محنتی شخص کو کہتے ہیں، اور 'كسلان' سست شخص کو۔",
+          "en": "'Mujtahid' means a hardworking person, and 'kaslan' means a lazy person."
+        },
+        {
+          "ur": "'غني' امیر کو کہتے ہیں، اور 'فقير' غریب کو۔",
+          "en": "'Ghani' means rich, and 'faqir' means poor."
+        }
+      ],
+      "question": {
+        "ur": "'مجتهد' کس قسم کے شخص کو کہتے ہیں؟",
+        "en": "What kind of person is called 'mujtahid'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "حالت بتانے والی صفات: بھوکا، پیاسا، غصے میں",
+        "en": "State Adjectives: Hungry, Thirsty, Angry"
+      },
+      "arabic_example": "جوعان، عطشان، غضبان",
+      "sentences": [
+        {
+          "ur": "'جوعان' بھوکے کو کہتے ہیں، اور 'عطشان' پیاسے کو۔",
+          "en": "'Jaw'an' means hungry, and 'atshan' means thirsty."
+        },
+        {
+          "ur": "'غضبان' غصے والے کو کہتے ہیں۔",
+          "en": "'Ghadban' means angry."
+        },
+        {
+          "ur": "ایسی صفات عام طور پر تنوین قبول نہیں کرتی۔",
+          "en": "Such adjectives generally do not take tanween."
+        }
+      ],
+      "question": {
+        "ur": "'جوعان' کا کیا مطلب ہے؟",
+        "en": "What does 'jaw'an' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اسم مقصور: ہمزے پر ختم ہونے والے نام",
+        "en": "Ism Maqsur: Names Ending in a Soft Alif"
+      },
+      "arabic_example": "الاسم المقصور",
+      "sentences": [
+        {
+          "ur": "جن اسموں کے آخر میں ہمزہ ہو، خاص طور پر ممالک یا لوگوں کے نام، انہیں 'اسم مقصور' کہتے ہیں۔",
+          "en": "Nouns that end in such a letter, especially names of countries or people, are called 'ism maqsur'."
+        },
+        {
+          "ur": "یہ اسم اپنی خاص ساخت کی وجہ سے تنوین قبول نہیں کرتے۔",
+          "en": "Because of their particular structure, these nouns do not take tanween."
+        }
+      ],
+      "question": {
+        "ur": "اسم مقصور کس چیز پر ختم ہوتا ہے؟",
+        "en": "What does an ism maqsur end in?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ممنوع من الصرف: مؤنث نام",
+        "en": "Mamnu' min al-Sarf: Feminine Names"
+      },
+      "arabic_example": "ممنوع من الصرف",
+      "sentences": [
+        {
+          "ur": "زیادہ تر مؤنث خاص نام بھی تنوین قبول نہیں کرتے، یعنی یہ 'ممنوع من الصرف' ہوتے ہیں۔",
+          "en": "Most feminine proper names also do not take tanween — that is, they are 'mamnu' min al-sarf' (diptote)."
+        },
+        {
+          "ur": "البتہ کچھ مختصر تین حرفی نام جو ساکن نون یا تاء مربوطہ پر ختم ہوں، اس اصول سے مستثنیں ہو سکتے ہیں۔",
+          "en": "However, some short three-letter names ending in a sakin nun or a ta marbuta can be exceptions to this rule."
+        }
+      ],
+      "question": {
+        "ur": "زیادہ تر مؤنث خاص نام کیا قبول نہیں کرتے؟",
+        "en": "What do most feminine proper names not take?"
+      }
+    },
+    {
+      "title": {
+        "ur": "موصولہ لفظ: الذي",
+        "en": "The Relative Pronoun: alladhi"
+      },
+      "arabic_example": "الذي",
+      "sentences": [
+        {
+          "ur": "'الذي' کا استعمال کسی اسم کو اس کی وضاحت کے ساتھ جوڑنے کے لیے ہوتا ہے۔",
+          "en": "'Alladhi' is used to connect a noun to a clause that further describes it."
+        },
+        {
+          "ur": "مثال کے طور پر 'الرجل الذي يُعلّمك' یعنی 'وہ آدمی جو آپ کو پڑھاتا ہے'۔",
+          "en": "For example, 'ar-rajul alladhi yu'allimuka' means 'the man who teaches you'."
+        }
+      ],
+      "question": {
+        "ur": "'الذي' کا کیا کام ہے؟",
+        "en": "What is the function of 'alladhi'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ترتیبی نمبر: پہلا، دوسرا، تیسرا",
+        "en": "Ordinal Numbers: First, Second, Third"
+      },
+      "arabic_example": "الأول، الثاني، الثالث",
+      "sentences": [
+        {
+          "ur": "'الأول' پہلے کو کہتے ہیں، 'الثاني' دوسرے کو، اور 'الثالث' تیسرے کو۔",
+          "en": "'Al-awwal' means first, 'ath-thani' means second, and 'ath-thalith' means third."
+        },
+        {
+          "ur": "یہ شمار کرنے والے نمبروں سے مختلف ہوتے ہیں۔",
+          "en": "These are different from cardinal (counting) numbers."
+        }
+      ],
+      "question": {
+        "ur": "'الأول' کا کیا مطلب ہے؟",
+        "en": "What does 'al-awwal' mean?"
+      }
+    }
+  ]
+}

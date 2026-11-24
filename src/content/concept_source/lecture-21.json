@@ -1,0 +1,163 @@
+{
+  "title": {
+    "ur": "کلاس ۲۱ — ملکیت (لـ بمقابلہ عند)، اسم موصول، حالت بتانے والے الفاظ (بھوکا/سست)، ممنوع من الصرف، گنتی ۱۱ سے ۱۹",
+    "en": "Class 21 — Possession (Li vs Inda), Relative Pronouns, States (Hungry/Lazy), Mamnu min al-Sarf, Numbers 11-19"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "جسمانی اعضاء کی ملکیت: 'لـ'",
+        "en": "Possession of body parts: 'Li'"
+      },
+      "arabic_example": "لـ (ملکیت)",
+      "sentences": [
+        {
+          "ur": "جسم کے وہ اعضاء جو جوڑے میں ہوتے ہیں، جیسے ہاتھ اور آنکھیں، ان کے ساتھ ملکیت ظاہر کرنے کے لیے 'لـ' استعمال ہوتا ہے۔",
+          "en": "For body parts that come in pairs, like hands and eyes, 'li' is used to express possession."
+        },
+        {
+          "ur": "قریبی رشتوں کے ساتھ بھی 'لـ' استعمال ہوتا ہے۔",
+          "en": "'Li' is also used with close relatives."
+        }
+      ],
+      "question": {
+        "ur": "جسمانی اعضاء کی ملکیت ظاہر کرنے کے لیے کون سا لفظ استعمال ہوتا ہے؟",
+        "en": "Which word is used to express possession of body parts?"
+      }
+    },
+    {
+      "title": {
+        "ur": "عام چیزوں کی ملکیت: 'عند'",
+        "en": "Possession of general things: 'Inda'"
+      },
+      "arabic_example": "عند",
+      "sentences": [
+        {
+          "ur": "وہ چیزیں جو ہم سے الگ ہو سکتی ہیں، جیسے گاڑی یا موبائل، ان کی ملکیت ظاہر کرنے کے لیے 'عند' استعمال ہوتا ہے۔",
+          "en": "For things that can be separated from us, like a car or a mobile phone, 'inda' is used to express possession."
+        },
+        {
+          "ur": "یعنی رشتوں اور اعضاء کے لیے 'لـ'، اور عام چیزوں کے لیے 'عند' استعمال ہوتا ہے۔",
+          "en": "In other words, 'li' is used for relatives and body parts, while 'inda' is used for general things."
+        }
+      ],
+      "question": {
+        "ur": "عام چیزوں (جیسے گاڑی) کی ملکیت کے لیے کون سا لفظ استعمال ہوتا ہے؟",
+        "en": "Which word is used for the possession of general things (like a car)?"
+      }
+    },
+    {
+      "title": {
+        "ur": "الذی اور التی: اشارہ کرنے والے الفاظ",
+        "en": "Al-ladhi and al-lati: relative pronouns"
+      },
+      "arabic_example": "الذی / التی",
+      "sentences": [
+        {
+          "ur": "'الذی' مذکر کے لیے استعمال ہوتا ہے، اور اس کا مطلب ہے 'جو'۔",
+          "en": "'Al-ladhi' is used for the masculine, and it means 'who/which/that'."
+        },
+        {
+          "ur": "'التی' مؤنث کے لیے استعمال ہوتا ہے۔",
+          "en": "'Al-lati' is used for the feminine."
+        },
+        {
+          "ur": "یہ الفاظ کسی پہلے بتائی گئی چیز یا شخص کی وضاحت کے لیے استعمال ہوتے ہیں۔",
+          "en": "These words are used to further describe a previously mentioned thing or person."
+        }
+      ],
+      "question": {
+        "ur": "'التی' کس کے لیے استعمال ہوتا ہے: مذکر یا مؤنث؟",
+        "en": "Is 'al-lati' used for the masculine or the feminine?"
+      }
+    },
+    {
+      "title": {
+        "ur": "حالت بتانے والے الفاظ: قسلان، جوعان، عطشان",
+        "en": "Words describing states: kaslan, ju'an, atshan"
+      },
+      "arabic_example": "جوعان / عطشان / قسلان",
+      "sentences": [
+        {
+          "ur": "'جوعان' کا مطلب ہے بھوکا، اور 'عطشان' کا مطلب ہے پیاسا۔",
+          "en": "'Ju'an' means hungry, and 'atshan' means thirsty."
+        },
+        {
+          "ur": "'قسلان' کا مطلب ہے سست۔",
+          "en": "'Kaslan' means lazy."
+        },
+        {
+          "ur": "یہ الفاظ کسی شخص کی وقتی حالت بتاتے ہیں۔",
+          "en": "These words describe a person's temporary state."
+        }
+      ],
+      "question": {
+        "ur": "'عطشان' کا کیا مطلب ہے؟",
+        "en": "What does 'atshan' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ممنوع من الصرف کا تعارف",
+        "en": "Introduction to Mamnu' min al-Sarf"
+      },
+      "arabic_example": "ممنوع من الصرف",
+      "sentences": [
+        {
+          "ur": "کچھ اسم ایسے ہوتے ہیں جن کے آخر میں کبھی تنوین نہیں لگتی۔",
+          "en": "Some nouns are such that tanween is never placed on their ending."
+        },
+        {
+          "ur": "انہیں 'ممنوع من الصرف' کہتے ہیں، جیسے لوگوں کے خاص نام۔",
+          "en": "These are called 'mamnu' min al-sarf' (diptotes), such as proper names of people."
+        }
+      ],
+      "question": {
+        "ur": "'ممنوع من الصرف' اسم کے آخر میں کیا کبھی نہیں لگتا؟",
+        "en": "What is never placed at the end of a 'mamnu' min al-sarf' noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "گیارہ سے انیس تک گنتی",
+        "en": "Numbers from eleven to nineteen"
+      },
+      "arabic_example": "الحادی عشر",
+      "sentences": [
+        {
+          "ur": "'الحادی عشر' کا مطلب ہے گیارہواں۔",
+          "en": "'Al-hadi 'ashar' means eleventh."
+        },
+        {
+          "ur": "گیارہ سے انیس تک کے ہندسے دو الفاظ ملا کر بنتے ہیں۔",
+          "en": "The numbers from eleven to nineteen are formed by combining two words."
+        }
+      ],
+      "question": {
+        "ur": "'الحادی عشر' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'al-hadi 'ashar' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "بھائی اور بہن",
+        "en": "Brother and sister"
+      },
+      "arabic_example": "أخی / أختی",
+      "sentences": [
+        {
+          "ur": "'أخی' کا مطلب ہے میرا بھائی۔",
+          "en": "'Akhi' means my brother."
+        },
+        {
+          "ur": "'أختی' کا مطلب ہے میری بہن۔",
+          "en": "'Ukhti' means my sister."
+        }
+      ],
+      "question": {
+        "ur": "'أختی' کا کیا مطلب ہے؟",
+        "en": "What does 'ukhti' mean?"
+      }
+    }
+  ]
+}

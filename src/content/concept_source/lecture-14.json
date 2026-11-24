@@ -1,0 +1,184 @@
+{
+  "title": {
+    "ur": "کلاس 14 — اعرابی حالتیں، تنوین/اضافت کے اصول، خاص نام، پیشے اور ممالک",
+    "en": "Class 14 — I'rab Cases, Tanween/Idafah Rules, Proper Nouns, Professions & Countries"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "قریب اور دور: هذا، ذلك",
+        "en": "Near and Far: hadha, dhalika"
+      },
+      "arabic_example": "هذا / ذلك",
+      "sentences": [
+        {
+          "ur": "قریب کی چیز کی طرف اشارہ کرنے کے لیے 'هذا' استعمال ہوتا ہے۔",
+          "en": "'Hadha' is used to point to something nearby."
+        },
+        {
+          "ur": "دور کی چیز کی طرف اشارہ کرنے کے لیے 'ذلك' استعمال ہوتا ہے۔",
+          "en": "'Dhalika' is used to point to something far away."
+        },
+        {
+          "ur": "مؤنث کے لیے دور والی چیز کو 'تلك' کہا جاتا ہے۔",
+          "en": "For the feminine, something far away is called 'tilka'."
+        }
+      ],
+      "question": {
+        "ur": "دور کی چیز کی طرف اشارہ کرنے کے لیے کون سا لفظ استعمال ہوتا ہے؟",
+        "en": "Which word is used to point to something far away?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اسم کی تین حالتیں: رفع، نصب، جر",
+        "en": "The Three Cases of a Noun: raf', nasb, jarr"
+      },
+      "arabic_example": "رفع / نصب / جر",
+      "sentences": [
+        {
+          "ur": "عربی میں اسم کی تین بنیادی حالتیں ہوتی ہیں۔",
+          "en": "In Arabic, a noun has three basic grammatical cases."
+        },
+        {
+          "ur": "'رفع' فاعل کی حالت ہے، اور 'نصب' مفعول کی حالت ہے۔",
+          "en": "'Raf'' (nominative) is the case of the subject, and 'nasb' (accusative) is the case of the object."
+        },
+        {
+          "ur": "'جر' وہ حالت ہے جو حرفِ جر کے بعد آتی ہے۔",
+          "en": "'Jarr' (genitive) is the case that follows a preposition."
+        }
+      ],
+      "question": {
+        "ur": "عربی میں اسم کی کتنی بنیادی حالتیں ہوتی ہیں؟",
+        "en": "How many basic cases does a noun have in Arabic?"
+      }
+    },
+    {
+      "title": {
+        "ur": "حرفِ جر کے بعد اسم: مِن الیابان",
+        "en": "A Noun After a Preposition: min al-Yaban"
+      },
+      "arabic_example": "مِن اليابان",
+      "sentences": [
+        {
+          "ur": "جب کوئی اسم حرفِ جر کے بعد آئے تو وہ 'مجرور' بن جاتا ہے۔",
+          "en": "When a noun comes after a preposition, it becomes 'majrur' (in the genitive case)."
+        },
+        {
+          "ur": "مثال کے طور پر 'مِن اليابان' یعنی 'جاپان سے'، اس میں 'اليابان' مجرور ہے کیونکہ یہ 'مِن' کے بعد آیا ہے۔",
+          "en": "For example, 'min al-Yaban' means 'from Japan'; here 'al-Yaban' is majrur because it comes after 'min'."
+        }
+      ],
+      "question": {
+        "ur": "'مِن اليابان' میں 'اليابان' کس حالت میں ہے؟",
+        "en": "In 'min al-Yaban', what case is 'al-Yaban' in?"
+      }
+    },
+    {
+      "title": {
+        "ur": "تنوین اور اضافت کا تعلق",
+        "en": "The Relationship Between Tanween and Idafa"
+      },
+      "arabic_example": "ـٌ / إضافة",
+      "sentences": [
+        {
+          "ur": "جب اسم غیر معرفہ ہو اور رفع کی حالت میں ہو تو اس پر تنوین آتی ہے۔",
+          "en": "When a noun is indefinite and in the raf' (nominative) case, it takes tanween."
+        },
+        {
+          "ur": "لیکن جب کوئی اسم اضافت کا حصہ بن جائے یعنی کسی دوسرے اسم کی طرف مضاف ہو تو اس کی تنوین ختم ہو جاتی ہے۔",
+          "en": "But when a noun becomes part of an idafa (possessive construction) — that is, it is the first term (mudaf) of another noun — its tanween is dropped."
+        }
+      ],
+      "question": {
+        "ur": "اضافت میں پہلے اسم کی تنوین کا کیا ہوتا ہے؟",
+        "en": "In an idafa construction, what happens to the tanween of the first noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "خاص نام اور تنوین",
+        "en": "Proper Nouns and Tanween"
+      },
+      "arabic_example": "محمد، عمر",
+      "sentences": [
+        {
+          "ur": "زیادہ تر خاص نام تنوین قبول نہیں کرتے۔",
+          "en": "Most proper nouns do not take tanween."
+        },
+        {
+          "ur": "مثال کے طور پر 'محمد' اور 'عمر' عام طور پر تنوین کے بغیر لکھے جاتے ہیں۔",
+          "en": "For example, 'Muhammad' and 'Umar' are usually written without tanween."
+        }
+      ],
+      "question": {
+        "ur": "کیا زیادہ تر خاص نام تنوین قبول کرتے ہیں؟",
+        "en": "Do most proper nouns take tanween?"
+      }
+    },
+    {
+      "title": {
+        "ur": "پیشے اور جگہیں",
+        "en": "Professions and Places"
+      },
+      "arabic_example": "طبيب، تاجر، مدرسة، جامعة",
+      "sentences": [
+        {
+          "ur": "'طبيب' ڈاکٹر کو کہتے ہیں، اور 'تاجر' کاروباری شخص کو۔",
+          "en": "'Tabib' means doctor, and 'tajir' means a businessman/trader."
+        },
+        {
+          "ur": "'مدرسة' سکول کو کہتے ہیں، اور 'جامعة' یونیورسٹی کو۔",
+          "en": "'Madrasa' means school, and 'jami'a' means university."
+        }
+      ],
+      "question": {
+        "ur": "'طبيب' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'tabib' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ممالک کے نام",
+        "en": "Names of Countries"
+      },
+      "arabic_example": "اليابان، ألمانيا، إنجلترا",
+      "sentences": [
+        {
+          "ur": "'اليابان' جاپان کو کہتے ہیں۔",
+          "en": "'Al-Yaban' means Japan."
+        },
+        {
+          "ur": "'ألمانيا' جرمنی کو، اور 'إنجلترا' انگلنڈ کو کہتے ہیں۔",
+          "en": "'Almaniya' means Germany, and 'Injiltara' means England."
+        }
+      ],
+      "question": {
+        "ur": "'اليابان' کس ملک کا نام ہے؟",
+        "en": "Which country's name is 'al-Yaban'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جانور اور مؤنث جمع: بقرات",
+        "en": "Animals and the Feminine Plural: baqarat"
+      },
+      "arabic_example": "ناقة، حمار، بقرات",
+      "sentences": [
+        {
+          "ur": "'ناقة' مادہ اونٹنی کو کہتے ہیں، اور 'حمار' گدھے کو۔",
+          "en": "'Naqa' means a female camel, and 'himar' means a donkey."
+        },
+        {
+          "ur": "'بقرات' گائوں کی جمع ہے، جو مؤنث اسم کے آخر میں 'ات' لگا کر بنائی جاتی ہے۔",
+          "en": "'Baqarat' is the plural of 'cows', formed by adding 'at' to the end of the feminine noun."
+        }
+      ],
+      "question": {
+        "ur": "مؤنث اسم کی جمع بنانے کے لیے آخر میں کیا لگایا جاتا ہے؟",
+        "en": "What is added at the end of a feminine noun to form its plural?"
+      }
+    }
+  ]
+}

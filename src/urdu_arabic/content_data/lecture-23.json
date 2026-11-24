@@ -1,0 +1,239 @@
+{
+  "id": "lecture-23",
+  "title": {
+    "ur": "کلاس ۲۳ — اسم موصول کی مطابقت، ضمیر ملکیت کے بعد پوشیدہ کسرہ، مبتدہ/خبر/صفت",
+    "en": "Class 23 — Ism Mawsul Agreement, Hidden Kasra After Possessive Pronoun, Mubtada/Khabar/Sifah"
+  },
+  "parts": [
+    {
+      "id": "part-1",
+      "arabic_example": "الذی / التی",
+      "title": {
+        "ur": "اسم موصول: الذی اور التی",
+        "en": "Ism mawsul: al-ladhi and al-lati"
+      },
+      "question": {
+        "ur": "'اسم موصول' کسے کہتے ہیں؟",
+        "en": "What is called 'ism mawsul'?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-23/part-1.mp3",
+          "sentences": [
+            {
+              "text": "الذی' اور 'التی' جیسے الفاظ کو 'اسم موصول' کہتے ہیں",
+              "start": 0.1,
+              "end": 4.5375
+            },
+            {
+              "text": "الذی' مذکر کے لیے اور 'التی' مؤنث کے لیے استعمال ہوتا ہے",
+              "start": 4.4875,
+              "end": 9.0
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-23/part-1-en.mp3",
+          "sentences": [
+            {
+              "text": "Words like 'al-ladhi' and 'al-lati' are called 'ism mawsul' (relative pronouns).",
+              "start": 0.1,
+              "end": 5.3875
+            },
+            {
+              "text": "Al-ladhi' is used for the masculine and 'al-lati' for the feminine.",
+              "start": 5.3375,
+              "end": 9.5375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-2",
+      "arabic_example": "اسم موصول",
+      "title": {
+        "ur": "اسم موصول کی چار شرطیں",
+        "en": "The four conditions of agreement for ism mawsul"
+      },
+      "question": {
+        "ur": "اسم موصول کو کتنی باتوں میں مطابقت رکھنی ہوتی ہے؟",
+        "en": "In how many respects must the ism mawsul agree with its antecedent?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-23/part-2.mp3",
+          "sentences": [
+            {
+              "text": "اسم موصول کو اپنے سے پہلے آنے والے اسم کے ساتھ چار باتوں میں مطابقت رکھنی ہوتی ہے",
+              "start": 0.1,
+              "end": 5.925
+            },
+            {
+              "text": "یہ چار باتیں ہیں: جنس، تعداد، حالت، اور معرفہ ہونا",
+              "start": 5.875,
+              "end": 10.225
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-23/part-2-en.mp3",
+          "sentences": [
+            {
+              "text": "The ism mawsul must agree with the noun that precedes it (its antecedent) in four respects.",
+              "start": 0.1,
+              "end": 6.1875
+            },
+            {
+              "text": "These four respects are: gender, number, case, and being definite.",
+              "start": 6.1375,
+              "end": 11.3125
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-3",
+      "arabic_example": "صلہ",
+      "title": {
+        "ur": "اسم موصول کے بعد جملہ (صلہ)",
+        "en": "The clause after ism mawsul (silah)"
+      },
+      "question": {
+        "ur": "اسم موصول کے بعد آنے والے جملے کو کیا کہتے ہیں؟",
+        "en": "What is the clause that follows the ism mawsul called?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-23/part-3.mp3",
+          "sentences": [
+            {
+              "text": "اسم موصول اکیلے مکمل معنی نہیں دیتا",
+              "start": 0.1,
+              "end": 3.35
+            },
+            {
+              "text": "اس کے بعد ایک جملہ آتا ہے جسے 'صلہ' کہتے ہیں، جو اس کا مطلب مکمل کرتا ہے",
+              "start": 3.3,
+              "end": 9.025
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-23/part-3-en.mp3",
+          "sentences": [
+            {
+              "text": "The ism mawsul does not give complete meaning on its own.",
+              "start": 0.1,
+              "end": 3.8125
+            },
+            {
+              "text": "It is followed by a clause called the 'silah' (relative clause), which completes its meaning.",
+              "start": 3.7625,
+              "end": 9.325
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-4",
+      "arabic_example": "حقیبتی",
+      "title": {
+        "ur": "مضاف الیہ کے بعد پوشیدہ کسرہ",
+        "en": "The hidden kasra after a possessive pronoun"
+      },
+      "question": {
+        "ur": "مضاف الیہ کے بعد پوشیدہ کسرہ کی ایک مثال کیا ہے؟",
+        "en": "What is an example of the hidden kasra after a possessive pronoun?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-23/part-4.mp3",
+          "sentences": [
+            {
+              "text": "جب کسی اسم کے ساتھ ملکیت ظاہر کرنے والا ضمیر لگایا جاتا ہے تو کسرہ نظر نہیں آتا",
+              "start": 0.1,
+              "end": 6.3875
+            },
+            {
+              "text": "جیسے 'حقیبتی' یعنی میرا بیگ",
+              "start": 6.3375,
+              "end": 9.2375
+            },
+            {
+              "text": "یہ کسرہ لکھا نہیں جاتا لیکن گرامر کے لحاظ سے موجود سمجھا جاتا ہے",
+              "start": 9.2375,
+              "end": 14.0625
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-23/part-4-en.mp3",
+          "sentences": [
+            {
+              "text": "When a possessive pronoun is attached to a noun, the kasra is not visible.",
+              "start": 0.1,
+              "end": 5.075
+            },
+            {
+              "text": "For example, 'haqibati', meaning 'my bag'.",
+              "start": 5.025,
+              "end": 8.575
+            },
+            {
+              "text": "This kasra is not written, but it is grammatically considered to be present (an implied/hidden case marker).",
+              "start": 8.575,
+              "end": 15.5625
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-5",
+      "arabic_example": "مبتدہ / خبر / صفت",
+      "title": {
+        "ur": "مبتدہ، خبر اور صفت",
+        "en": "Mubtada, khabar, and sifah"
+      },
+      "question": {
+        "ur": "'صفت' کس کام آتی ہے؟",
+        "en": "What is the function of the 'sifah'?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-23/part-5.mp3",
+          "sentences": [
+            {
+              "text": "جملہ اسمیہ میں مبتدہ اور خبر کے علاوہ 'صفت' بھی شامل ہو سکتی ہے",
+              "start": 0.1,
+              "end": 5.1375
+            },
+            {
+              "text": "صفت کسی اسم کی اضافی تفصیل بتاتی ہے",
+              "start": 5.0875,
+              "end": 8.6
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-23/part-5-en.mp3",
+          "sentences": [
+            {
+              "text": "In a nominal sentence, besides the mubtada (subject) and khabar (predicate), a 'sifah' (adjective) can also be included.",
+              "start": 0.1,
+              "end": 8.575
+            },
+            {
+              "text": "The sifah gives additional detail about a noun.",
+              "start": 8.525,
+              "end": 11.8625
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

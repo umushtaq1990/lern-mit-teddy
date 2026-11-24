@@ -1,0 +1,121 @@
+{
+  "title": {
+    "ur": "کلاس ۲۲ — سکول/ہسپتال کے الفاظ، لـ بمقابلہ عند کا دوبارہ جائزہ، اسم موصول کے جملے، دو کے لیے فعل",
+    "en": "Class 22 — School/Hospital Vocabulary, La vs Inda Recap, Relative Clauses, Dual Verbs"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "سکول اور ہسپتال کے نام",
+        "en": "Names of school and hospital"
+      },
+      "arabic_example": "مدرسة ثانویة / مدرسة متوسطة",
+      "sentences": [
+        {
+          "ur": "'مدرسة ثانویة' کا مطلب ہے ثانوی سکول۔",
+          "en": "'Madrasa thanawiyya' means secondary school."
+        },
+        {
+          "ur": "'مدرسة متوسطة' کا مطلب ہے درمیانے درجے کا سکول۔",
+          "en": "'Madrasa mutawassita' means middle school."
+        },
+        {
+          "ur": "'مستشفى الولادة' زچگی کے ہسپتال کو کہتے ہیں۔",
+          "en": "'Mustashfa al-wilada' refers to a maternity hospital."
+        }
+      ],
+      "question": {
+        "ur": "'مدرسة ثانویة' کس چیز کو کہتے ہیں؟",
+        "en": "What does 'madrasa thanawiyya' refer to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "'لـ' اور 'عند' میں مزید فرق",
+        "en": "Further distinction between 'li' and 'inda'"
+      },
+      "arabic_example": "لـ / عند",
+      "sentences": [
+        {
+          "ur": "قریبی رشتوں اور جسمانی حصوں کے لیے 'لـ' استعمال ہوتا ہے۔",
+          "en": "'Li' is used for close relatives and body parts."
+        },
+        {
+          "ur": "دیگر چیزوں اور ثانوی تعلقات کے لیے 'عند' استعمال ہوتا ہے۔",
+          "en": "'Inda' is used for other things and secondary relationships."
+        }
+      ],
+      "question": {
+        "ur": "قریبی رشتوں کے لیے کون سا لفظ استعمال ہوتا ہے؟",
+        "en": "Which word is used for close relatives?"
+      }
+    },
+    {
+      "title": {
+        "ur": "موصول الفاظ: الذی اور التی",
+        "en": "Relative pronouns: al-ladhi and al-lati"
+      },
+      "arabic_example": "القلم الذی",
+      "sentences": [
+        {
+          "ur": "'القلم الذی' کا مطلب ہے 'وہ قلم جو...'۔",
+          "en": "'Al-qalam al-ladhi' means 'the pen which...'."
+        },
+        {
+          "ur": "'الذی' کے بعد ایک مکمل جملہ آتا ہے جو اس کی وضاحت کرتا ہے۔",
+          "en": "A complete clause follows 'al-ladhi' which describes it (the relative clause)."
+        },
+        {
+          "ur": "مؤنث کے لیے 'التی' استعمال ہوتا ہے۔",
+          "en": "'Al-lati' is used for the feminine."
+        }
+      ],
+      "question": {
+        "ur": "'الذی' کے بعد کیا آتا ہے؟",
+        "en": "What follows 'al-ladhi'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "دو آدمیوں کے لیے فعل کی صورت: ذہبا",
+        "en": "The verb form for two men: dhahaba"
+      },
+      "arabic_example": "ذہبا",
+      "sentences": [
+        {
+          "ur": "'ذہبا' کا مطلب ہے 'وہ دونوں گئے'۔",
+          "en": "'Dhahaba' (dual form) means 'the two of them went'."
+        },
+        {
+          "ur": "جب کام کرنے والے دو ہوں تو فعل کی ایک خاص صورت استعمال ہوتی ہے۔",
+          "en": "When there are two doers of an action, a special dual form of the verb is used."
+        }
+      ],
+      "question": {
+        "ur": "'ذہبا' کس کے لیے استعمال ہوتا ہے؟",
+        "en": "Who is the dual verb form 'dhahaba' used for?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جمع مذکر کے لیے فعل: ذہبوا",
+        "en": "The verb for masculine plural: dhahabu"
+      },
+      "arabic_example": "ذہبوا",
+      "sentences": [
+        {
+          "ur": "'ذہبوا' کا مطلب ہے 'وہ (مرد) سب گئے'۔",
+          "en": "'Dhahabu' means 'they (all the men) went'."
+        },
+        {
+          "ur": "یہ فعل کی وہ صورت ہے جب کام کرنے والے ایک سے زیادہ مرد ہوں۔",
+          "en": "This is the verb form used when there is more than one male doer of the action."
+        }
+      ],
+      "question": {
+        "ur": "'ذہبوا' کس کے لیے استعمال ہوتا ہے؟",
+        "en": "Who is the verb form 'dhahabu' used for?"
+      }
+    }
+  ]
+}

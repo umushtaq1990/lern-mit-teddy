@@ -1,0 +1,208 @@
+{
+  "title": {
+    "ur": "پہلا سبق — نحو اور صرف کا فرق، بنیادی الفاظ",
+    "en": "Class 1 — Course Introduction, Nahw vs Sarf, Basic Vocabulary"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "نحو اور صرف میں فرق",
+        "en": "The Difference Between Nahw and Sarf"
+      },
+      "arabic_example": "نحو / صرف",
+      "sentences": [
+        {
+          "ur": "عربی گرامر کی دو بڑی شاخیں ہیں: نحو اور صرف۔",
+          "en": "Arabic grammar has two major branches: nahw (syntax) and sarf (morphology)."
+        },
+        {
+          "ur": "نحو الفاظ کے آخر اور جملے کی ساخت کا مطالعہ ہ۔",
+          "en": "Nahw is the study of word endings and sentence structure."
+        },
+        {
+          "ur": "صرف فعل کی تصریف اور الفاظ کی ساخت کا مطالعہ ہ۔",
+          "en": "Sarf is the study of verb conjugation and word formation."
+        }
+      ],
+      "question": {
+        "ur": "نحو کس چیز کا مطالعہ کرتا ہے؟",
+        "en": "What does nahw study?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اشارہ کرنے والے الفاظ: هذا، هذه",
+        "en": "Demonstrative Words: hadha, hadhihi"
+      },
+      "arabic_example": "هذا / هذه",
+      "sentences": [
+        {
+          "ur": "کسی قریبی چیز کی طرف اشارہ کرنے کے لیے عربی میں دو الفاظ استعمال ہوتے ہیں۔",
+          "en": "Arabic uses two words to point to something nearby."
+        },
+        {
+          "ur": "مذکر کے لیے 'هذا' کہتے ہیں، جیسے 'هذا كتاب' یعنی یہ ایک کتاب ہے۔",
+          "en": "For masculine nouns, 'hadha' is used, as in 'hadha kitab', meaning 'this is a book'."
+        },
+        {
+          "ur": "مؤنث کے لیے 'هذه' کہتے ہیں، جیسے 'هذه مدرسة' یعنی یہ ایک سکول ہے۔",
+          "en": "For feminine nouns, 'hadhihi' is used, as in 'hadhihi madrasa', meaning 'this is a school'."
+        }
+      ],
+      "question": {
+        "ur": "ایک مذکر چیز کی طرف اشارہ کرنے کے لیے کون سا لفظ استعمال ہوگا؟",
+        "en": "Which word is used to point to a masculine object?"
+      }
+    },
+    {
+      "title": {
+        "ur": "سوال پوچھنا: ما هذا؟",
+        "en": "Asking a Question: ma hadha?"
+      },
+      "arabic_example": "ما هذا؟",
+      "sentences": [
+        {
+          "ur": "'ما هذا؟' کا مطلب ہے 'یہ کیا ہے؟'۔",
+          "en": "'ma hadha?' means 'what is this?'."
+        },
+        {
+          "ur": "یہ سوال کسی نامعلوم چیز کے بارے میں پوچھنے کے لیے استعمال ہوتا ہے۔",
+          "en": "This question is used to ask about something unknown."
+        },
+        {
+          "ur": "اس کا جواب 'هذا...' سے شروع ہو کر چیز کا نام بتا کر دیا جاتا ہے۔",
+          "en": "The answer is given by starting with 'hadha...' followed by the name of the thing."
+        }
+      ],
+      "question": {
+        "ur": "'ما هذا؟' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'ma hadha?' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہاں اور نہیں: نعم، لا",
+        "en": "Yes and No: na'am, la"
+      },
+      "arabic_example": "نعم / لا",
+      "sentences": [
+        {
+          "ur": "عربی میں 'ہاں' کہنے کے لیے 'نعم' استعمال ہوتا ہے۔",
+          "en": "In Arabic, 'na'am' is used to say 'yes'."
+        },
+        {
+          "ur": "'نہیں' کہنے کے لیے 'لا' استعمال ہوتا ہے۔",
+          "en": "'la' is used to say 'no'."
+        },
+        {
+          "ur": "یہ الفاظ ہاں یا نہیں میں جواب دینے والے سوالوں کے جواب میں استعمال ہوتے ہیں۔",
+          "en": "These words are used to answer yes/no questions."
+        }
+      ],
+      "question": {
+        "ur": "عربی میں 'نہیں' کس لفظ سے کہا جاتا ہے؟",
+        "en": "Which word means 'no' in Arabic?"
+      }
+    },
+    {
+      "title": {
+        "ur": "گھر کی چیزوں کے نام",
+        "en": "Names of Household Items"
+      },
+      "arabic_example": "منزل، مفتاح، كتاب",
+      "sentences": [
+        {
+          "ur": "'منزل' کا مطلب ہے گھر، اور 'مسجد' کا مطلب ہے مسجد۔",
+          "en": "'manzil' means house, and 'masjid' means mosque."
+        },
+        {
+          "ur": "'مفتاح' چابی کو کہتے ہیں، اور 'باب' دروازے کو۔",
+          "en": "'miftah' means key, and 'bab' means door."
+        },
+        {
+          "ur": "'كتاب' کتاب ہے، 'قلم' قلم ہے، اور 'كرسي' کرسی کو کہتے ہیں۔",
+          "en": "'kitab' is book, 'qalam' is pen, and 'kursi' means chair."
+        }
+      ],
+      "question": {
+        "ur": "'مفتاح' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'miftah' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جانوروں کے نام",
+        "en": "Names of Animals"
+      },
+      "arabic_example": "جمل، كلب، حصان، حمار",
+      "sentences": [
+        {
+          "ur": "'جمل' اونٹ کو کہتے ہیں۔",
+          "en": "'jamal' means camel."
+        },
+        {
+          "ur": "'كلب' کتے کو، اور 'حصان' گھوڑے کو کہتے ہیں۔",
+          "en": "'kalb' means dog, and 'hisan' means horse."
+        },
+        {
+          "ur": "'حمار' گدھے کو کہتے ہیں۔",
+          "en": "'himar' means donkey."
+        }
+      ],
+      "question": {
+        "ur": "'جمل' کس جانور کو کہتے ہیں؟",
+        "en": "Which animal does 'jamal' refer to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "لوگوں کے نام: مدرّس، طالب، رجل",
+        "en": "Words for People: mudarris, talib, rajul"
+      },
+      "arabic_example": "مدرّس، طالب، رجل",
+      "sentences": [
+        {
+          "ur": "'مدرّس' استاد کو کہتے ہیں، اور 'طالب' طالب علم کو۔",
+          "en": "'mudarris' means teacher, and 'talib' means student."
+        },
+        {
+          "ur": "'رجل' ایک بالغ مرد کے لیے استعمال ہوتا ہے۔",
+          "en": "'rajul' is used for an adult man."
+        },
+        {
+          "ur": "ایک چھوٹے لڑکے کے لیے الگ لفظ 'ولد' استعمال ہوتا ہے، 'رجل' نہیں۔",
+          "en": "A separate word, 'walad', is used for a young boy, not 'rajul'."
+        }
+      ],
+      "question": {
+        "ur": "'رجل' کس کے لیے استعمال ہوتا ہے: لڑکے کے لیے یا بالغ مرد کے لیے؟",
+        "en": "Is 'rajul' used for a boy or for an adult man?"
+      }
+    },
+    {
+      "title": {
+        "ur": "تنوین: بولنے اور لکھنے میں فرق",
+        "en": "Tanween: The Difference Between Speech and Writing"
+      },
+      "arabic_example": "ـٌ (تنوین)",
+      "sentences": [
+        {
+          "ur": "لکھی ہوئی کلاسیکی عربی میں غیر معرفہ اسم کے آخر میں تنوین کی آواز آتی ہے۔",
+          "en": "In written classical Arabic, an indefinite noun carries the tanween sound at the end."
+        },
+        {
+          "ur": "بول چال کی عربی میں اکثر رک کر بات کرتے وقت یہ آواز چھوڑ دی جاتی ہے۔",
+          "en": "In spoken Arabic, this sound is often dropped when pausing at the end of a word."
+        },
+        {
+          "ur": "یعنی 'كتابٌ' بولتے وقت اکثر صرف 'كتاب' کہا جاتا ہے۔",
+          "en": "So when speaking, 'kitabun' is often simply pronounced as 'kitab'."
+        }
+      ],
+      "question": {
+        "ur": "بول چال کی عربی میں تنوین کی آواز اکثر کیا ہوتی ہے؟",
+        "en": "What usually happens to the tanween sound in spoken Arabic?"
+      }
+    }
+  ]
+}

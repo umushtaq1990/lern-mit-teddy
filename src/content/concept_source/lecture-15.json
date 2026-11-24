@@ -1,0 +1,142 @@
+{
+  "title": {
+    "ur": "کلاس 15 — ہمزۙ الوصل بمقابلہ ہمزۙ القطع، عین، اعراب تقدیری، جمع کی اقسام، صفت",
+    "en": "Class 15 — Hamzat al-Wasl vs al-Qat', 'Ayn, Implied Declension, Plurals, Sifah"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "ہمزے الوصل اور ہمزے القطع",
+        "en": "Hamzat al-Wasl and Hamzat al-Qat'"
+      },
+      "arabic_example": "همزة الوصل / همزة القطع",
+      "sentences": [
+        {
+          "ur": "'ہمزۙ الوصل' وہ ہمزہ ہے جو جملے کے شروع میں بولا جاتا ہے لیکن درمیان میں گر جاتا ہے۔",
+          "en": "'Hamzat al-wasl' is the hamza that is pronounced at the start of a sentence but is dropped in the middle of speech."
+        },
+        {
+          "ur": "'ہمزۙ القطع' ہمیشہ بولا جاتا ہے، چاہے جملے میں کہیں بھی ہو۔",
+          "en": "'Hamzat al-qat'' is always pronounced, no matter where it occurs in the sentence."
+        }
+      ],
+      "question": {
+        "ur": "کون سا ہمزہ ہمیشہ بولا جاتا ہے؟",
+        "en": "Which hamza is always pronounced?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمزۙ الوصل کے تلفظ کا اصول",
+        "en": "The Rule for Pronouncing Hamzat al-Wasl"
+      },
+      "arabic_example": null,
+      "sentences": [
+        {
+          "ur": "ہمزۙ الوصل کا تلفظ تیسرے حرف کی حرکت پر منحصر ہوتا ہے۔",
+          "en": "The pronunciation of hamzat al-wasl depends on the vowel of the third letter."
+        },
+        {
+          "ur": "اگر تیسرا حرف زبر یا زیر کے ساتھ ہو تو ہمزہ زیر کے ساتھ پڑھا جاتا ہے۔",
+          "en": "If the third letter has a fatha or a kasra, the hamza is pronounced with a kasra."
+        },
+        {
+          "ur": "اگر تیسرا حرف پیش کے ساتھ ہو تو ہمزہ پیش کے ساتھ پڑھا جاتا ہے۔",
+          "en": "If the third letter has a damma, the hamza is pronounced with a damma."
+        }
+      ],
+      "question": {
+        "ur": "ہمزۙ الوصل کا تلفظ کس چیز پر منحصر ہوتا ہے؟",
+        "en": "What does the pronunciation of hamzat al-wasl depend on?"
+      }
+    },
+    {
+      "title": {
+        "ur": "عین اور ہمزہ میں فرق",
+        "en": "The Difference Between 'Ayn and Hamza"
+      },
+      "arabic_example": "ع",
+      "sentences": [
+        {
+          "ur": "'عین' صرف اس وقت آتا ہے جب اس سے پہلے والا حرف ساکن ہو۔",
+          "en": "'Ayn' occurs only when the letter before it is sakin (unvoweled)."
+        },
+        {
+          "ur": "اگر اس جگہ حرکت آ جائے تو وہ 'عین' نہیں بلکہ 'ہمزہ' شمار ہوتا ہے۔",
+          "en": "If there is a vowel in that place instead, it is counted not as 'ayn' but as 'hamza'."
+        }
+      ],
+      "question": {
+        "ur": "'عین' کب آتا ہے؟",
+        "en": "When does 'ayn' occur?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اِعراب تقدیری: چھپی ہوئی حرکت",
+        "en": "I'rab Taqdiri: the Hidden (Implied) Vowel"
+      },
+      "arabic_example": "إعراب تقديري",
+      "sentences": [
+        {
+          "ur": "کچھ الفاظ، جیسے الف لام پر ختم ہونے والے، کاغذ پر حرکت نہیں دکھاتے۔",
+          "en": "Some words, such as those ending in alif, do not show their vowel in writing."
+        },
+        {
+          "ur": "لیکن گرامر کے اصول کے مطابق ان کی حرکت پھر بھی موجود ہوتی ہے، بس چھپی ہوئی ہوتی ہے۔",
+          "en": "But according to grammatical rules, their vowel still exists — it is simply hidden."
+        },
+        {
+          "ur": "اسے 'اعراب تقدیری' یعنی اندازاً مانی گئی حرکت کہتے ہیں۔",
+          "en": "This is called 'i'rab taqdiri', meaning an implied or assumed case-ending."
+        }
+      ],
+      "question": {
+        "ur": "'اعراب تقدیری' کس طرح کے الفاظ میں ہوتا ہے؟",
+        "en": "In what kind of words does 'i'rab taqdiri' occur?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جمع سالم اور جمع مکسر",
+        "en": "Jam' Salim and Jam' Mukassar"
+      },
+      "arabic_example": "جمع سالم / جمع مكسر",
+      "sentences": [
+        {
+          "ur": "'جمع سالم' وہ جمع ہے جو ایک خاص پیٹرن کے مطابق لفظ کے آخر میں اضافہ کر کے بنتی ہے۔",
+          "en": "'Jam' salim' (sound plural) is a plural formed by adding a fixed pattern to the end of the word."
+        },
+        {
+          "ur": "'جمع مکسر' وہ جمع ہے جس میں لفظ کی اندرونی ساخت بدل جاتی ہے۔",
+          "en": "'Jam' mukassar' (broken plural) is a plural in which the internal structure of the word changes."
+        }
+      ],
+      "question": {
+        "ur": "جمع مکسر میں لفظ میں کیا تبدیلی آتی ہے؟",
+        "en": "What change occurs in the word in a broken plural (jam' mukassar)?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفت اسم کی حالت کی پیروی کرتی ہے",
+        "en": "The Adjective Follows the Noun's Case"
+      },
+      "arabic_example": "صفة",
+      "sentences": [
+        {
+          "ur": "'صفت' یعنی صفت والا لفظ ہمیشہ اس اسم کی گرامر حالت کی پیروی کرتا ہے جسے وہ بیان کر رہا ہو۔",
+          "en": "'Sifah' — that is, the adjective — always follows the grammatical case of the noun it describes."
+        },
+        {
+          "ur": "یعنی اگر اسم رفع میں ہو تو اس کی صفت بھی رفع میں ہوگی۔",
+          "en": "That is, if the noun is in the raf' (nominative) case, its adjective will also be in raf'."
+        }
+      ],
+      "question": {
+        "ur": "صفت کس چیز کی پیروی کرتی ہے؟",
+        "en": "What does the adjective follow?"
+      }
+    }
+  ]
+}

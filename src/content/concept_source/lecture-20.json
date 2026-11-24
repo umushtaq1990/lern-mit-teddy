@@ -1,0 +1,204 @@
+{
+  "title": {
+    "ur": "کلاس 20 — کلمے کی اقسام، جملوں کی اقسام، مبتدا/خبر، فاعل/مفعول، اضافہ کا تعارف، ضمائر",
+    "en": "Class 20 — Parts of Speech, Sentence Types, Mubtada/Khabar, Fa'il/Maf'ul, Idafa Intro, Pronouns"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "تین اقسام کلمہ: اسم، فعل، حرف",
+        "en": "The Three Parts of Speech: Noun, Verb, Particle"
+      },
+      "arabic_example": "اسم / فعل / حرف",
+      "sentences": [
+        {
+          "ur": "عربی میں ہر لفظ تین اقسام میں سے ایک ہے: اسم، فعل، یا حرف۔",
+          "en": "In Arabic, every word belongs to one of three categories: ism (noun), fi'l (verb), or harf (particle)."
+        },
+        {
+          "ur": "'اسم' کسی چیز، شخص یا جگہ کا نام ہوتا ہے۔",
+          "en": "'Ism' is the name of a thing, person, or place."
+        },
+        {
+          "ur": "'فعل' کسی کام کو ظاہر کرتا ہے، اور 'حرف' جملے کے حصون کو جوڑتا ہے۔",
+          "en": "'Fi'l' denotes an action, and 'harf' connects parts of the sentence."
+        }
+      ],
+      "question": {
+        "ur": "'فعل' کس چیز کو ظاہر کرتا ہے؟",
+        "en": "What does 'fi'l' denote?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جملہ اسمیہ اور جملہ فعلیہ",
+        "en": "Jumla Ismiyya and Jumla Fi'liyya"
+      },
+      "arabic_example": "جملہ اسمیہ / جملہ فعلیہ",
+      "sentences": [
+        {
+          "ur": "عربی میں جملے کی دو بنیادی قسمیں ہیں۔",
+          "en": "There are two basic types of sentences in Arabic."
+        },
+        {
+          "ur": "'جملہ اسمیہ' وہ جملہ ہے جو اسم سے شروع ہوتا ہے۔",
+          "en": "'Jumla ismiyya' (nominal sentence) is a sentence that begins with a noun."
+        },
+        {
+          "ur": "'جملہ فعلیہ' وہ جملہ ہے جو فعل سے شروع ہوتا ہے۔",
+          "en": "'Jumla fi'liyya' (verbal sentence) is a sentence that begins with a verb."
+        }
+      ],
+      "question": {
+        "ur": "'جملہ اسمیہ' کس سے شروع ہوتا ہے؟",
+        "en": "What does a 'jumla ismiyya' begin with?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مبتدہ اور خبر",
+        "en": "Mubtada and Khabar"
+      },
+      "arabic_example": "مبتدہ / خبر",
+      "sentences": [
+        {
+          "ur": "جملہ اسمیہ میں دو بنیادی حصے ہوتے ہیں: مبتدہ اور خبر۔",
+          "en": "A nominal sentence has two basic parts: the mubtada (subject) and the khabar (predicate)."
+        },
+        {
+          "ur": "'مبتدہ' وہ اسم ہے جس کے بارے میں بات کی جا رہی ہو۔",
+          "en": "The 'mubtada' is the noun that is being talked about."
+        },
+        {
+          "ur": "'خبر' وہ حصہ ہے جو مبتدہ کے بارے میں معلومات دیتا ہے۔",
+          "en": "The 'khabar' is the part that gives information about the mubtada."
+        }
+      ],
+      "question": {
+        "ur": "جملہ اسمیہ میں 'خبر' کا کیا کام ہوتا ہے؟",
+        "en": "What is the function of the 'khabar' in a nominal sentence?"
+      }
+    },
+    {
+      "title": {
+        "ur": "فاعل اور مفعول",
+        "en": "Fa'il and Maf'ul"
+      },
+      "arabic_example": "فاعل / مفعول",
+      "sentences": [
+        {
+          "ur": "'فاعل' وہ ہے جو کام کرتا ہے، یعنی جملے کا اصل کرنے والا۔",
+          "en": "'Fa'il' (subject/doer) is the one who performs the action — the actual doer in the sentence."
+        },
+        {
+          "ur": "'مفعول' وہ ہے جس پر کام کیا جاتا ہے۔",
+          "en": "'Maf'ul' (object) is the one upon whom the action is performed."
+        },
+        {
+          "ur": "جیسے 'كتب الطالب الدرس' میں 'الطالب' فاعل ہے اور 'الدرس' مفعول۔",
+          "en": "For example, in 'kataba at-talibu ad-darsa', 'at-talib' is the fa'il and 'ad-dars' is the maf'ul."
+        }
+      ],
+      "question": {
+        "ur": "جملے میں 'فاعل' کس کو کہتے ہیں؟",
+        "en": "Who is called the 'fa'il' in a sentence?"
+      }
+    },
+    {
+      "title": {
+        "ur": "لازم اور متعدی فعل",
+        "en": "Fi'l Lazim and Fi'l Muta'addi"
+      },
+      "arabic_example": "فعل لازم / فعل متعدی",
+      "sentences": [
+        {
+          "ur": "کچھ افعال کو مفعول کی ضرورت نہیں ہوتی، انہیں 'فعل لازم' کہتے ہیں، جیسے 'جلس' یعنی بیٹھا۔",
+          "en": "Some verbs do not need an object; these are called 'fi'l lazim' (intransitive verbs), such as 'jalasa', meaning 'he sat'."
+        },
+        {
+          "ur": "کچھ افعال کو مفعول کی ضرورت ہوتی ہے، انہیں 'فعل متعدی' کہتے ہیں، جیسے 'كتب' یعنی لکھا۔",
+          "en": "Some verbs need an object; these are called 'fi'l muta'addi' (transitive verbs), such as 'kataba', meaning 'he wrote'."
+        }
+      ],
+      "question": {
+        "ur": "'فعل لازم' اور 'فعل متعدی' میں کیا فرق ہے؟",
+        "en": "What is the difference between 'fi'l lazim' and 'fi'l muta'addi'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "معرفہ اور نکرہ",
+        "en": "Definite (Ma'rifah) and Indefinite (Nakirah)"
+      },
+      "arabic_example": "معرفہ / نکرہ",
+      "sentences": [
+        {
+          "ur": "عربی میں اسم یا تو 'معرفہ' ہوتا ہے یا 'نکرہ'۔",
+          "en": "In Arabic, a noun is either 'ma'rifah' (definite) or 'nakirah' (indefinite)."
+        },
+        {
+          "ur": "نکرہ اسم کے آخر میں تنوین لگتی ہے۔",
+          "en": "An indefinite noun takes tanween at its end."
+        },
+        {
+          "ur": "معرفہ اسم کے آخر میں تنوین نہیں لگتی۔",
+          "en": "A definite noun does not take tanween at its end."
+        }
+      ],
+      "question": {
+        "ur": "نکرہ اسم کے آخر میں کیا لگتا ہے؟",
+        "en": "What is added at the end of an indefinite noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اضافہ کا تعارف",
+        "en": "Introduction to Idafa (Possessive Construction)"
+      },
+      "arabic_example": "اضافہ",
+      "sentences": [
+        {
+          "ur": "'اضافہ' دو اسموں کو ملا کر ملکیت ظاہر کرنے کا طریقہ ہے۔",
+          "en": "'Idafa' is a way of joining two nouns together to show possession."
+        },
+        {
+          "ur": "پہلے اسم کو 'مضاف' کہتے ہیں، اور دوسرے کو 'مضاف الیہ'۔",
+          "en": "The first noun is called the 'mudaf', and the second is called the 'mudaf ilayh'."
+        },
+        {
+          "ur": "'مضاف الیہ' ہمیشہ جر کی حالت میں ہوتا ہے۔",
+          "en": "The 'mudaf ilayh' is always in the jarr (genitive) case."
+        }
+      ],
+      "question": {
+        "ur": "اضافہ کے دوسرے حصے کو کیا کہتے ہیں؟",
+        "en": "What is the second part of an idafa called?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ضمیر منفصل اور متصل",
+        "en": "Detached and Attached Pronouns"
+      },
+      "arabic_example": "ضمیر منفصل / ضمیر متصل",
+      "sentences": [
+        {
+          "ur": "عربی میں دو قسم کے ضمیر ہوتے ہیں۔",
+          "en": "There are two types of pronouns in Arabic."
+        },
+        {
+          "ur": "'ضمیر منفصل' ایک الگ لفظ ہوتا ہے، جیسے 'أنا' یعنی میں۔",
+          "en": "A 'dumair munfasil' (detached/independent pronoun) is a separate word, such as 'ana', meaning 'I'."
+        },
+        {
+          "ur": "'ضمیر متصل' کسی لفظ کے ساتھ جڑا ہوتا ہے، جیسے 'قلمه' یعنی اس کا قلم۔",
+          "en": "A 'dumair muttasil' (attached pronoun) is joined to another word, such as 'qalamuhu', meaning 'his pen'."
+        }
+      ],
+      "question": {
+        "ur": "'ضمیر متصل' کیسے استعمال ہوتا ہے؟",
+        "en": "How is an attached pronoun ('dumair muttasil') used?"
+      }
+    }
+  ]
+}

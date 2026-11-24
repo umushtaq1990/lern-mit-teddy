@@ -151,6 +151,10 @@ Desktop.ini
 *.mp3
 *.wav
 
+# ...except the generated curriculum audio itself -- this is shipped content
+# the app serves, not a test artifact (~21MB for all 26 lectures x 2 languages).
+!src/urdu_arabic/content_data/audio/**/*.mp3
+
 # Local course content / media (lectures, books) — large, not committed
 data/
 

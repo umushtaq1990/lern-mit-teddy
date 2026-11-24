@@ -1,0 +1,200 @@
+{
+  "title": {
+    "ur": "کلاس 8 — اسموں کی حالتیں، مبنی اور معرب، حروف جر، سوالیہ الفاظ",
+    "en": "Class 8 — I'rab States, Mabni vs Mu'rab, Prepositions, Question Words"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "اسموں کی حالتیں: رفع، نصب، جر",
+        "en": "Noun States: Raf', Nasb, Jarr"
+      },
+      "arabic_example": "رفع / نصب / جر",
+      "sentences": [
+        {
+          "ur": "عربی میں اسم تین حالتوں میں سے ایک میں ہو سکتا ہے: رفع، نصب، یا جر۔",
+          "en": "In Arabic, a noun can be in one of three states (i'rab): raf' (nominative), nasb (accusative), or jarr (genitive)."
+        },
+        {
+          "ur": "رفع کی علامت عام طور پر ضمہ ہوتی ہے، نصب کی فتحہ، اور جر کی کسرہ۔",
+          "en": "The marker for raf' is usually damma, for nasb it is fatha, and for jarr it is kasra."
+        },
+        {
+          "ur": "فعل کی حالتیں اسم سے مختلف ہوتی ہیں: فعل جزم یا نصب ہوتا ہے، رفع نہیں۔",
+          "en": "Verbs have different states from nouns: a verb is either jazm or nasb, not raf'."
+        }
+      ],
+      "question": {
+        "ur": "اسم کی تین حالتیں کون سی ہیں؟",
+        "en": "What are the three states of a noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مبنی اور معرب الفاظ",
+        "en": "Mabni and Mu'rab Words"
+      },
+      "arabic_example": "مبنی / معرب",
+      "sentences": [
+        {
+          "ur": "کچھ الفاظ 'مبنی' ہوتے ہیں، یعنی ان کا آخری حرف کبھی نہیں بدلتا۔",
+          "en": "Some words are 'mabni', meaning their last letter never changes."
+        },
+        {
+          "ur": "ماضی کے افعال، ضمائر، اشارہ کرنے والے الفاظ، اور حروف سب مبنی ہوتے ہیں۔",
+          "en": "Past-tense verbs, pronouns, demonstratives, and particles are all mabni."
+        },
+        {
+          "ur": "اسم فاعل اور فعل مضارع 'معرب' ہوتے ہیں، یعنی ان کا آخری حرف جملے کے مطابق بدلتا ہے۔",
+          "en": "The active participle (ism fa'il) and the present-tense verb (fi'l mudari') are 'mu'rab', meaning their last letter changes according to their role in the sentence."
+        }
+      ],
+      "question": {
+        "ur": "ماضی کا فعل مبنی ہوتا ہے یا معرب؟",
+        "en": "Is the past-tense verb mabni or mu'rab?"
+      }
+    },
+    {
+      "title": {
+        "ur": "حروف جر",
+        "en": "Prepositions (Huruf Jarr)"
+      },
+      "arabic_example": "في، على، إلى",
+      "sentences": [
+        {
+          "ur": "عربی میں سولہ حروف جر ہیں، جیسے 'في' (میں)، 'على' (پر)، اور 'إلى' (کی طرف)۔",
+          "en": "There are sixteen prepositions (huruf jarr) in Arabic, such as 'في' (in), 'على' (on), and 'إلى' (toward)."
+        },
+        {
+          "ur": "جب کوئی حرف جر کسی اسم سے پہلے آئے تو وہ اسم 'مجرور' بن جاتا ہے۔",
+          "en": "When a preposition comes before a noun, that noun becomes 'majrur' (in the genitive state)."
+        },
+        {
+          "ur": "مجرور اسم عام طور پر کسرہ لیتا ہے۔",
+          "en": "A majrur noun usually takes kasra."
+        }
+      ],
+      "question": {
+        "ur": "جب کوئی حرف جر کسی اسم سے پہلے آئے تو وہ اسم کیا بن جاتا ہے؟",
+        "en": "When a preposition precedes a noun, what does that noun become?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمزة الوصل اور ہمزة القطع",
+        "en": "Hamzat al-Wasl and Hamzat al-Qat'"
+      },
+      "arabic_example": "ء (ہمزہ)",
+      "sentences": [
+        {
+          "ur": "عربی میں دو قسم کے ہمزے ہوتے ہیں: ہمزة الوصل اور ہمزة القطع۔",
+          "en": "There are two kinds of hamza in Arabic: hamzat al-wasl and hamzat al-qat'."
+        },
+        {
+          "ur": "ہمزة القطع ہمیشہ بولا جاتا ہے، چاہے جملے کے شروع میں ہو یا درمیان۔",
+          "en": "Hamzat al-qat' is always pronounced, whether it occurs at the start of a sentence or in the middle."
+        },
+        {
+          "ur": "ہمزة الوصل صرف جملے کے شروع میں بولا جاتا ہے، درمیان میں خاموش ہو جاتا ہے۔",
+          "en": "Hamzat al-wasl is only pronounced at the start of a sentence; in the middle it becomes silent."
+        }
+      ],
+      "question": {
+        "ur": "ہمزة الوصل درمیان جملے میں بولا جاتا ہے یا خاموش رہتا ہے؟",
+        "en": "Is hamzat al-wasl pronounced in the middle of a sentence, or does it stay silent?"
+      }
+    },
+    {
+      "title": {
+        "ur": "سوال کرنے کے الفاظ: أين، ما",
+        "en": "Question Words: 'Ayna, Ma"
+      },
+      "arabic_example": "أين؟ / ما؟",
+      "sentences": [
+        {
+          "ur": "'أين' کا مطلب ہے 'کہاں' اور یہ جگہ کے بارے میں پوچھنے کے لیے استعمال ہوتا ہے۔",
+          "en": "'أين' means 'where' and is used to ask about a place."
+        },
+        {
+          "ur": "'ما' کا مطلب ہے 'کیا' اور یہ چیز کے بارے میں پوچھنے کے لیے استعمال ہوتا ہے۔",
+          "en": "'ما' means 'what' and is used to ask about a thing."
+        }
+      ],
+      "question": {
+        "ur": "'أين' کس چیز کے بارے میں سوال پوچھنے کے لیے استعمال ہوتا ہے؟",
+        "en": "What does 'أين' ask about?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جگہوں کے نام",
+        "en": "Names of Places"
+      },
+      "arabic_example": "المدرسة، المسجد، الحمام",
+      "sentences": [
+        {
+          "ur": "'المدرسة' سکول کو کہتے ہیں، اور 'المسجد' مسجد کو۔",
+          "en": "'المدرسة' means school, and 'المسجد' means mosque."
+        },
+        {
+          "ur": "'الحمام' باتھ روم کو کہتے ہیں۔",
+          "en": "'الحمام' means bathroom."
+        },
+        {
+          "ur": "'السوق' بازار کو کہتے ہیں۔",
+          "en": "'السوق' means market."
+        }
+      ],
+      "question": {
+        "ur": "'المدرسة' کا اردو میں کیا مطلب ہے؟",
+        "en": "What does 'المدرسة' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ملکوں کے نام",
+        "en": "Names of Countries"
+      },
+      "arabic_example": "اليابان، الهند، السعودية",
+      "sentences": [
+        {
+          "ur": "'اليابان' جاپان کو کہتے ہیں، اور 'الهند' انڈیا کو۔",
+          "en": "'اليابان' means Japan, and 'الهند' means India."
+        },
+        {
+          "ur": "'السعودية' سعودی عرب کو کہتے ہیں۔",
+          "en": "'السعودية' means Saudi Arabia."
+        },
+        {
+          "ur": "'الصين' چین کو، اور 'الفلبين' فلپائن کو کہتے ہیں۔",
+          "en": "'الصين' means China, and 'الفلبين' means the Philippines."
+        }
+      ],
+      "question": {
+        "ur": "'الهند' کس ملک کو کہتے ہیں؟",
+        "en": "Which country does 'الهند' refer to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "پیشوں کے نام: المدير، التاجر",
+        "en": "Names of Professions: Al-Mudir, At-Tajir"
+      },
+      "arabic_example": "المدير، التاجر",
+      "sentences": [
+        {
+          "ur": "'المدير' پرنسپل یا منیجر کو کہتے ہیں۔",
+          "en": "'المدير' means principal or manager."
+        },
+        {
+          "ur": "'التاجر' تاجر یا کاروباری آدمی کو کہتے ہیں۔",
+          "en": "'التاجر' means merchant or businessman."
+        }
+      ],
+      "question": {
+        "ur": "'التاجر' کس شخص کو کہتے ہیں؟",
+        "en": "Who does 'التاجر' refer to?"
+      }
+    }
+  ]
+}

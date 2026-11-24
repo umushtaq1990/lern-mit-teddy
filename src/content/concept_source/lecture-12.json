@@ -1,0 +1,163 @@
+{
+  "title": {
+    "ur": "کلاس 12 — نحو کا جائزہ، مبنی اور معرب، فعل کا صیغہ، جملہ اسمیہ، مؤنث موافقت",
+    "en": "Class 12 — Nahw Review, Mabni vs Mu'rab, Verb Conjugation, Nominal Sentence, Feminine Agreement"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "نحو کیا ہے؟",
+        "en": "What Is Nahw (Syntax)?"
+      },
+      "arabic_example": "نحو",
+      "sentences": [
+        {
+          "ur": "نحو عربی گرامر کی وہ شاخ ہے جو الفاظ کے آخری حرف کا مطالعہ کرتی ہے۔",
+          "en": "Nahw is the branch of Arabic grammar that studies the last letter of words."
+        },
+        {
+          "ur": "اسے 'اعراب' یعنی کلمے کے آخر میں تبدیلیوں کا علم بھی کہا جاتا ہے۔",
+          "en": "It is also called the science of 'i'rab', i.e. the changes that occur at the end of a word."
+        }
+      ],
+      "question": {
+        "ur": "نحو کس چیز کا مطالعہ کرتا ہے؟",
+        "en": "What does nahw study?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مبنی اور معرب کا فرق",
+        "en": "The Difference Between Mabni and Mu'rab"
+      },
+      "arabic_example": "مبنی / معرب",
+      "sentences": [
+        {
+          "ur": "مبنی الفاظ کا آخری حرف کبھی نہیں بدلتا، جیسے نون یا تاء مربوطہ پر ختم ہونے والے الفاظ۔",
+          "en": "The last letter of mabni words never changes, such as words ending in nun or ta marbuta."
+        },
+        {
+          "ur": "معرب الفاظ کا آخری حرف جملے میں ان کے کردار کے مطابق بدلتا رہتا ہے۔",
+          "en": "The last letter of mu'rab words keeps changing according to their role in the sentence."
+        }
+      ],
+      "question": {
+        "ur": "معرب الفاظ کا آخری حرف کیوں بدلتا ہے؟",
+        "en": "Why does the last letter of mu'rab words change?"
+      }
+    },
+    {
+      "title": {
+        "ur": "فعل ماضی اور فعل مضارع",
+        "en": "The Past Verb and the Present Verb"
+      },
+      "arabic_example": "فعل ماضۍ / فعل مضارع",
+      "sentences": [
+        {
+          "ur": "'فعل ماضی' وہ فعل ہے جو گزرے ہوئے زمانے کا کام بتاتا ہے۔",
+          "en": "The 'past verb' (fi'l madi) is the verb that indicates an action in the past tense."
+        },
+        {
+          "ur": "'فعل مضارع' وہ فعل ہے جو حال یا مستقبل کے زمانے کا کام بتاتا ہے۔",
+          "en": "The 'present verb' (fi'l mudari') is the verb that indicates an action in the present or future tense."
+        },
+        {
+          "ur": "دونوں فعل ایک ہی جڑ کے تین حروف سے بنتے ہیں۔",
+          "en": "Both verbs are built from the same three root letters."
+        }
+      ],
+      "question": {
+        "ur": "کون سا فعل گزرے ہوئے زمانے کا کام بتاتا ہے؟",
+        "en": "Which verb indicates an action in the past tense?"
+      }
+    },
+    {
+      "title": {
+        "ur": "جملہ اسمیہ کی ساخت: مبتدأ اور خبر",
+        "en": "The Structure of a Nominal Sentence: Mubtada and Khabar"
+      },
+      "arabic_example": "مبتدأ / خبر",
+      "sentences": [
+        {
+          "ur": "جملہ اسمیہ میں 'مبتدأ' موضوع ہوتا ہے، اور 'خبر' اس کے بارے میں معلومات دیتا ہے۔",
+          "en": "In a nominal sentence, the 'mubtada' is the subject, and the 'khabar' gives information about it (the predicate)."
+        },
+        {
+          "ur": "مبتدأ اور خبر دونوں عام طور پر مرفوع کی حالت میں آتے ہیں۔",
+          "en": "Both the mubtada and the khabar are usually in the marfu' (nominative) state."
+        }
+      ],
+      "question": {
+        "ur": "جملہ اسمیہ میں موضوع کو کیا کہتے ہیں؟",
+        "en": "In a nominal sentence, what is the subject called?"
+      }
+    },
+    {
+      "title": {
+        "ur": "تنوین کا کردار",
+        "en": "The Role of Tanwin"
+      },
+      "arabic_example": "ـٌ ـً ـٍ",
+      "sentences": [
+        {
+          "ur": "تنوین ایک ایسا نشان ہے جو غیر معرفہ، واحد، مذکر اسم کے آخر میں لگتا ہے۔",
+          "en": "Tanwin is a mark placed at the end of an indefinite, singular, masculine noun."
+        },
+        {
+          "ur": "یہ اسم کی حالت یعنی رفع، نصب، یا جر ظاہر کرنے میں مدد دیتا ہے۔",
+          "en": "It helps indicate the noun's state, that is, raf', nasb, or jarr."
+        }
+      ],
+      "question": {
+        "ur": "تنوین کس قسم کے اسم کے آخر میں لگتی ہے؟",
+        "en": "What kind of noun does tanwin attach to?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ہمزة الوصل کا گرنا",
+        "en": "The Dropping of Hamzat al-Wasl"
+      },
+      "arabic_example": "يَجِيءُ",
+      "sentences": [
+        {
+          "ur": "همزة الوصل پچھلے لفظ سے جڑتے وقت گر جاتا ہے، جیسے فعل مضارع میں۔",
+          "en": "Hamzat al-wasl drops when it connects with the preceding word, as happens with the present-tense verb."
+        },
+        {
+          "ur": "لیکن اگر وہی لفظ اکیلا بولا جائے تو ہمزة الوصل اپنی جگہ قائم رہتا ہے۔",
+          "en": "But if that same word is spoken on its own, hamzat al-wasl remains in place."
+        }
+      ],
+      "question": {
+        "ur": "ہمزة الوصل کب گر جاتا ہے؟",
+        "en": "When does hamzat al-wasl drop out?"
+      }
+    },
+    {
+      "title": {
+        "ur": "مؤنث حقیقی اور مؤنث غیر حقیقی",
+        "en": "Real Feminine and Abstract (Non-Real) Feminine"
+      },
+      "arabic_example": "مؤنث حقيقي / مؤنث غير حقيقي",
+      "sentences": [
+        {
+          "ur": "'مؤنث حقیقی' حقیقی مؤنث کو کہتے ہیں، جیسے کوئی عورت یا لڑکی۔",
+          "en": "'Real feminine' (mu'annath haqiqi) refers to an actually feminine being, such as a woman or girl."
+        },
+        {
+          "ur": "'مؤنث غیر حقیقی' ان چیزوں کو کہتے ہیں جنہیں گرامر میں مؤنث مانا جاتا ہے، جیسے سورج یا چاند۔",
+          "en": "'Abstract feminine' (mu'annath ghayr haqiqi) refers to things that are grammatically treated as feminine, such as the sun or the moon."
+        },
+        {
+          "ur": "جسم کے اعضاء اور جمع بننے والے انسانی الفاظ بھی اکثر مؤنث کے طور پر برتے جاتے ہیں۔",
+          "en": "Body parts and human plural words are also often treated as feminine."
+        }
+      ],
+      "question": {
+        "ur": "سورج اور چاند کو گرامر میں کیسا مانا جاتا ہے: مذکر یا مؤنث؟",
+        "en": "Grammatically, are the sun and moon treated as masculine or feminine?"
+      }
+    }
+  ]
+}

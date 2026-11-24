@@ -1,0 +1,159 @@
+{
+  "title": {
+    "ur": "کلاس 17 — عِند بمقابلہ مَع، صفت (نعت) کی موافقت کے اصول، صفات، تعلیمی درجے، الذي/التي، سمتیں",
+    "en": "Class 17 — 'Inda vs Ma'a, Na'at Agreement Rules, Adjectives, Education Levels, Alladhi/Allati, Directions"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "عِند اور مَع میں فرق",
+        "en": "The Difference Between 'Inda and Ma'a"
+      },
+      "arabic_example": "عند / مع",
+      "sentences": [
+        {
+          "ur": "'عند' کا مطلب ہے کسی کی جگہ پر یا پاس، جیسے 'عند المدير' یعنی 'پرنسیپل کے پاس'۔",
+          "en": "'Inda' means at someone's place or in their possession, as in ''inda al-mudir', meaning 'at the principal's' / 'with the principal'."
+        },
+        {
+          "ur": "'مع' کا مطلب ہے کسی کے ساتھ، جیسے 'مع المدير' یعنی 'پرنسیپل کے ساتھ'۔",
+          "en": "'Ma'a' means together with someone, as in 'ma'a al-mudir', meaning 'with the principal'."
+        }
+      ],
+      "question": {
+        "ur": "'عند' اور 'مع' میں کیا فرق ہے؟",
+        "en": "What is the difference between ''inda' and 'ma'a'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفت کی چار شرطیں",
+        "en": "The Four Conditions of the Adjective (Na'at)"
+      },
+      "arabic_example": "النعت",
+      "sentences": [
+        {
+          "ur": "صفت کو اپنے اسم کے ساتھ چار چیزوں میں میل کھانا ضروری ہے۔",
+          "en": "The adjective (na'at) must agree with its noun in four things."
+        },
+        {
+          "ur": "پہلی: حالت یعنی رفع، نصب یا جر۔ دوسری: جنس یعنی مذکر یا مؤنث۔",
+          "en": "First: case — that is, raf', nasb, or jarr. Second: gender — that is, masculine or feminine."
+        },
+        {
+          "ur": "تیسری: معرفہ یا نکرہ ہونا۔ چوتھی: واحد، تثنیہ یا جمع ہونا۔",
+          "en": "Third: being definite or indefinite. Fourth: being singular, dual, or plural."
+        }
+      ],
+      "question": {
+        "ur": "صفت کو اسم کے ساتھ کتنی چیزوں میں میل کھانا ضروری ہے؟",
+        "en": "In how many things must the adjective agree with the noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفات: چھوٹا، لمبا، چھوٹا قد",
+        "en": "Adjectives: Small, Tall, Short"
+      },
+      "arabic_example": "صغير، طويل، قصير",
+      "sentences": [
+        {
+          "ur": "'صغير' چھوٹے کو کہتے ہیں، یہ 'كبير' یعنی بڑے کا الٹ ہے۔",
+          "en": "'Saghir' means small; it is the opposite of 'kabir', meaning big."
+        },
+        {
+          "ur": "'طويل' لمبے کو کہتے ہیں، اور 'قصير' چھوٹے قد کو۔",
+          "en": "'Tawil' means tall, and 'qasir' means short (in height)."
+        }
+      ],
+      "question": {
+        "ur": "'صغير' کس لفظ کا الٹ ہے؟",
+        "en": "Which word is 'saghir' the opposite of?"
+      }
+    },
+    {
+      "title": {
+        "ur": "صفات: تیز، ٹوٹا ہوا",
+        "en": "Adjectives: Sharp, Broken"
+      },
+      "arabic_example": "حاد، مقصور",
+      "sentences": [
+        {
+          "ur": "'حاد' تیز دھار والی چیز کے لیے استعمال ہوتا ہے، جیسے چاقو۔",
+          "en": "'Hadd' is used for something sharp-edged, like a knife."
+        },
+        {
+          "ur": "'مقصور' ٹوٹی ہوئی چیز کے لیے استعمال ہوتا ہے، جیسے 'السرير المقصور' یعنی 'ٹوٹا ہوا بستر'۔",
+          "en": "'Maksur' is used for something broken, as in 'as-sarir al-maksur', meaning 'the broken bed'."
+        }
+      ],
+      "question": {
+        "ur": "'حاد' کس قسم کی چیز کے لیے استعمال ہوتا ہے؟",
+        "en": "What kind of thing is 'hadd' used for?"
+      }
+    },
+    {
+      "title": {
+        "ur": "تعلیمی درجے: پرائمری، مڈل، ہائی سکول",
+        "en": "Education Levels: Primary, Middle, High School"
+      },
+      "arabic_example": "الابتدائية، المتوسطة، الثانوية",
+      "sentences": [
+        {
+          "ur": "'الابتدائية' پرائمری سکول کو کہتے ہیں۔",
+          "en": "'Al-ibtida'iyya' means primary school."
+        },
+        {
+          "ur": "'المتوسطة' مڈل سکول کو کہتے ہیں، اور 'الثانوية' ہائی سکول کو۔",
+          "en": "'Al-mutawassita' means middle school, and 'ath-thanawiyya' means high school."
+        }
+      ],
+      "question": {
+        "ur": "'الثانوية' کس تعلیمی درجے کو کہتے ہیں؟",
+        "en": "Which education level is called 'ath-thanawiyya'?"
+      }
+    },
+    {
+      "title": {
+        "ur": "موصولہ الفاظ: الذي، التي",
+        "en": "Relative Pronouns: alladhi, allati"
+      },
+      "arabic_example": "الذي / التي",
+      "sentences": [
+        {
+          "ur": "مذکر اسم کے لیے 'الذي' استعمال ہوتا ہے، اور مؤنث اسم کے لیے 'التي'۔",
+          "en": "'Alladhi' is used for a masculine noun, and 'allati' is used for a feminine noun."
+        },
+        {
+          "ur": "دونوں کا مطلب ہے 'جو'، یعنی کسی چیز کی مزید وضاحت دینے کے لیے۔",
+          "en": "Both mean 'who/which', used to give further description of something."
+        }
+      ],
+      "question": {
+        "ur": "مؤنث اسم کے لیے کون سا موصولہ لفظ استعمال ہوتا ہے؟",
+        "en": "Which relative pronoun is used for a feminine noun?"
+      }
+    },
+    {
+      "title": {
+        "ur": "سمت بتانے والے الفاظ: پیچھے، اوپر، نیچے",
+        "en": "Direction Words: Behind, Above, Below"
+      },
+      "arabic_example": "خلف، فوق، تحت",
+      "sentences": [
+        {
+          "ur": "'خلف' پیچھے کے لیے استعمال ہوتا ہے۔",
+          "en": "'Khalf' is used for 'behind'."
+        },
+        {
+          "ur": "'فوق' اوپر کے لیے، اور 'تحت' نیچے کے لیے استعمال ہوتا ہے۔",
+          "en": "'Fawq' is used for 'above', and 'taht' is used for 'below'."
+        }
+      ],
+      "question": {
+        "ur": "'فوق' کا کیا مطلب ہے؟",
+        "en": "What does 'fawq' mean?"
+      }
+    }
+  ]
+}

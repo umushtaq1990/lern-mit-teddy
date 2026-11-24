@@ -1,0 +1,273 @@
+{
+  "id": "lecture-26",
+  "title": {
+    "ur": "کلاس ۲۶ — جمع بنانے کا دوبارہ جائزہ، اضافہ میں تنوین کا ختم ہونا، پیشوں/رشتوں کے الفاظ، لفظ 'الشیخ'، ممنوع من الصرف",
+    "en": "Class 26 — Plural Formation Recap, Tanween Loss in Idafa, Professions/Family Vocabulary, Ash-Shaykh, Mamnu min al-Sarf"
+  },
+  "parts": [
+    {
+      "id": "part-1",
+      "arabic_example": "رجل / رجال",
+      "title": {
+        "ur": "واحد سے جمع بنانا: رجل / رجال",
+        "en": "Forming the plural from the singular: rajul / rijal"
+      },
+      "question": {
+        "ur": "'رجال' کس لفظ کی جمع ہے؟",
+        "en": "Which word is 'rijal' the plural of?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-26/part-1.mp3",
+          "sentences": [
+            {
+              "text": "رجل' کا مطلب ہے ایک آدمی، اور 'رجال' کا مطلب ہے کئی آدمی",
+              "start": 0.1,
+              "end": 4.75
+            },
+            {
+              "text": "یہ ایک مثال ہے کہ واحد سے جمع کیس طرح بنتی ہے",
+              "start": 4.7,
+              "end": 8.475
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-26/part-1-en.mp3",
+          "sentences": [
+            {
+              "text": "Rajul' means one man, and 'rijal' means several men.",
+              "start": 0.1,
+              "end": 4.025
+            },
+            {
+              "text": "This is an example of how the plural is formed from the singular.",
+              "start": 3.975,
+              "end": 8.0375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-2",
+      "arabic_example": "اضافہ",
+      "title": {
+        "ur": "اضافہ میں تنوین کا ختم ہونا",
+        "en": "The loss of tanween in idafa"
+      },
+      "question": {
+        "ur": "اضافہ میں کیا چیز ختم ہو جاتی ہے؟",
+        "en": "What is dropped in an idafa construction?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-26/part-2.mp3",
+          "sentences": [
+            {
+              "text": "جب کوئی اسم کسی دوسرے اسم کے ساتھ مل کر ملکیت ظاہر کرے تو اس کی تنوین ختم ہو جاتی ہے",
+              "start": 0.1,
+              "end": 6.3
+            },
+            {
+              "text": "یہ قاعدہ 'اضافہ' کہلاتا ہے",
+              "start": 6.25,
+              "end": 9.05
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-26/part-2-en.mp3",
+          "sentences": [
+            {
+              "text": "When a noun combines with another noun to express possession, its tanween is dropped.",
+              "start": 0.1,
+              "end": 5.325
+            },
+            {
+              "text": "This rule is called 'idafa' (the possessive/genitive construction).",
+              "start": 5.275,
+              "end": 10.05
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-3",
+      "arabic_example": "غنی / فقیر / طبیب",
+      "title": {
+        "ur": "پیشے اور حیثیت کے الفاظ",
+        "en": "Words for professions and status"
+      },
+      "question": {
+        "ur": "'فقیر' کا کیا مطلب ہے؟",
+        "en": "What does 'faqir' mean?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-26/part-3.mp3",
+          "sentences": [
+            {
+              "text": "غنی' کا مطلب ہے امیر، اور 'فقیر' کا مطلب ہے غریب",
+              "start": 0.1,
+              "end": 4.35
+            },
+            {
+              "text": "طبیب' ڈاکٹر کو کہتے ہیں",
+              "start": 4.3,
+              "end": 6.65
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-26/part-3-en.mp3",
+          "sentences": [
+            {
+              "text": "Ghani' means rich, and 'faqir' means poor.",
+              "start": 0.1,
+              "end": 3.5625
+            },
+            {
+              "text": "Tabib' refers to a doctor.",
+              "start": 3.5125,
+              "end": 5.9375
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-4",
+      "arabic_example": "إخوان / أخوات",
+      "title": {
+        "ur": "رشتوں کے جمع الفاظ",
+        "en": "Plural words for relatives"
+      },
+      "question": {
+        "ur": "'أخوات' کا کیا مطلب ہے؟",
+        "en": "What does 'akhawat' mean?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-26/part-4.mp3",
+          "sentences": [
+            {
+              "text": "إخوان' کا مطلب ہے کئی بھائی",
+              "start": 0.1,
+              "end": 2.625
+            },
+            {
+              "text": "أخوات' کا مطلب ہے کئی بہنیں",
+              "start": 2.575,
+              "end": 5.2125
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-26/part-4-en.mp3",
+          "sentences": [
+            {
+              "text": "Ikhwan' means several brothers.",
+              "start": 0.1,
+              "end": 2.5875
+            },
+            {
+              "text": "Akhawat' means several sisters.",
+              "start": 2.5375,
+              "end": 5.175
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-5",
+      "arabic_example": "الشیخ",
+      "title": {
+        "ur": "لفظ 'شیخ' کے کئی معنی",
+        "en": "The several meanings of the word 'shaykh'"
+      },
+      "question": {
+        "ur": "'الشیخ' کن کن کے لیے استعمال ہو سکتا ہے؟",
+        "en": "Who can the word 'al-shaykh' be used for?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-26/part-5.mp3",
+          "sentences": [
+            {
+              "text": "الشیخ' کا مطلب صرف 'استاد' نہیں ہے",
+              "start": 0.1,
+              "end": 3.225
+            },
+            {
+              "text": "یہ کسی عالم، بزرگ، یا دولت مند شخص کے لیے بھی استعمال ہوتا ہے",
+              "start": 3.175,
+              "end": 7.7125
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-26/part-5-en.mp3",
+          "sentences": [
+            {
+              "text": "Al-shaykh' does not only mean 'teacher'.",
+              "start": 0.1,
+              "end": 2.9125
+            },
+            {
+              "text": "It is also used for a religious scholar, an elder, or a wealthy person.",
+              "start": 2.8625,
+              "end": 7.825
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-6",
+      "arabic_example": "ممنوع من الصرف",
+      "title": {
+        "ur": "ممنوع من الصرف کی ایک قسم",
+        "en": "A type of mamnu' min al-sarf"
+      },
+      "question": {
+        "ur": "'ممنوع من الصرف' الفاظ کے آخر میں کیا نہیں آتا؟",
+        "en": "What does not appear at the end of 'mamnu' min al-sarf' words?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-26/part-6.mp3",
+          "sentences": [
+            {
+              "text": "کچھ مؤنث نام اور خاص صفتیں تنوین قبول نہیں کرتیں",
+              "start": 0.1,
+              "end": 4.0625
+            },
+            {
+              "text": "انہیں 'ممنوع من الصرف' کہا جاتا ہے",
+              "start": 4.0125,
+              "end": 7.075
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-26/part-6-en.mp3",
+          "sentences": [
+            {
+              "text": "Some feminine names and certain adjectives do not take tanween.",
+              "start": 0.1,
+              "end": 4.25
+            },
+            {
+              "text": "These are called 'mamnu' min al-sarf' (diptotes).",
+              "start": 4.2,
+              "end": 7.6375
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

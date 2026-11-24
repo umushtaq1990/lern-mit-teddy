@@ -1,0 +1,161 @@
+{
+  "id": "lecture-05",
+  "title": {
+    "ur": "پانچواں سبق — جملہ اسمیہ، تعین (معرفہ/نکرہ)، صفت کی موافقت",
+    "en": "Class 5 — The Nominal Sentence, Definiteness, Adjective Agreement"
+  },
+  "parts": [
+    {
+      "id": "part-1",
+      "arabic_example": "جملة إسمية",
+      "title": {
+        "ur": "جملہ اسمیہ: مبتدا اور خبر",
+        "en": "The Nominal Sentence: Mubtada and Khabar"
+      },
+      "question": {
+        "ur": "جملہ اسمیہ کے دو بنیادی حصے کون سے ہیں؟",
+        "en": "What are the two basic parts of a nominal sentence?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-05/part-1.mp3",
+          "sentences": [
+            {
+              "text": "عربی میں اسمی جملے کے دو بنیادی حصے ہوتے ہیں",
+              "start": 0.1,
+              "end": 3.7125
+            },
+            {
+              "text": "پہلا حصہ 'مبتدا' کہلاتا ہے، یعنی جس کے بارے میں بات کی جا رہی ہو",
+              "start": 3.6625,
+              "end": 8.55
+            },
+            {
+              "text": "دوسرا حصہ 'خبر' کہلاتا ہے، یعنی مبتدا کے بارے میں بتائی گئی بات",
+              "start": 8.55,
+              "end": 13.675
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-05/part-1-en.mp3",
+          "sentences": [
+            {
+              "text": "A nominal sentence in Arabic has two basic parts.",
+              "start": 0.1,
+              "end": 3.9125
+            },
+            {
+              "text": "The first part is called the 'mubtada' (subject), i.e. the thing being talked about.",
+              "start": 3.8625,
+              "end": 9.025
+            },
+            {
+              "text": "The second part is called the 'khabar' (predicate), i.e. what is said about the mubtada.",
+              "start": 9.025,
+              "end": 14.2125
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-2",
+      "arabic_example": "ال / تنوين",
+      "title": {
+        "ur": "معرفہ اور نکرہ میں فرق",
+        "en": "The Difference Between Definite (Ma'rifa) and Indefinite (Nakira)"
+      },
+      "question": {
+        "ur": "کون سی علامت اسم کو 'معرفہ' بناتی ہے؟",
+        "en": "Which marker makes a noun 'ma'rifa' (definite)?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-05/part-2.mp3",
+          "sentences": [
+            {
+              "text": "اگر کسی اسم کے شروع میں 'ال' لگا ہو تو وہ 'معرفہ' یعنی متعین اسم ہوتا ہے",
+              "start": 0.1,
+              "end": 5.6
+            },
+            {
+              "text": "اگر اسم کے آخر میں تنوین ہو تو وہ 'نکرہ' یعنی غیر متعین اسم ہوتا ہے",
+              "start": 5.55,
+              "end": 10.6875
+            },
+            {
+              "text": "لوگوں کے نام ہمیشہ معرفہ ہوتے ہیں، چاہے ان پر 'ال' نہ بھی لگا ہو",
+              "start": 10.6875,
+              "end": 15.5
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-05/part-2-en.mp3",
+          "sentences": [
+            {
+              "text": "If a noun has 'al' attached at the start, it is 'ma'rifa', i.e. a definite noun.",
+              "start": 0.1,
+              "end": 5.4375
+            },
+            {
+              "text": "If a noun has tanween at the end, it is 'nakira', i.e. an indefinite noun.",
+              "start": 5.3875,
+              "end": 10.5125
+            },
+            {
+              "text": "People's names are always definite, even if 'al' is not attached to them.",
+              "start": 10.5125,
+              "end": 15.1125
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part-3",
+      "arabic_example": "الولد جالس",
+      "title": {
+        "ur": "صفت اور موصوف میں مطابقت",
+        "en": "Agreement Between the Adjective and the Noun It Describes"
+      },
+      "question": {
+        "ur": "صفت کس چیز کے مطابق بدلتی ہے؟",
+        "en": "What does an adjective change in agreement with?"
+      },
+      "narration": {
+        "ur": {
+          "audio_url": "/content/audio/lecture-05/part-3.mp3",
+          "sentences": [
+            {
+              "text": "صفت ہمیشہ اپنے موصوف کے مذکر، مؤنث، واحد، یا جمع ہونے کے مطابق آتی ہے",
+              "start": 0.1,
+              "end": 5.4375
+            },
+            {
+              "text": "مثلاً 'الولد جالس' کا مطلب ہے 'لڑکا بیٹھا ہوا ہے'",
+              "start": 5.3875,
+              "end": 9.5125
+            }
+          ]
+        },
+        "en": {
+          "audio_url": "/content/audio/lecture-05/part-3-en.mp3",
+          "sentences": [
+            {
+              "text": "An adjective always agrees with the noun it describes in being masculine, feminine, singular, or plural.",
+              "start": 0.1,
+              "end": 7.05
+            },
+            {
+              "text": "For example, 'al-waladu jalisun' means 'the boy is sitting'.",
+              "start": 7.0,
+              "end": 11.375
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

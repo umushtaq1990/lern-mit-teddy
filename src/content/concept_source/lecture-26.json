@@ -1,0 +1,134 @@
+{
+  "title": {
+    "ur": "کلاس ۲۶ — جمع بنانے کا دوبارہ جائزہ، اضافہ میں تنوین کا ختم ہونا، پیشوں/رشتوں کے الفاظ، لفظ 'الشیخ'، ممنوع من الصرف",
+    "en": "Class 26 — Plural Formation Recap, Tanween Loss in Idafa, Professions/Family Vocabulary, Ash-Shaykh, Mamnu min al-Sarf"
+  },
+  "concepts": [
+    {
+      "title": {
+        "ur": "واحد سے جمع بنانا: رجل / رجال",
+        "en": "Forming the plural from the singular: rajul / rijal"
+      },
+      "arabic_example": "رجل / رجال",
+      "sentences": [
+        {
+          "ur": "'رجل' کا مطلب ہے ایک آدمی، اور 'رجال' کا مطلب ہے کئی آدمی۔",
+          "en": "'Rajul' means one man, and 'rijal' means several men."
+        },
+        {
+          "ur": "یہ ایک مثال ہے کہ واحد سے جمع کیس طرح بنتی ہے۔",
+          "en": "This is an example of how the plural is formed from the singular."
+        }
+      ],
+      "question": {
+        "ur": "'رجال' کس لفظ کی جمع ہے؟",
+        "en": "Which word is 'rijal' the plural of?"
+      }
+    },
+    {
+      "title": {
+        "ur": "اضافہ میں تنوین کا ختم ہونا",
+        "en": "The loss of tanween in idafa"
+      },
+      "arabic_example": "اضافہ",
+      "sentences": [
+        {
+          "ur": "جب کوئی اسم کسی دوسرے اسم کے ساتھ مل کر ملکیت ظاہر کرے تو اس کی تنوین ختم ہو جاتی ہے۔",
+          "en": "When a noun combines with another noun to express possession, its tanween is dropped."
+        },
+        {
+          "ur": "یہ قاعدہ 'اضافہ' کہلاتا ہے۔",
+          "en": "This rule is called 'idafa' (the possessive/genitive construction)."
+        }
+      ],
+      "question": {
+        "ur": "اضافہ میں کیا چیز ختم ہو جاتی ہے؟",
+        "en": "What is dropped in an idafa construction?"
+      }
+    },
+    {
+      "title": {
+        "ur": "پیشے اور حیثیت کے الفاظ",
+        "en": "Words for professions and status"
+      },
+      "arabic_example": "غنی / فقیر / طبیب",
+      "sentences": [
+        {
+          "ur": "'غنی' کا مطلب ہے امیر، اور 'فقیر' کا مطلب ہے غریب۔",
+          "en": "'Ghani' means rich, and 'faqir' means poor."
+        },
+        {
+          "ur": "'طبیب' ڈاکٹر کو کہتے ہیں۔",
+          "en": "'Tabib' refers to a doctor."
+        }
+      ],
+      "question": {
+        "ur": "'فقیر' کا کیا مطلب ہے؟",
+        "en": "What does 'faqir' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "رشتوں کے جمع الفاظ",
+        "en": "Plural words for relatives"
+      },
+      "arabic_example": "إخوان / أخوات",
+      "sentences": [
+        {
+          "ur": "'إخوان' کا مطلب ہے کئی بھائی۔",
+          "en": "'Ikhwan' means several brothers."
+        },
+        {
+          "ur": "'أخوات' کا مطلب ہے کئی بہنیں۔",
+          "en": "'Akhawat' means several sisters."
+        }
+      ],
+      "question": {
+        "ur": "'أخوات' کا کیا مطلب ہے؟",
+        "en": "What does 'akhawat' mean?"
+      }
+    },
+    {
+      "title": {
+        "ur": "لفظ 'شیخ' کے کئی معنی",
+        "en": "The several meanings of the word 'shaykh'"
+      },
+      "arabic_example": "الشیخ",
+      "sentences": [
+        {
+          "ur": "'الشیخ' کا مطلب صرف 'استاد' نہیں ہے۔",
+          "en": "'Al-shaykh' does not only mean 'teacher'."
+        },
+        {
+          "ur": "یہ کسی عالم، بزرگ، یا دولت مند شخص کے لیے بھی استعمال ہوتا ہے۔",
+          "en": "It is also used for a religious scholar, an elder, or a wealthy person."
+        }
+      ],
+      "question": {
+        "ur": "'الشیخ' کن کن کے لیے استعمال ہو سکتا ہے؟",
+        "en": "Who can the word 'al-shaykh' be used for?"
+      }
+    },
+    {
+      "title": {
+        "ur": "ممنوع من الصرف کی ایک قسم",
+        "en": "A type of mamnu' min al-sarf"
+      },
+      "arabic_example": "ممنوع من الصرف",
+      "sentences": [
+        {
+          "ur": "کچھ مؤنث نام اور خاص صفتیں تنوین قبول نہیں کرتیں۔",
+          "en": "Some feminine names and certain adjectives do not take tanween."
+        },
+        {
+          "ur": "انہیں 'ممنوع من الصرف' کہا جاتا ہے۔",
+          "en": "These are called 'mamnu' min al-sarf' (diptotes)."
+        }
+      ],
+      "question": {
+        "ur": "'ممنوع من الصرف' الفاظ کے آخر میں کیا نہیں آتا؟",
+        "en": "What does not appear at the end of 'mamnu' min al-sarf' words?"
+      }
+    }
+  ]
+}

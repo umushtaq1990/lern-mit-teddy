@@ -1,0 +1,231 @@
+body {
+  font-family: "Noto Nastaliq Urdu", "Segoe UI", sans-serif;
+  background: #FBF8F1;
+  color: #2F3B37;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+h1, h2, h3 {
+  color: #0B6E4F;
+}
+
+input, textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 8px 0;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  padding: 10px 18px;
+  margin: 6px 4px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #0B6E4F;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.link-btn {
+  background: none;
+  color: #0B6E4F;
+  text-decoration: underline;
+  padding: 4px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.arabic {
+  font-size: 36px;
+  color: #D4A017;
+  font-weight: 700;
+  text-align: center;
+  margin: 12px 0;
+}
+
+#question-box {
+  margin-top: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+}
+
+#answer-status {
+  color: #8A9A91;
+}
+
+.progress {
+  color: #8A9A91;
+  font-size: 14px;
+}
+
+.lesson-row {
+  margin: 8px 0;
+}
+
+.lesson-header {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+#lessons-list .lesson-item {
+  display: block;
+  flex: 1;
+  width: auto;
+  background: white;
+  color: #2F3B37;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 0;
+  font-size: 18px;
+}
+
+#lessons-list .lesson-item:hover {
+  border-color: #0B6E4F;
+}
+
+.lesson-toggle {
+  flex: 0 0 48px;
+  background: white;
+  color: #0B6E4F;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.lesson-toggle:hover {
+  border-color: #0B6E4F;
+}
+
+.lesson-parts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px 0 0;
+  padding-left: 12px;
+  border-left: 2px solid #ddd;
+}
+
+.lesson-parts[hidden] {
+  display: none;
+}
+
+.lesson-part-item {
+  display: block;
+  width: 100%;
+  background: #F4F8F6;
+  color: #2F3B37;
+  border: 1px solid #e3e9e6;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 0;
+  font-size: 15px;
+}
+
+.lesson-part-item:hover {
+  border-color: #0B6E4F;
+}
+
+/* Alignment follows the selected language's direction, not a fixed
+   left/right -- set dynamically via document.documentElement.dir in app.js
+   so any language the registry gains later is handled automatically. */
+[dir="ltr"] #lessons-list .lesson-item,
+[dir="ltr"] .lesson-part-item,
+[dir="ltr"] #sentence-text,
+[dir="ltr"] #question-text-display {
+  text-align: left;
+}
+
+[dir="rtl"] #lessons-list .lesson-item,
+[dir="rtl"] .lesson-part-item,
+[dir="rtl"] #sentence-text,
+[dir="rtl"] #question-text-display {
+  text-align: right;
+}
+
+#language-picker {
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.lang-btn {
+  background: white;
+  color: #2F3B37;
+  border: 1px solid #ddd;
+}
+
+.lang-btn.active {
+  background: #0B6E4F;
+  color: white;
+  border-color: #0B6E4F;
+}
+
+#slide-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  min-height: 220px;
+}
+
+.slide-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 8px;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.slide-icon.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#sentence-box {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.sentence {
+  font-size: 22px;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.sentence.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#answer-reveal {
+  margin-top: 16px;
+  padding: 16px;
+  background: #F4F8F6;
+  border-radius: 10px;
+}
