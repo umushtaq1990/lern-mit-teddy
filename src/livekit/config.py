@@ -9,8 +9,9 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 from dataclasses import dataclass
+
+from src.settings import get_settings
 
 logger = logging.getLogger(__name__)
 
@@ -145,6 +146,7 @@ class VoiceSettings:
     tts_voice: str
     tts_base_url: str | None
     tts_api_key: str | None
+    nvidia_api_key: str | None
 
     # Realtime provider specifics
     openai_realtime_model: str
@@ -156,8 +158,9 @@ class VoiceSettings:
 
     @classmethod
     def from_env(cls) -> "VoiceSettings":
-        stt_provider = os.getenv("STT_PROVIDER", "faster_whisper").lower().strip()
-        stt_raw = os.getenv("STT_MODEL", "base")
+        settings = get_settings()
+        stt_provider = settings.stt_provider.lower().strip()
+        stt_raw = settings.stt_model
         if stt_provider == "deepgram":
             # Don't normalize — Deepgram models have their own naming (nova-2, nova-3, etc.)
             stt_model = stt_raw.strip() or "nova-2"
@@ -166,26 +169,27 @@ class VoiceSettings:
             normalized = stt_raw.strip().split("#", 1)[0].strip().lower()
             if stt_model != normalized and normalized:
                 logger.warning("STT_MODEL=%r is not a valid faster-whisper size; using %r", stt_raw, stt_model)
-        raw_lang = os.getenv("LANGUAGE", "en").strip().lower().split("-")[0]
+        raw_lang = settings.language.strip().lower().split("-")[0]
         language = raw_lang if raw_lang in SUPPORTED_LANGUAGES else "en"
         return cls(
-            voice_mode=os.getenv("VOICE_MODE", "pipeline").lower(),
-            llm_model=os.getenv("LLM_MODEL", "gpt-4.1-nano"),
-            langgraph_url=os.getenv("LANGGRAPH_URL", "http://localhost:2024"),
+            voice_mode=settings.voice_mode.lower(),
+            llm_model=settings.llm_model,
+            langgraph_url=settings.langgraph_url,
             language=language,
             stt_provider=stt_provider,
             stt_model=stt_model,
-            tts_provider=os.getenv("TTS_PROVIDER", "hume"),
-            tts_model=os.getenv("TTS_MODEL", "default"),
-            tts_voice=os.getenv("TTS_VOICE", "ash"),
-            tts_base_url=os.getenv("TTS_BASE_URL") or None,
-            tts_api_key=os.getenv("TTS_API_KEY") or None,
-            openai_realtime_model=os.getenv("OPENAI_REALTIME_MODEL", "gpt-4o-mini-realtime-preview"),
-            openai_realtime_voice=os.getenv("OPENAI_REALTIME_VOICE", "alloy"),
-            gemini_live_model=os.getenv("GEMINI_LIVE_MODEL", "gemini-3.1-flash-live-preview"),
-            gemini_live_voice=os.getenv("GEMINI_LIVE_VOICE", "Puck"),
-            ultravox_model=os.getenv("ULTRAVOX_MODEL", "fixie-ai/ultravox"),
-            ultravox_voice=os.getenv("ULTRAVOX_VOICE", "Mark"),
+            tts_provider=settings.tts_provider,
+            tts_model=settings.tts_model,
+            tts_voice=settings.tts_voice,
+            tts_base_url=settings.tts_base_url or None,
+            tts_api_key=settings.tts_api_key or None,
+            nvidia_api_key=settings.nvidia_api_key or None,
+            openai_realtime_model=settings.openai_realtime_model,
+            openai_realtime_voice=settings.openai_realtime_voice,
+            gemini_live_model=settings.gemini_live_model,
+            gemini_live_voice=settings.gemini_live_voice,
+            ultravox_model=settings.ultravox_model,
+            ultravox_voice=settings.ultravox_voice,
         )
 
 

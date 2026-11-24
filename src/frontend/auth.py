@@ -12,10 +12,8 @@ from __future__ import annotations
 
 import base64
 import hashlib
-import os
 import secrets
 from dataclasses import dataclass
-from typing import Any
 
 import httpx
 import jwt
@@ -23,28 +21,49 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from jwt import PyJWKClient
 
-AUTH_TENANT_ID = os.getenv("AUTH_TENANT_ID", "")
-AUTH_DOMAIN = os.getenv("AUTH_DOMAIN", "")  # e.g. "lernmitteddyusers"
-AUTH_CLIENT_ID = os.getenv("AUTH_CLIENT_ID", "")
-AUTH_CLIENT_SECRET = os.getenv("AUTH_CLIENT_SECRET", "")
-
-_AUTHORITY = f"https://{AUTH_DOMAIN}.ciamlogin.com/{AUTH_TENANT_ID}"
-AUTHORIZATION_ENDPOINT = f"{_AUTHORITY}/oauth2/v2.0/authorize"
-TOKEN_ENDPOINT = f"{_AUTHORITY}/oauth2/v2.0/token"
-JWKS_URI = f"{_AUTHORITY}/discovery/v2.0/keys"
-ISSUER = f"https://{AUTH_TENANT_ID}.ciamlogin.com/{AUTH_TENANT_ID}/v2.0"
+from src.db.repository import upsert_user
+from src.db.session import get_session_factory
+from src.settings import get_settings
 
 _jwk_client: PyJWKClient | None = None
+_jwk_client_jwks_uri: str | None = None
 
 
 def is_configured() -> bool:
-    return bool(AUTH_TENANT_ID and AUTH_DOMAIN and AUTH_CLIENT_ID and AUTH_CLIENT_SECRET)
+    s = get_settings()
+    return bool(s.auth_tenant_id and s.auth_domain and s.auth_client_id and s.auth_client_secret)
+
+
+def _authority() -> str:
+    s = get_settings()
+    return f"https://{s.auth_domain}.ciamlogin.com/{s.auth_tenant_id}"
+
+
+def _authorization_endpoint() -> str:
+    return f"{_authority()}/oauth2/v2.0/authorize"
+
+
+def _token_endpoint() -> str:
+    return f"{_authority()}/oauth2/v2.0/token"
+
+
+def _jwks_uri() -> str:
+    return f"{_authority()}/discovery/v2.0/keys"
+
+
+def _issuer() -> str:
+    s = get_settings()
+    return f"https://{s.auth_tenant_id}.ciamlogin.com/{s.auth_tenant_id}/v2.0"
 
 
 def _get_jwk_client() -> PyJWKClient:
-    global _jwk_client
-    if _jwk_client is None:
-        _jwk_client = PyJWKClient(JWKS_URI)
+    """Cached PyJWKClient, rebuilt if the configured JWKS URI ever changes
+    (e.g. between test runs with different settings)."""
+    global _jwk_client, _jwk_client_jwks_uri
+    uri = _jwks_uri()
+    if _jwk_client is None or _jwk_client_jwks_uri != uri:
+        _jwk_client = PyJWKClient(uri)
+        _jwk_client_jwks_uri = uri
     return _jwk_client
 
 
@@ -79,7 +98,7 @@ def login(request: Request) -> RedirectResponse:
     request.session["auth_code_verifier"] = code_verifier
 
     params = {
-        "client_id": AUTH_CLIENT_ID,
+        "client_id": get_settings().auth_client_id,
         "response_type": "code",
         "redirect_uri": _redirect_uri(request),
         "response_mode": "query",
@@ -88,7 +107,7 @@ def login(request: Request) -> RedirectResponse:
         "code_challenge": code_challenge,
         "code_challenge_method": "S256",
     }
-    url = f"{AUTHORIZATION_ENDPOINT}?{httpx.QueryParams(params)}"
+    url = f"{_authorization_endpoint()}?{httpx.QueryParams(params)}"
     return RedirectResponse(url)
 
 
@@ -102,12 +121,13 @@ async def callback(request: Request, code: str | None = None, state: str | None 
     if not code or not state or not expected_state or state != expected_state:
         raise HTTPException(status_code=400, detail="Invalid or missing auth state")
 
+    settings = get_settings()
     async with httpx.AsyncClient(timeout=15) as client:
         resp = await client.post(
-            TOKEN_ENDPOINT,
+            _token_endpoint(),
             data={
-                "client_id": AUTH_CLIENT_ID,
-                "client_secret": AUTH_CLIENT_SECRET,
+                "client_id": settings.auth_client_id,
+                "client_secret": settings.auth_client_secret,
                 "grant_type": "authorization_code",
                 "code": code,
                 "redirect_uri": _redirect_uri(request),
@@ -126,8 +146,8 @@ async def callback(request: Request, code: str | None = None, state: str | None 
         id_token,
         signing_key.key,
         algorithms=["RS256"],
-        audience=AUTH_CLIENT_ID,
-        issuer=ISSUER,
+        audience=settings.auth_client_id,
+        issuer=_issuer(),
     )
 
     user_id = claims.get("oid") or claims.get("sub")
@@ -135,6 +155,13 @@ async def callback(request: Request, code: str | None = None, state: str | None 
     email = (claims.get("emails") or [None])[0]
 
     request.session["user"] = {"user_id": user_id, "display_name": display_name, "email": email}
+
+    db = get_session_factory()()
+    try:
+        upsert_user(db, user_id=user_id, display_name=display_name, email=email)
+    finally:
+        db.close()
+
     return RedirectResponse("/")
 
 

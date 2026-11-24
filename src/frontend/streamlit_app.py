@@ -10,10 +10,13 @@ from pathlib import Path
 import streamlit as st
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # must run before src.settings reads the environment
 
-FASTAPI_PORT = int(os.getenv("FRONTEND_PORT", "8080"))
-FASTAPI_URL = os.getenv("FRONTEND_URL", f"http://127.0.0.1:{FASTAPI_PORT}")
+from src.settings import get_settings  # noqa: E402
+
+_settings = get_settings()
+FASTAPI_PORT = _settings.frontend_port
+FASTAPI_URL = _settings.frontend_url or f"http://127.0.0.1:{FASTAPI_PORT}"
 
 
 def _project_root() -> Path:
@@ -56,7 +59,7 @@ uv run python -m src.frontend.native_client
 
 with tab_web:
     st.markdown(
-        f"""
+        """
         The **FastAPI** app serves the same flow as
         [langgraph-voice-call-agent-web](https://github.com/ahmad2b/langgraph-voice-call-agent-web):
         token API + LiveKit voice call in the browser.

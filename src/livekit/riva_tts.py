@@ -10,16 +10,15 @@ import asyncio
 import logging
 import uuid
 
-from livekit.agents import APIConnectOptions, DEFAULT_API_CONNECT_OPTIONS
+from livekit.agents import DEFAULT_API_CONNECT_OPTIONS, APIConnectOptions
 from livekit.agents import tts as tts_base
 from livekit.agents.tts import AudioEmitter
 
+from src.settings import get_settings
+
 logger = logging.getLogger(__name__)
 
-import os
-
 _RIVA_SERVER = "grpc.nvcf.nvidia.com:443"
-_FUNCTION_ID = os.getenv("NVIDIA_TTS_FUNCTION_ID", "ddacc747-1269-4fab-bfd9-8f593dead106")
 _SAMPLE_RATE = 22050
 _NUM_CHANNELS = 1
 
@@ -88,7 +87,7 @@ class RivaChunkedStream(tts_base.ChunkedStream):
             auth = riva.client.Auth(
                 use_ssl=True,
                 metadata_args=[
-                    ["function-id", _FUNCTION_ID],
+                    ["function-id", get_settings().nvidia_tts_function_id],
                     ["authorization", f"Bearer {self._riva_tts._api_key}"],
                 ],
                 uri=_RIVA_SERVER,

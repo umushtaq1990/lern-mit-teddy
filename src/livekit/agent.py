@@ -17,6 +17,7 @@ import asyncio
 import json
 import logging
 import uuid
+from datetime import datetime, timezone
 
 from dotenv import load_dotenv
 from livekit.agents import (
@@ -31,13 +32,16 @@ from livekit.agents import (
 from livekit.agents.voice.turn import InterruptionOptions, TurnHandlingOptions
 from livekit.plugins import deepgram as deepgram_plugin
 from livekit.plugins import silero
-from src.langgraph.agent import agent as lingua_graph
+
+from src.db.repository import upsert_session
+from src.db.session import get_session_factory
+from src.langgraph.agent import get_agent as _get_lingua_graph
+
 from .adapter.langgraph import LangGraphAdapter
 from .config import (
     DEEPGRAM_UNSUPPORTED_LANGUAGES,
     FASTER_WHISPER_FALLBACK_DEFAULT,
     FASTER_WHISPER_FALLBACK_MODEL,
-    SUPPORTED_LANGUAGES,
     CallConfig,
     VoiceSettings,
 )
@@ -147,6 +151,16 @@ async def entrypoint(ctx: JobContext) -> None:
     session_id = participant.metadata or ctx.room.name
     thread_id = str(uuid.uuid5(uuid.NAMESPACE_URL, session_id))
 
+    _track_session(
+        session_id=session_id,
+        user_id=participant.identity,
+        room=ctx.room.name,
+        language=cfg.language,
+        native_language=cfg.native_language,
+        started_at=datetime.now(timezone.utc),
+        llm_model=_SETTINGS.llm_model,
+    )
+
     logger.info(
         "Room=%s participant=%s mode=%s stt=%s tts=%s language=%s",
         ctx.room.name, participant.identity,
@@ -220,6 +234,37 @@ async def entrypoint(ctx: JobContext) -> None:
         if pipeline_tracer:
             pipeline_tracer.flush()
         await agent.cleanup()
+        _track_session(session_id=session_id, ended_at=datetime.now(timezone.utc))
+
+
+def _track_session(
+    *,
+    session_id: str,
+    user_id: str | None = None,
+    room: str | None = None,
+    language: str | None = None,
+    native_language: str | None = None,
+    started_at: datetime | None = None,
+    ended_at: datetime | None = None,
+    llm_model: str | None = None,
+) -> None:
+    """Best-effort local DB write — see src/db/repository.py's module
+    docstring for why this never raises into the caller."""
+    db = get_session_factory()()
+    try:
+        upsert_session(
+            db,
+            session_id=session_id,
+            user_id=user_id,
+            room=room,
+            language=language,
+            native_language=native_language,
+            started_at=started_at,
+            ended_at=ended_at,
+            llm_model=llm_model,
+        )
+    finally:
+        db.close()
 
 
 # ── Session builders ───────────────────────────────────────────────────────────
@@ -259,7 +304,7 @@ def _build_pipeline_session(
         tts_model=cfg.tts_label,
     )
 
-    graph = lingua_graph
+    graph = _get_lingua_graph()
 
     async def _publish_caption(translation: str, turn_id: str) -> None:
         """Forward a silent translation caption to the frontend (never spoken by TTS).

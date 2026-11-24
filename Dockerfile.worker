@@ -20,12 +20,10 @@ RUN uv sync --frozen --no-editable
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Download the VAD model during image build to reduce cold starts.
-# OPENAI_API_KEY here is a build-time-only placeholder: importing src.livekit.agent
-# transitively imports src/langgraph/agent.py, which constructs ChatOpenAI(...) at
-# module load time — its constructor validates that *some* key string is present,
-# even though no API call is actually made by "download-files". Without this, the
-# build fails in any CI/CD environment that (correctly) has no secrets at build time.
-RUN OPENAI_API_KEY=build-time-placeholder-not-a-real-key python -m src.livekit.agent download-files
+# Download the VAD model during image build to reduce cold starts. Importing
+# src.livekit.agent no longer constructs a real ChatOpenAI client at import
+# time (src/langgraph/agent.py builds it lazily via get_agent()), so this
+# needs no placeholder API key.
+RUN python -m src.livekit.agent download-files
 
 CMD ["python", "-m", "src.livekit.agent", "start"]

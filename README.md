@@ -119,11 +119,15 @@ OPENAI_API_KEY=your_openai_api_key
 LANGUAGE=de
 ```
 
-### 3. Start LiveKit (Docker)
+### 3. Start the local stack (Docker)
 
 ```bash
-docker compose up -d
+docker compose up -d livekit db
 ```
+
+This brings up the self-hosted LiveKit dev server (`ws://localhost:7880`, keys `devkey`/`secret` — set these as `LIVEKIT_URL`/`LIVEKIT_API_KEY`/`LIVEKIT_API_SECRET` in `.env` to use it instead of LiveKit Cloud) and a local Postgres DB for user/session tracking.
+
+Run `docker compose up -d` with no service names to additionally bring up Grafana (`http://localhost:3001`, anonymous viewer access), Prometheus (`http://localhost:9091`), and MLflow (`http://localhost:5001`) alongside containerized `frontend`/`worker` — the full local observability stack, all from one command. (Ports are offset from their defaults — 3001/9091/5001 instead of 3000/9090/5000 — in case you already run another Grafana/Prometheus/MLflow locally.) See `docker-compose.yml`.
 
 ### 4. Download VAD model (first run only)
 

@@ -2,26 +2,34 @@
 
 from __future__ import annotations
 
-import os
+import logging
+import time
+import uuid
 from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
 
-load_dotenv()  # must run before importing .auth, which reads env vars at module load time
+load_dotenv()  # must run before src.settings reads the environment
 
 from fastapi import FastAPI, HTTPException, Request  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 from fastapi.responses import FileResponse  # noqa: E402
 from fastapi.staticfiles import StaticFiles  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
+from prometheus_fastapi_instrumentator import Instrumentator  # noqa: E402
 from starlette.middleware.sessions import SessionMiddleware  # noqa: E402
+
+from src.settings import get_settings  # noqa: E402
 
 from . import auth  # noqa: E402
 from .token import ConnectionDetails, create_connection_details  # noqa: E402
 
+request_logger = logging.getLogger("request")
+
 STATIC_DIR = Path(__file__).resolve().parent / "static"
-DEFAULT_PORT = int(os.getenv("FRONTEND_PORT", "8080"))
+_settings = get_settings()
+DEFAULT_PORT = _settings.frontend_port
 
 app = FastAPI(
     title="LangGraph Voice Frontend",
@@ -36,12 +44,29 @@ app.add_middleware(
 )
 app.add_middleware(
     SessionMiddleware,
-    secret_key=os.getenv("AUTH_SESSION_SECRET", "dev-only-insecure-secret"),
+    secret_key=_settings.auth_session_secret,
     max_age=30 * 24 * 3600,  # 30 days — logged-in users stay logged in across visits
     same_site="lax",
-    https_only=os.getenv("SESSION_COOKIE_SECURE", "true").lower() in ("1", "true", "yes"),
+    https_only=_settings.session_cookie_secure,
 )
 app.include_router(auth.router)
+
+Instrumentator().instrument(app).expose(app, endpoint="/metrics", include_in_schema=False)
+
+
+@app.middleware("http")
+async def _log_requests(request: Request, call_next):
+    request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+    start = time.monotonic()
+    response = await call_next(request)
+    duration_ms = round((time.monotonic() - start) * 1000, 2)
+    response.headers["X-Request-ID"] = request_id
+    request_logger.info(
+        "%s %s -> %s (%sms)",
+        request.method, request.url.path, response.status_code, duration_ms,
+        extra={"request_id": request_id},
+    )
+    return response
 
 
 class RoomAgentConfig(BaseModel):
@@ -105,7 +130,7 @@ def connection_details(request: Request, body: ConnectionDetailsRequest | None =
 
     try:
         room_config: dict[str, Any] | None = None
-        agent_name = os.getenv("LIVEKIT_AGENT_NAME") or None
+        agent_name = _settings.livekit_agent_name or None
         voice_cfg: dict[str, Any] | None = None
 
         if body:
@@ -135,17 +160,18 @@ def submit_feedback(body: FeedbackRequest) -> dict[str, str]:
     Strategy: look up the voice session trace by session_id, then score it.
     If not found, create a lightweight feedback trace so the score has a valid trace_id.
     """
-    pk = os.getenv("LANGFUSE_PUBLIC_KEY")
-    sk = os.getenv("LANGFUSE_SECRET_KEY")
+    pk = _settings.langfuse_public_key
+    sk = _settings.langfuse_secret_key
     if not pk or not sk:
         return {"status": "skipped", "reason": "Langfuse not configured"}
     try:
-        import urllib.request
-        import urllib.parse
         import base64
+        import urllib.parse
+        import urllib.request
+
         from langfuse import Langfuse
 
-        host = os.getenv("LANGFUSE_HOST") or os.getenv("LANGFUSE_BASE_URL") or "https://cloud.langfuse.com"
+        host = _settings.langfuse_host or _settings.langfuse_base_url or "https://cloud.langfuse.com"
         lf = Langfuse(public_key=pk, secret_key=sk, host=host)
 
         # Find the existing voice session trace for this room so the score
@@ -228,9 +254,9 @@ def main() -> None:
 
     uvicorn.run(
         "src.frontend.server:app",
-        host=os.getenv("FRONTEND_HOST", "127.0.0.1"),
+        host=_settings.frontend_host,
         port=DEFAULT_PORT,
-        reload=os.getenv("FRONTEND_RELOAD", "true").lower() in ("1", "true", "yes"),
+        reload=_settings.frontend_reload,
         # Azure Container Apps terminates TLS at its ingress and forwards to this
         # container over plain HTTP — without trusting X-Forwarded-Proto, uvicorn
         # (and anything building absolute URLs, like the OAuth redirect_uri) sees

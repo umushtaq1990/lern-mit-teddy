@@ -1,23 +1,24 @@
 import asyncio
 import json
 import logging
-import os
 from pathlib import Path
+
+from ai_platform_shared.llm_client import get_chat_model
 from dotenv import load_dotenv
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import AIMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
-from ai_platform_shared.llm_client import get_chat_model
-from .prompts import build_prompt as _build_lingua_prompt
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.prebuilt import create_react_agent
+
+from src.settings import get_settings
+
 from .prompts import build_conversation_helper_prompt as _build_conversation_helper_prompt
+from .prompts import build_prompt as _build_lingua_prompt
 
 logger = logging.getLogger(__name__)
 
-load_dotenv()
-
-LLM_MODEL = os.getenv("LLM_MODEL", "gpt-4.1-nano")
+load_dotenv()  # must run before src.settings reads the environment
 
 _LANGUAGE_NAMES: dict[str, str] = {
     "en": "English",
@@ -149,7 +150,7 @@ def _vocab_progress_heuristic(messages: list, lang_code: str, set_key: str) -> t
 
 
 def _get_judge_llm() -> ChatOpenAI:
-    return get_chat_model(LLM_MODEL, temperature=0)
+    return get_chat_model(get_settings().llm_model, temperature=0)
 
 
 def _recent_transcript(messages: list, limit: int = 24) -> str:
@@ -249,12 +250,36 @@ async def _judge_vocab_progress(messages: list, lang_code: str, set_key: str) ->
 # turn's messages. One turn of staleness is invisible in practice: by the time
 # the child replies again, the background call (a single fast LLM call) has
 # almost always already finished.
-_judge_cache: dict[str, dict[str, list[str]]] = {}
-_judge_tasks: dict[tuple[str, str], asyncio.Task] = {}
+#
+# This state is deliberately process-global, not part of the LangGraph
+# checkpoint — it's judge-call bookkeeping, not conversation state — so it's
+# wrapped in a small holder with an explicit reset() instead of bare module
+# dicts, letting tests call reset_agent_caches() between runs instead of
+# silently leaking state across them.
+class _AgentRuntimeState:
+    def __init__(self) -> None:
+        self.judge_cache: dict[str, dict[str, list[str]]] = {}
+        self.judge_tasks: dict[tuple[str, str], asyncio.Task] = {}
+        self.word_attempts: dict[str, int] = {}
+
+    def reset(self) -> None:
+        self.judge_cache.clear()
+        self.judge_tasks.clear()
+        self.word_attempts.clear()
+
+
+_state = _AgentRuntimeState()
+
+
+def reset_agent_caches() -> None:
+    """Clear all process-global agent runtime state (judge cache, in-flight
+    judge tasks, word-attempt counters). Intended for test fixtures — call
+    between tests so one test's thread_id state can't affect another's."""
+    _state.reset()
 
 
 def _cached_vocab_done(thread_id: str, set_key: str) -> list[str] | None:
-    return _judge_cache.get(thread_id, {}).get(set_key)
+    return _state.judge_cache.get(thread_id, {}).get(set_key)
 
 
 def _refresh_vocab_done_async(thread_id: str, lang_code: str, set_key: str, messages: list) -> None:
@@ -263,7 +288,7 @@ def _refresh_vocab_done_async(thread_id: str, lang_code: str, set_key: str, mess
     if not thread_id:
         return
     key = (thread_id, set_key)
-    existing = _judge_tasks.get(key)
+    existing = _state.judge_tasks.get(key)
     if existing and not existing.done():
         return  # a refresh for this exact card is already in flight
 
@@ -277,27 +302,26 @@ def _refresh_vocab_done_async(thread_id: str, lang_code: str, set_key: str, mess
             # from scratch would then "forget" a word that was already verified
             # correct and re-drill it.
             items = _VOCAB_DATA.get(lang_code, {}).get(set_key, {}).get("items", [])
-            existing = set(_judge_cache.get(thread_id, {}).get(set_key, []))
+            existing = set(_state.judge_cache.get(thread_id, {}).get(set_key, []))
             merged = [w for w in items if w in existing | set(fresh)]
-            _judge_cache.setdefault(thread_id, {})[set_key] = merged
+            _state.judge_cache.setdefault(thread_id, {})[set_key] = merged
         except Exception:
             logger.warning("background vocab judge refresh failed", exc_info=True)
 
     task = asyncio.create_task(_run())
-    _judge_tasks[key] = task
+    _state.judge_tasks[key] = task
 
 
 # ── Attempt limit — force progress past a word the child is stuck on ───────
 # The correction rule below has no natural exit: without this, a child who
 # can never quite land one word would keep Teddy re-asking it forever.
 _MAX_WORD_ATTEMPTS = 3
-_word_attempts: dict[str, int] = {}
 
 
 def _bump_word_attempts(thread_id: str, set_key: str, word: str) -> int:
     key = f"{thread_id}:{set_key}:{word}"
-    _word_attempts[key] = _word_attempts.get(key, 0) + 1
-    return _word_attempts[key]
+    _state.word_attempts[key] = _state.word_attempts.get(key, 0) + 1
+    return _state.word_attempts[key]
 
 
 # Detected in code (not just left to the persona LLM to "comply" with in the
@@ -429,7 +453,7 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
                 if attempts > _MAX_WORD_ATTEMPTS or skipped_by_request:
                     just_skipped_word = remaining.pop(0)
                     done = done + [just_skipped_word]
-                    _judge_cache.setdefault(thread_id, {})[active_set] = [w for w in items if w in set(done)]
+                    _state.judge_cache.setdefault(thread_id, {})[active_set] = [w for w in items if w in set(done)]
 
             if used_default and not remaining:
                 # Greetings already fully completed and nothing else was
@@ -531,12 +555,28 @@ async def _build_prompt(state, config: RunnableConfig) -> list:
     return [SystemMessage(content=prompt)] + recent
 
 
-agent = create_react_agent(
-    model=get_chat_model(LLM_MODEL),
-    tools=[],
-    prompt=_build_prompt,
-    name="lingua_ai_agent",
-    checkpointer=MemorySaver(),
-)
+_agent = None
+
+
+def get_agent():
+    """Build (on first call) and cache the compiled LangGraph agent.
+
+    Deliberately lazy: constructing it eagerly at module import time meant
+    just `import src.langgraph.agent` built a real ChatOpenAI client, which
+    required a real-looking OPENAI_API_KEY to even be present — including at
+    Docker build time (see the download-files step in Dockerfile.worker) and
+    in any test that merely imports this module. Call this instead of
+    accessing a module-level `agent` wherever the compiled graph is needed.
+    """
+    global _agent
+    if _agent is None:
+        _agent = create_react_agent(
+            model=get_chat_model(get_settings().llm_model),
+            tools=[],
+            prompt=_build_prompt,
+            name="lingua_ai_agent",
+            checkpointer=MemorySaver(),
+        )
+    return _agent
 
 

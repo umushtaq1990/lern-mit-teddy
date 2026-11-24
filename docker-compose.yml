@@ -1,0 +1,125 @@
+services:
+  # Self-hosted LiveKit dev server (devkey/secret) — an alternative to LiveKit
+  # Cloud for fully-offline local development. Point .env's LIVEKIT_URL at
+  # ws://localhost:7880 (the browser connects to LiveKit directly, not via
+  # the frontend/worker containers, so this must be host-reachable, not the
+  # in-network "livekit" hostname) with LIVEKIT_API_KEY=devkey and
+  # LIVEKIT_API_SECRET=secret to use it instead of LiveKit Cloud.
+  livekit:
+    image: livekit/livekit-server:latest
+    restart: unless-stopped
+    command: ["--dev", "--bind", "0.0.0.0", "--keys", "devkey: secret"]
+    ports:
+      - "7880:7880"   # HTTP/WebSocket API (signaling)
+      - "7881:7881"   # TURN/TLS
+      - "7882:7882/udp"  # WebRTC media
+    volumes:
+      - livekit_data:/data
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-teddy}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teddy_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-teddy}
+    ports:
+      - "5433:5432"  # 5432 may already be taken by another local Postgres/container
+    volumes:
+      - teddy_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-teddy} -d ${POSTGRES_DB:-teddy}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-teddy}:${POSTGRES_PASSWORD:-teddy_dev_password}@db:5432/${POSTGRES_DB:-teddy}
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-teddy}:${POSTGRES_PASSWORD:-teddy_dev_password}@db:5432/${POSTGRES_DB:-teddy}
+      FRONTEND_HOST: 0.0.0.0
+      FRONTEND_PORT: "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-teddy}:${POSTGRES_PASSWORD:-teddy_dev_password}@db:5432/${POSTGRES_DB:-teddy}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  mlflow:
+    build:
+      context: ./docker/mlflow
+    ports:
+      - "5001:5000"  # 5000 may already be taken by another local MLflow/container
+    volumes:
+      - mlflow_data:/mlflow-data
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    ports:
+      - "9091:9090"  # 9090 may already be taken by another local Prometheus/container
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    # No depends_on frontend: Prometheus's own scrape retry handles frontend
+    # not being up yet — a hard dependency here would force frontend's (heavy)
+    # image to build just to start the observability services.
+
+  grafana:
+    image: grafana/grafana:11.3.1
+    ports:
+      - "3001:3000"  # 3000 may already be taken by another local Grafana/container
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      POSTGRES_USER: ${POSTGRES_USER:-teddy}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teddy_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-teddy}
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - db
+
+volumes:
+  livekit_data:
+  teddy_db_data:
+  mlflow_data:
+  prometheus_data:
+  grafana_data:

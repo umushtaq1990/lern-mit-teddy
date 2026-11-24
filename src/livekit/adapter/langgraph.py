@@ -14,35 +14,38 @@ References:
   https://github.com/langchain-ai/langgraph/blob/main/docs/docs/how-tos/use-remote-graph.md
 """
 
-from typing import Any, Awaitable, Callable, Optional
 import asyncio
 import base64
+from typing import Any, Awaitable, Callable, Optional
+
 from httpx import HTTPStatusError
 from livekit.agents import llm
+from livekit.agents.llm.tool_context import FunctionTool, RawFunctionTool, ToolChoice
 from livekit.agents.types import (
-    APIConnectOptions,
     DEFAULT_API_CONNECT_OPTIONS,
     NOT_GIVEN,
+    APIConnectOptions,
     NotGivenOr,
 )
 from livekit.agents.utils import shortuuid
-from livekit.agents.llm.tool_context import FunctionTool, RawFunctionTool, ToolChoice
-from livekit.agents.utils.images import encode, EncodeOptions
+from livekit.agents.utils.images import EncodeOptions, encode
+
 try:
     # Prefer concrete ImageContent class if available
     from livekit.agents.llm import ImageContent as LKImageContent  # type: ignore
 except Exception:  # pragma: no cover
     LKImageContent = None  # sentinel; we'll fallback to hasattr checks
-from langgraph.pregel import Pregel
-from langchain_core.messages import BaseMessageChunk, AIMessage, HumanMessage, SystemMessage, ToolMessage
-from langgraph.types import Command
-from langgraph.errors import GraphInterrupt
+import logging
+
+from langchain_core.messages import AIMessage, BaseMessageChunk, HumanMessage, SystemMessage, ToolMessage
 from langchain_openai import ChatOpenAI
+from langgraph.errors import GraphInterrupt
+from langgraph.pregel import Pregel
+from langgraph.types import Command
+
+from src.settings import get_settings
 
 from ..config import SUPPORTED_LANGUAGES
-
-import logging
-import os
 
 logger = logging.getLogger(__name__)
 
@@ -51,14 +54,13 @@ logger = logging.getLogger(__name__)
 # translation with a formatting marker proved unreliable (the model would
 # sometimes drop the marker, or let English leak into the spoken reply). A
 # second, single-purpose call has one job and nothing else to get wrong.
-_TRANSLATOR_MODEL = os.getenv("LLM_MODEL", "gpt-4o-mini")
 _translator: ChatOpenAI | None = None
 
 
 def _get_translator() -> ChatOpenAI:
     global _translator
     if _translator is None:
-        _translator = ChatOpenAI(model=_TRANSLATOR_MODEL, temperature=0)
+        _translator = ChatOpenAI(model=get_settings().llm_model, temperature=0)
     return _translator
 
 

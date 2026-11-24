@@ -3,15 +3,16 @@
 from __future__ import annotations
 
 import json
-import os
 import random
 import re
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import Any
 
-from livekit import api
 from livekit.protocol import room as proto_room
+
+from livekit import api
+from src.settings import get_settings
 
 
 @dataclass(frozen=True)
@@ -31,9 +32,8 @@ class ConnectionDetails:
 
 
 def _livekit_env() -> tuple[str, str, str]:
-    url = os.getenv("LIVEKIT_URL")
-    api_key = os.getenv("LIVEKIT_API_KEY")
-    api_secret = os.getenv("LIVEKIT_API_SECRET")
+    settings = get_settings()
+    url, api_key, api_secret = settings.livekit_url, settings.livekit_api_key, settings.livekit_api_secret
     if not url or not api_key or not api_secret:
         raise RuntimeError(
             "Set LIVEKIT_URL, LIVEKIT_API_KEY, and LIVEKIT_API_SECRET in .env"

@@ -13,8 +13,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg git && r
 # re-resolving to whatever versions happen to be newest on build day.
 RUN pip install --no-cache-dir uv==0.11.6
 
-COPY pyproject.toml uv.lock README.md ./
+COPY pyproject.toml uv.lock README.md alembic.ini ./
 COPY src ./src
+COPY alembic ./alembic
 
 RUN uv sync --frozen --no-editable
 

@@ -150,3 +150,10 @@ Desktop.ini
 # Test audio files
 *.mp3
 *.wav
+
+# Local course content / media (lectures, books) — large, not committed
+data/
+
+# Local SQLite DBs (default DATABASE_URL / MLFLOW_TRACKING_URI targets)
+*.db
+*.db-journal
