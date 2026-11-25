@@ -2,9 +2,279 @@ body {
   font-family: "Noto Nastaliq Urdu", "Segoe UI", sans-serif;
   background: #FBF8F1;
   color: #2F3B37;
-  max-width: 640px;
+  margin: 0;
+  padding: 0;
+}
+
+#app-shell {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* Panel side follows the selected language's direction: Urdu (rtl) keeps
+   the panel on the right, English (ltr) moves it to the left -- driven by
+   document.documentElement.dir, set in app.js, no per-language CSS branch
+   needed beyond this. */
+html[dir="ltr"] #app-shell {
+  flex-direction: row;
+}
+
+html[dir="rtl"] #app-shell {
+  flex-direction: row-reverse;
+}
+
+/* Fluid width on normal screens -- scales with the viewport instead of a
+   fixed pixel value, between a usable floor and a ceiling that keeps it
+   from eating the content area on very wide screens. */
+/* A fixed, viewport-locked height (not min-height) -- so a long lesson
+   list scrolls inside #sidebar-nav instead of stretching the whole page.
+   position: sticky keeps it pinned while the main content area scrolls. */
+#sidebar {
+  flex: 0 0 clamp(220px, 22vw, 320px);
+  width: clamp(220px, 22vw, 320px);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  box-sizing: border-box;
+  background: white;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+
+#sidebar-backdrop {
+  display: none;
+}
+
+html[dir="ltr"] #sidebar {
+  border-right: 1px solid #e3e9e6;
+}
+
+html[dir="rtl"] #sidebar {
+  border-left: 1px solid #e3e9e6;
+}
+
+#sidebar-user-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid #e3e9e6;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+#user-identifier {
+  font-size: 13px;
+  color: #8A9A91;
+  word-break: break-all;
+  margin: 0;
+}
+
+#sidebar-user-bar #logout-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+#sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+
+.sidebar-empty {
+  color: #8A9A91;
+  font-size: 14px;
+}
+
+#app {
+  flex: 1;
+  min-width: 0;
+  padding: 24px 32px;
+  box-sizing: border-box;
+}
+
+#app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #e3e9e6;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#app-header h1#brand {
+  margin: 0;
+  font-size: 22px;
+}
+
+#app-header #language-picker {
+  margin-bottom: 0;
+}
+
+#app > section {
+  max-width: 760px;
   margin: 0 auto;
-  padding: 24px 16px;
+}
+
+#more-menu {
+  position: relative;
+}
+
+#sidebar-toggle-btn {
+  font-size: 20px;
+  padding: 6px 12px;
+}
+
+#more-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #e3e9e6;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  min-width: 170px;
+  z-index: 60;
+  overflow: hidden;
+}
+
+#more-menu-dropdown[hidden] {
+  display: none;
+}
+
+html[dir="ltr"] #more-menu-dropdown {
+  right: 0;
+}
+
+html[dir="rtl"] #more-menu-dropdown {
+  left: 0;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  background: white;
+  color: #2F3B37;
+  border: none;
+  border-radius: 0;
+  text-align: inherit;
+  padding: 10px 16px;
+  margin: 0;
+  font-size: 15px;
+}
+
+.menu-item:hover {
+  background: #F4F8F6;
+}
+
+#info-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+#info-modal-backdrop[hidden] {
+  display: none;
+}
+
+#info-modal {
+  position: relative;
+  background: white;
+  border-radius: 14px;
+  padding: 28px 24px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#info-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 22px;
+  line-height: 1;
+}
+
+html[dir="rtl"] #info-modal-close {
+  right: auto;
+  left: 12px;
+}
+
+#info-modal-body a {
+  color: #0B6E4F;
+}
+
+/* Below this width the panel becomes an off-canvas drawer (toggled by the
+   hamburger button in the header) instead of squeezing the content column,
+   sliding in from whichever side matches the current language's direction. */
+@media (max-width: 720px) {
+  html[dir="ltr"] #app-shell,
+  html[dir="rtl"] #app-shell {
+    flex-direction: row;
+  }
+
+  #sidebar-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    padding: 6px 10px;
+  }
+
+  #sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: min(78vw, 320px);
+    flex: none;
+    min-height: 100vh;
+    z-index: 50;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+  }
+
+  html[dir="ltr"] #sidebar {
+    left: 0;
+    border-right: 1px solid #e3e9e6;
+    border-left: none;
+    transform: translateX(-100%);
+  }
+
+  html[dir="rtl"] #sidebar {
+    right: 0;
+    border-left: 1px solid #e3e9e6;
+    border-right: none;
+    transform: translateX(100%);
+  }
+
+  #sidebar.open {
+    transform: translateX(0);
+  }
+
+  #sidebar-backdrop.visible {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 40;
+  }
 }
 
 h1, h2, h3 {
@@ -56,14 +326,106 @@ button:disabled {
   color: #D4A017;
   font-weight: 700;
   text-align: center;
+  margin: 0;
+}
+
+.arabic-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin: 12px 0;
 }
 
-#question-box {
-  margin-top: 16px;
+.arabic-row[hidden] {
+  display: none;
+}
+
+#example-play-btn {
+  background: #F4F8F6;
+  color: #D4A017;
+  border: 1px solid #e3e9e6;
+  font-size: 16px;
+  padding: 6px 10px;
+  margin: 0;
+}
+
+/* A floating chat popup (LinkedIn-style), not an always-open inline block:
+   collapsed by default on every slide, opened via #chat-fab, so it never
+   competes for space with the slide content itself. */
+#question-box.chat-panel {
+  position: fixed;
+  bottom: 84px;
+  inset-inline-end: 20px;
+  width: min(360px, calc(100vw - 32px));
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  margin-top: 0;
   padding: 16px;
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.22);
+  z-index: 59;
+  display: none;
+}
+
+#question-box.chat-panel.open {
+  display: block;
+}
+
+#question-box.chat-panel[hidden] {
+  display: none;
+}
+
+.chat-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.chat-panel-header h3 {
+  margin: 0;
+}
+
+.chat-fab {
+  position: fixed;
+  bottom: 20px;
+  inset-inline-end: 20px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0B6E4F;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.chat-fab:hover {
+  background: #0d7f5a;
+}
+
+.chat-fab[hidden] {
+  display: none;
+}
+
+.chat-fab-icon {
+  font-size: 18px;
+}
+
+@media (max-width: 720px) {
+  #question-box.chat-panel {
+    bottom: 76px;
+    inset-inline-end: 12px;
+    inset-inline-start: 12px;
+    width: auto;
+  }
 }
 
 #answer-status {
@@ -85,7 +447,7 @@ button:disabled {
   gap: 6px;
 }
 
-#lessons-list .lesson-item {
+#sidebar-nav .lesson-item {
   display: block;
   flex: 1;
   width: auto;
@@ -93,12 +455,12 @@ button:disabled {
   color: #2F3B37;
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 14px 18px;
+  padding: 10px 12px;
   margin: 0;
-  font-size: 18px;
+  font-size: 14px;
 }
 
-#lessons-list .lesson-item:hover {
+#sidebar-nav .lesson-item:hover {
   border-color: #0B6E4F;
 }
 
@@ -137,9 +499,9 @@ button:disabled {
   color: #2F3B37;
   border: 1px solid #e3e9e6;
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 8px 10px;
   margin: 0;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .lesson-part-item:hover {
@@ -149,17 +511,15 @@ button:disabled {
 /* Alignment follows the selected language's direction, not a fixed
    left/right -- set dynamically via document.documentElement.dir in app.js
    so any language the registry gains later is handled automatically. */
-[dir="ltr"] #lessons-list .lesson-item,
+[dir="ltr"] #sidebar-nav .lesson-item,
 [dir="ltr"] .lesson-part-item,
-[dir="ltr"] #sentence-text,
-[dir="ltr"] #question-text-display {
+[dir="ltr"] #sentence-text {
   text-align: left;
 }
 
-[dir="rtl"] #lessons-list .lesson-item,
+[dir="rtl"] #sidebar-nav .lesson-item,
 [dir="rtl"] .lesson-part-item,
-[dir="rtl"] #sentence-text,
-[dir="rtl"] #question-text-display {
+[dir="rtl"] #sentence-text {
   text-align: right;
 }
 
@@ -181,11 +541,75 @@ button:disabled {
 }
 
 #slide-card {
+  position: relative;
   background: white;
   border-radius: 16px;
-  padding: 32px 24px;
+  padding: 44px 24px 32px;
   text-align: center;
   min-height: 220px;
+}
+
+/* Lesson title + position ("1 / 8") and the back-to-lessons arrow, tucked
+   into a small corner badge on the card instead of a separate full-width
+   line above it. inset-inline-start follows the selected language's
+   direction automatically. */
+.slide-corner-info {
+  position: absolute;
+  top: 10px;
+  inset-inline-start: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 28px);
+}
+
+.slide-back-icon {
+  flex: 0 0 auto;
+  background: #F4F8F6;
+  color: #0B6E4F;
+  border: 1px solid #e3e9e6;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1;
+}
+
+.slide-back-icon:hover {
+  border-color: #0B6E4F;
+}
+
+.slide-corner-info .progress {
+  font-size: 12px;
+  color: #8A9A91;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#part-title {
+  margin-top: 4px;
+}
+
+/* Comparison layout (today: nahw vs sarf): the illustration shrinks into a
+   corner so the two-column table owns the space, instead of sitting large
+   and centered above the content. inset-inline-end follows the selected
+   language's direction automatically -- no separate ltr/rtl rule needed. */
+#slide-card.comparison-layout #part-title {
+  margin-inline-end: 84px;
+}
+
+#slide-card.comparison-layout .slide-image,
+#slide-card.comparison-layout .slide-icon {
+  position: absolute;
+  top: 20px;
+  inset-inline-end: 20px;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  opacity: 1;
+  transform: none;
 }
 
 .slide-icon {
@@ -202,12 +626,393 @@ button:disabled {
   transform: scale(1);
 }
 
+.slide-image {
+  display: block;
+  width: 200px;
+  height: 200px;
+  max-width: 80%;
+  object-fit: contain;
+  margin: 0 auto 8px;
+  border-radius: 16px;
+  background: #F4F8F6;
+  opacity: 0;
+  transform: scale(0.7) translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.slide-image[hidden] {
+  display: none;
+}
+
+.slide-image.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.examples-section {
+  margin-top: 16px;
+}
+
+.examples-section[hidden] {
+  display: none;
+}
+
+/* Collapsed by default: the slide opens showing only the image, narration
+   and play button -- a short pill below invites the learner to expand the
+   worked examples rather than dropping all five in front of them unasked. */
+.examples-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 auto;
+  background: #F4F8F6;
+  color: #0B6E4F;
+  border: 1px solid #e3e9e6;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.examples-toggle-btn:hover {
+  border-color: #0B6E4F;
+}
+
+.examples-toggle-caret {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.examples-section:not(.collapsed) .examples-toggle-caret {
+  transform: rotate(180deg);
+}
+
+.examples-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.examples-section.collapsed .examples-list {
+  display: none;
+}
+
+.comparison-section {
+  margin: 16px 0 4px;
+}
+
+.comparison-section[hidden] {
+  display: none;
+}
+
+.comparison-hint {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #5C6B64;
+  text-align: center;
+}
+
+.comparison-hint[hidden] {
+  display: none;
+}
+
+.comparison-points {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.comparison-points[hidden] {
+  display: none;
+}
+
+.comparison-point {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #2F3B37;
+  background: #F4F8F6;
+  border-radius: 10px;
+  padding: 8px 12px;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: comparison-point-in 0.35s ease forwards;
+}
+
+@keyframes comparison-point-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comparison-point.linked {
+  cursor: pointer;
+  border: 1px solid #e3e9e6;
+}
+
+.comparison-point.linked:hover {
+  border-color: #0B6E4F;
+}
+
+/* A single tab bar shared by both columns -- selecting a word (e.g.
+   "kitab") swaps both the Nahw and the Sarf column to that word's
+   examples together, instead of each column having its own independent
+   selector. */
+.comparison-shared-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.comparison-shared-tabs[hidden] {
+  display: none;
+}
+
+.comparison-shared-tabs .comparison-tab {
+  font-size: 14px;
+  padding: 6px 18px;
+}
+
+.comparison-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  /* Grid items stretch to match the tallest sibling by default -- without
+     this, a shorter column (e.g. Nahw with a short translation) gets
+     padded with blank space at the bottom to match a taller one (e.g. Sarf
+     with a longer translation), instead of hugging its own content. */
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .comparison-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.comparison-column {
+  background: #F4F8F6;
+  border: 1px solid #e3e9e6;
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.comparison-col-label {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0B6E4F;
+}
+
+.comparison-col-desc {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #5C6B64;
+}
+
+.comparison-col-desc[hidden] {
+  display: none;
+}
+
+.comparison-col-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.comparison-col-tabs[hidden] {
+  display: none;
+}
+
+.comparison-tab {
+  background: white;
+  border: 1px solid #e3e9e6;
+  border-radius: 14px;
+  padding: 4px 12px;
+  font-size: 13px;
+  color: #2F3B37;
+}
+
+.comparison-tab.active {
+  background: #0B6E4F;
+  border-color: #0B6E4F;
+  color: white;
+}
+
+.comparison-col-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Reuses .example-card for visual consistency with the collapsed examples
+   list elsewhere, just stacked in a column instead of wrapped in a row.
+   `.example-card`'s `flex: 1 1 210px` is a WIDTH hint for its other home
+   (.examples-list, a row-direction flex container) -- but here the parent
+   is column-direction, so that same 210px flex-basis gets applied as a
+   HEIGHT instead, forcing every card to ~210px tall regardless of content.
+   Resetting flex-basis to auto (and disabling grow/shrink) makes the card
+   size to its own content's height here, as intended. */
+.comparison-col-items .example-card {
+  flex: 0 0 auto;
+  max-width: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Compact horizontal card: a small picture beside the text instead of a
+   big picture above it, sized to let several fit per row and to shrink
+   gracefully on narrow screens. */
+.example-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 1 1 210px;
+  max-width: 240px;
+  padding: 0 6px;
+  background: white;
+  border: 1px solid #e3e9e6;
+  border-radius: 12px;
+  text-align: start;
+  box-shadow: 0 1px 3px rgba(20, 40, 33, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Defensive reset: every bit of text inside a card is a <p>, and browsers
+   give <p> a ~1em top/bottom margin by default. Covering all of them here
+   (rather than relying on each class to remember margin: 0) means no
+   future text node inside a card can silently reintroduce that gap. */
+.example-card p {
+  margin: 0;
+}
+
+.example-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(20, 40, 33, 0.12);
+}
+
+.example-badge {
+  position: absolute;
+  top: -7px;
+  inset-inline-start: -7px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0B6E4F;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.example-image {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #F4F8F6;
+}
+
+.example-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.example-arabic-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Nastaliq (the site's Urdu body font) has very tall built-in line metrics
+   -- fine for Urdu prose, but it makes a single short Arabic word look like
+   it has huge padding above/below it. A plain system Arabic font (Tahoma
+   has solid Arabic glyph coverage on Windows) renders compactly instead. */
+.example-arabic {
+  font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+}
+
+.example-translit {
+  font-size: 11px;
+  font-style: italic;
+  color: #8A9A91;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.example-translation {
+  font-size: 12px;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* Revealed by clicking the speaker button -- the grammar rule behind the
+   example, kept visually distinct (a left/right accent border, not just
+   another plain line) from the plain-meaning translation above it. */
+.example-rule {
+  font-size: 11px;
+  line-height: 1.25;
+  color: #0B6E4F;
+  margin: 3px 0 0;
+  padding-inline-start: 6px;
+  border-inline-start: 2px solid #0B6E4F;
+}
+
+.example-rule[hidden] {
+  display: none;
+}
+
+.example-play-btn {
+  flex: 0 0 auto;
+  background: #F4F8F6;
+  color: #D4A017;
+  border: 1px solid #e3e9e6;
+  border-radius: 6px;
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+.example-play-btn.active {
+  background: #0B6E4F;
+  border-color: #0B6E4F;
+  color: white;
+}
+
+.example-play-btn:hover {
+  border-color: #D4A017;
+}
+
 #sentence-box {
   min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 16px 0;
+}
+
+#sentence-box[hidden] {
+  display: none;
 }
 
 .sentence {
@@ -223,9 +1028,95 @@ button:disabled {
   transform: translateY(0);
 }
 
-#answer-reveal {
-  margin-top: 16px;
-  padding: 16px;
+
+#feedback-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+#feedback-label {
+  font-size: 13px;
+  color: #8A9A91;
+}
+
+.feedback-btn {
   background: #F4F8F6;
-  border-radius: 10px;
+  color: #2F3B37;
+  border: 1px solid #e3e9e6;
+  font-size: 18px;
+  padding: 4px 12px;
+  margin: 0;
+}
+
+.feedback-btn.active {
+  background: #0B6E4F;
+  border-color: #0B6E4F;
+  color: white;
+}
+
+#part-chat-list {
+  margin-bottom: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+#part-chat-list .chat-entry:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-history-btn {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.chat-entry {
+  margin-bottom: 22px;
+}
+
+.chat-meta {
+  color: #8A9A91;
+  font-size: 13px;
+  margin: 0 0 6px;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin-bottom: 6px;
+}
+
+.chat-bubble p {
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+}
+
+.chat-bubble audio {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.chat-bubble-user {
+  background: #DCF3E7;
+  margin-left: auto;
+}
+
+.chat-bubble-answer {
+  background: #F4F8F6;
+  margin-right: auto;
+}
+
+[dir="rtl"] .chat-bubble-user {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .chat-bubble-answer {
+  margin-right: 0;
+  margin-left: auto;
 }

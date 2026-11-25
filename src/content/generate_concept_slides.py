@@ -32,19 +32,22 @@ frontend's lesson picker.
 from __future__ import annotations
 
 import asyncio
+import io
 import json
 import logging
+import re
 import sys
 import time
 from pathlib import Path
 from typing import Any
 
 import edge_tts
+from mutagen.mp3 import MP3
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from src.urdu_arabic.languages import DEFAULT_LANGUAGE, LANGUAGES  # noqa: E402
+from src.urdu_arabic.languages import DEFAULT_LANGUAGE, EXAMPLE_RATE, EXAMPLE_VOICE, LANGUAGES  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
@@ -74,8 +77,8 @@ def _load_concepts(path: Path) -> tuple[dict[str, str], list[dict[str, Any]]]:
     return data["title"], data["concepts"]
 
 
-async def _synthesize(text: str, voice: str) -> tuple[bytes, list[dict[str, float]]]:
-    communicate = edge_tts.Communicate(text, voice)
+async def _synthesize(text: str, voice: str, rate: str = "+0%") -> tuple[bytes, list[dict[str, float]]]:
+    communicate = edge_tts.Communicate(text, voice, rate=rate)
     audio = bytearray()
     boundaries: list[dict[str, float]] = []
     async for chunk in communicate.stream():
@@ -90,6 +93,82 @@ async def _synthesize(text: str, voice: str) -> tuple[bytes, list[dict[str, floa
                 }
             )
     return bytes(audio), boundaries
+
+
+# Urdu and Arabic share the same Unicode block, so "contains Arabic-range
+# characters" alone can't tell a quoted Arabic term apart from a quoted
+# Urdu phrase -- but Urdu has several letterforms Arabic doesn't use at all
+# (distinct codepoints from their Arabic look-alikes: Urdu heh goal vs
+# Arabic heh, Urdu yeh vs Arabic yeh, Urdu keheh vs Arabic kaf, retroflex
+# consonants, noon ghunna, ...). The authoring convention is that a
+# single-quoted span in an Urdu sentence is the Arabic term being taught,
+# UNLESS it's actually Urdu prose -- so "contains Arabic/Urdu-range script
+# but none of Urdu's own exclusive letters" is a reliable enough signal.
+_ARABIC_RANGE = re.compile("[؀-ۿ]")
+_URDU_SIGNATURE = re.compile("[ٹڈڑںےھگہیک]")
+_QUOTED_SPAN = re.compile(r"'([^']*)'")
+
+
+def _looks_arabic(span: str) -> bool:
+    return bool(_ARABIC_RANGE.search(span)) and not _URDU_SIGNATURE.search(span)
+
+
+# A fragment left over after splitting out quoted spans can be nothing but
+# punctuation/whitespace (e.g. the trailing "۔" after a sentence ending
+# right on a closing quote) -- that has nothing for a TTS engine to
+# pronounce and Edge TTS raises NoAudioReceived on it, so these are
+# filtered out before ever reaching _synthesize.
+_NO_LETTERS = re.compile(r"^[\s.,;:!?۔؟،\-—()\[\]'\"“”’‘]*$")
+
+
+def _is_speakable(text: str) -> bool:
+    return not _NO_LETTERS.match(text)
+
+
+def _split_segments(sentence: str) -> list[tuple[str, bool]]:
+    """Split a sentence into (text, use_arabic_voice) runs. Only the
+    single-quoted spans that look like genuine Arabic script (see
+    `_looks_arabic`) are flagged for the dedicated Arabic voice -- quoted
+    Urdu phrases, and English transliterations with internal apostrophes
+    (e.g. "fa'il", "mu'annath"), are left alone."""
+    parts = _QUOTED_SPAN.split(sentence)
+    segments: list[tuple[str, bool]] = []
+    for i, chunk in enumerate(parts):
+        if not chunk or not _is_speakable(chunk):
+            continue
+        is_quoted = i % 2 == 1
+        segments.append((chunk, is_quoted and _looks_arabic(chunk)))
+    return segments
+
+
+def _mp3_duration(data: bytes) -> float:
+    return MP3(io.BytesIO(data)).info.length
+
+
+async def _synthesize_mixed_sentence(sentence: str, main_voice: str) -> tuple[bytes, float]:
+    """Synthesize one sentence as a sequence of per-segment TTS calls, each
+    in whichever voice (main narration voice, or the dedicated Arabic voice)
+    fits that segment, concatenated back together. Duration is measured
+    from the actual audio rather than relying on Edge TTS's SentenceBoundary
+    events, since those only apply within a single Communicate stream."""
+    segments = _split_segments(sentence)
+    if not segments:
+        return b"", 0.0
+    audio_chunks: list[bytes] = []
+    total_duration = 0.0
+    for text, is_arabic in segments:
+        voice = EXAMPLE_VOICE if is_arabic else main_voice
+        rate = EXAMPLE_RATE if is_arabic else "+0%"
+        try:
+            audio_bytes, _ = await _synthesize(text, voice, rate=rate)
+        except Exception:
+            logger.warning("segment synthesis failed, skipping just this segment: %r", text)
+            continue
+        if not audio_bytes:
+            continue
+        audio_chunks.append(audio_bytes)
+        total_duration += _mp3_duration(audio_bytes)
+    return b"".join(audio_chunks), total_duration
 
 
 def _ensure_full_stop(sentence: str, language: str) -> str:
@@ -123,19 +202,44 @@ def _migrate_legacy_part(part: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+async def _build_narration_mixed_voice(sentences: list[str], language: str) -> tuple[bytes, list[dict[str, float]]]:
+    """Per-sentence synthesis with per-segment voice switching (see
+    `_synthesize_mixed_sentence`), for languages where a quoted span can
+    reliably be told apart as genuine Arabic script (today: Urdu only --
+    see `_build_narration`). Boundaries are measured from the actual
+    rendered audio instead of Edge TTS's SentenceBoundary events, since
+    those don't apply across multiple concatenated Communicate streams."""
+    main_voice = LANGUAGES[language]["voice"]
+    audio_chunks: list[bytes] = []
+    boundaries: list[dict[str, float]] = []
+    cursor = 0.0
+    for raw_sentence in sentences:
+        sentence = _ensure_full_stop(raw_sentence, language)
+        audio_bytes, duration = await _synthesize_mixed_sentence(sentence, main_voice)
+        if not audio_bytes:
+            continue
+        audio_chunks.append(audio_bytes)
+        boundaries.append({"text": raw_sentence, "start": cursor, "end": cursor + duration})
+        cursor += duration
+    return b"".join(audio_chunks), boundaries
+
+
 def _build_narration(
     lesson_id: str, part_id: str, language: str, sentences: list[str]
 ) -> dict[str, Any]:
-    voice = LANGUAGES[language]["voice"]
-    narration_text = " ".join(_ensure_full_stop(s, language) for s in sentences)
-    audio_bytes, boundaries = asyncio.run(_synthesize(narration_text, voice))
+    if language == "ur":
+        audio_bytes, boundaries = asyncio.run(_build_narration_mixed_voice(sentences, language))
+    else:
+        voice = LANGUAGES[language]["voice"]
+        narration_text = " ".join(_ensure_full_stop(s, language) for s in sentences)
+        audio_bytes, boundaries = asyncio.run(_synthesize(narration_text, voice))
 
     part_audio_dir = AUDIO_DIR / lesson_id
     part_audio_dir.mkdir(parents=True, exist_ok=True)
     audio_path = part_audio_dir / f"{part_id}-{language}.mp3"
     audio_path.write_bytes(audio_bytes)
 
-    # Fallback timing (even spacing) if Edge TTS gave no boundaries for this voice/text.
+    # Fallback timing (even spacing) if no boundaries came out of either path.
     if not boundaries:
         boundaries = [
             {"text": s, "start": i * 3.0, "end": (i + 1) * 3.0} for i, s in enumerate(sentences)
@@ -145,6 +249,58 @@ def _build_narration(
         "audio_url": f"/content/audio/{lesson_id}/{part_id}-{language}.mp3",
         "sentences": boundaries,
     }
+
+
+def _build_example_audio(lesson_id: str, part_id: str, arabic_example: str) -> str:
+    audio_bytes, _ = asyncio.run(_synthesize(arabic_example, EXAMPLE_VOICE, rate=EXAMPLE_RATE))
+    part_audio_dir = AUDIO_DIR / lesson_id
+    part_audio_dir.mkdir(parents=True, exist_ok=True)
+    audio_path = part_audio_dir / f"{part_id}-example.mp3"
+    audio_path.write_bytes(audio_bytes)
+    return f"/content/audio/{lesson_id}/{part_id}-example.mp3"
+
+
+def _build_example_entry_audio(lesson_id: str, part_id: str, example_id: str, arabic_text: str) -> str:
+    audio_bytes, _ = asyncio.run(_synthesize(arabic_text, EXAMPLE_VOICE, rate=EXAMPLE_RATE))
+    part_audio_dir = AUDIO_DIR / lesson_id
+    part_audio_dir.mkdir(parents=True, exist_ok=True)
+    audio_path = part_audio_dir / f"{part_id}-{example_id}.mp3"
+    audio_path.write_bytes(audio_bytes)
+    return f"/content/audio/{lesson_id}/{part_id}-{example_id}.mp3"
+
+
+def _build_examples(
+    lesson_id: str, part_id: str, source_examples: list[dict[str, Any]], existing_examples: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Each concept can carry several worked vocabulary/grammar examples
+    (Arabic phrase + transliteration + per-language translation), each with
+    its own slow-paced Arabic audio clip and its own picture (the picture is
+    filled in later by generate_concept_images.py, not here). Resumable per
+    example id, same pattern as the rest of this pipeline."""
+    existing_by_id = {e["id"]: e for e in existing_examples}
+    built = []
+    for example in source_examples:
+        example_id = example["id"]
+        current = dict(existing_by_id.get(example_id, {}))
+        current["id"] = example_id
+        current["arabic"] = example["arabic"]
+        current["transliteration"] = example.get("transliteration")
+        current["translation"] = example.get("translation", {})
+        current["rule"] = example.get("rule", {})
+        if not current.get("audio_url"):
+            try:
+                current["audio_url"] = _build_example_entry_audio(
+                    lesson_id, part_id, example_id, example["arabic"]
+                )
+                logger.info("%s/%s: synthesized example audio for %s", lesson_id, part_id, example_id)
+            except Exception:
+                current["audio_url"] = None
+                logger.exception(
+                    "%s/%s: failed to synthesize example audio for %s", lesson_id, part_id, example_id
+                )
+        current.setdefault("image_url", None)
+        built.append(current)
+    return built
 
 
 def _build_part(
@@ -164,6 +320,30 @@ def _build_part(
             "question": {},
             "narration": {},
         }
+
+    if part.get("arabic_example") and "example_audio_url" not in part:
+        try:
+            part["example_audio_url"] = _build_example_audio(lesson_id, part_id, part["arabic_example"])
+            logger.info("%s/%s: synthesized Arabic example audio", lesson_id, part_id)
+        except Exception:
+            # Permanent, not retried forever -- some "examples" are bare
+            # diacritic marks (e.g. tanween shapes) with nothing a TTS
+            # engine can pronounce, not a transient failure.
+            part["example_audio_url"] = None
+            logger.exception("%s/%s: failed to synthesize example audio, leaving it unset", lesson_id, part_id)
+
+    source_examples = concept.get("examples")
+    if source_examples:
+        part["examples"] = _build_examples(lesson_id, part_id, source_examples, part.get("examples", []))
+
+    # Plain passthrough data (not generated/synthesized) -- an optional
+    # alternate slide template, e.g. a two-column "A vs B" comparison table
+    # for concepts that are fundamentally a contrast rather than a narrated
+    # sequence. Re-synced from concept_source every run since it's cheap.
+    if concept.get("layout"):
+        part["layout"] = concept["layout"]
+    if concept.get("comparison"):
+        part["comparison"] = concept["comparison"]
 
     for language in LANGUAGES:
         if language in part["narration"]:
@@ -190,13 +370,24 @@ def _load_existing_lesson(out_path: Path) -> dict[str, Any] | None:
     return json.loads(out_path.read_text(encoding="utf-8"))
 
 
-def _needs_work(lesson: dict[str, Any] | None, concept_count: int) -> bool:
+def _needs_work(lesson: dict[str, Any] | None, concepts: list[dict[str, Any]]) -> bool:
     if lesson is None:
         return True
-    if len(lesson.get("parts", [])) < concept_count:
+    if len(lesson.get("parts", [])) < len(concepts):
         return True
-    for part in lesson["parts"]:
+    for part, concept in zip(lesson["parts"], concepts):
         if _is_legacy_part(part) or set(LANGUAGES) - set(part.get("narration", {})):
+            return True
+        if part.get("arabic_example") and "example_audio_url" not in part:
+            return True
+        existing_examples = {e["id"]: e for e in part.get("examples", [])}
+        for example in concept.get("examples", []):
+            existing = existing_examples.get(example["id"])
+            if existing is None or not existing.get("audio_url"):
+                return True
+        if concept.get("layout") and part.get("layout") != concept.get("layout"):
+            return True
+        if concept.get("comparison") and part.get("comparison") != concept.get("comparison"):
             return True
     return False
 
@@ -208,7 +399,7 @@ def _process_lecture(path: Path) -> None:
     title, concepts = _load_concepts(path)
     existing_lesson = _load_existing_lesson(out_path)
 
-    if not _needs_work(existing_lesson, len(concepts)):
+    if not _needs_work(existing_lesson, concepts):
         logger.info("Skipping %s (already complete for all languages)", lesson_id)
         return
 

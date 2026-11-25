@@ -80,6 +80,45 @@ services:
       migrate:
         condition: service_completed_successfully
 
+  urdu-arabic:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-teddy}:${POSTGRES_PASSWORD:-teddy_dev_password}@db:5432/${POSTGRES_DB:-teddy}
+      URDU_ARABIC_HOST: 0.0.0.0
+      URDU_ARABIC_PORT: "8090"
+    command: ["python", "-m", "src.urdu_arabic.server"]
+    ports:
+      - "8090:8090"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  urdu-arabic-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-teddy}:${POSTGRES_PASSWORD:-teddy_dev_password}@db:5432/${POSTGRES_DB:-teddy}
+    command: ["python", "-m", "src.urdu_arabic.worker"]
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
   mlflow:
     build:
       context: ./docker/mlflow

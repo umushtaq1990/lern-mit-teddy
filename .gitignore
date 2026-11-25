@@ -151,9 +151,17 @@ Desktop.ini
 *.mp3
 *.wav
 
-# ...except the generated curriculum audio itself -- this is shipped content
-# the app serves, not a test artifact (~21MB for all 26 lectures x 2 languages).
-!src/urdu_arabic/content_data/audio/**/*.mp3
+# Generated Urdu-Arabic lesson content (synthesized audio, AI-generated
+# illustrations, and the lecture-NN.json/manifest.json files the content
+# pipeline produces from src/content/concept_source/*.json) -- regenerable
+# locally via generate_concept_slides.py / generate_concept_images.py, kept
+# out of git since it's large binary/derived output, not authored source.
+# The hand-authored concept_source/*.json files are NOT covered by this and
+# stay tracked normally.
+src/urdu_arabic/content_data/audio/
+src/urdu_arabic/content_data/images/
+src/urdu_arabic/content_data/lecture-*.json
+src/urdu_arabic/content_data/manifest.json
 
 # Local course content / media (lectures, books) — large, not committed
 data/

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.db.models import Base
@@ -53,3 +53,38 @@ class UrduArabicQuestion(Base):
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     answered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class UrduArabicEvent(Base):
+    """Generic behavioral-analytics event log -- one row per user action
+    (login, lesson opened, part viewed, audio played, language switched,
+    chat message sent, ...). Deliberately schema-light (a free-form
+    event_type string + optional lesson/part/language + a JSON metadata
+    blob) so new event types never need a migration, just a new call site."""
+
+    __tablename__ = "urdu_arabic_events"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("urdu_arabic_users.id"), nullable=True)
+    event_type: Mapped[str] = mapped_column(String(50))
+    lesson_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    part_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    language: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    metadata_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class UrduArabicFeedback(Base):
+    """One thumbs up/down per (user, lesson, part) -- re-rating the same
+    part overwrites the previous value rather than piling up rows."""
+
+    __tablename__ = "urdu_arabic_feedback"
+    __table_args__ = (UniqueConstraint("user_id", "lesson_id", "part_id", name="uq_urdu_arabic_feedback_user_part"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("urdu_arabic_users.id"))
+    lesson_id: Mapped[str] = mapped_column(String(100))
+    part_id: Mapped[str] = mapped_column(String(100))
+    rating: Mapped[str] = mapped_column(String(10))  # "up" | "down"
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

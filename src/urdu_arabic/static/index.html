@@ -3,67 +3,149 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>اردو میں عربی سیکھیں</title>
+  <title>لسان — اردو میں عربی سیکھیں</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <main id="app">
-    <div id="language-picker" class="row"></div>
-
-    <section id="login-view">
-      <h1>اردو میں عربی سیکھیں</h1>
-      <p>اپنا فون نمبر یا ای میل درج کریں</p>
-      <input id="login-identifier" type="text" placeholder="phone or email">
-      <button id="request-otp-btn">کوڈ بھیجیں</button>
-
-      <div id="otp-box" hidden>
-        <p>کوڈ درج کریں (سرور لاگ میں دیکھیں)</p>
-        <input id="otp-code" type="text" placeholder="123456">
-        <button id="verify-otp-btn">تصدیق کریں</button>
+  <div id="app-shell">
+    <aside id="sidebar" hidden>
+      <div id="sidebar-user-bar">
+        <p id="user-identifier"></p>
+        <button id="logout-btn" class="link-btn">لاگ آؤٹ</button>
       </div>
-    </section>
+      <button id="sidebar-history-btn" class="lesson-item sidebar-history-btn">گفتگو کی تاریخ</button>
+      <nav id="sidebar-nav" aria-label="lessons"></nav>
+    </aside>
+    <div id="sidebar-backdrop"></div>
 
-    <section id="lessons-view" hidden>
-      <h2>اسباق</h2>
-      <div id="lessons-list"></div>
-    </section>
+    <main id="app">
+      <header id="app-header">
+        <div id="more-menu">
+          <button id="sidebar-toggle-btn" hidden aria-label="menu">&#9776;</button>
+          <div id="more-menu-dropdown" hidden>
+            <button id="about-link" class="menu-item">تعارف</button>
+            <button id="contact-link" class="menu-item">رابطہ کریں</button>
+          </div>
+        </div>
+        <h1 id="brand">لسان</h1>
+        <div id="language-picker" class="row"></div>
+      </header>
 
-    <section id="slide-view" hidden>
-      <button id="back-to-lessons-btn" class="link-btn">&larr; اسباق کی فہرست</button>
-      <p class="progress" id="slide-progress"></p>
+      <section id="login-view">
+        <h1>لسان — اردو میں عربی سیکھیں</h1>
+        <p>اپنا فون نمبر یا ای میل درج کریں</p>
+        <input id="login-identifier" type="text" placeholder="phone or email">
+        <button id="request-otp-btn">کوڈ بھیجیں</button>
 
+        <div id="otp-box" hidden>
+          <p>کوڈ درج کریں (سرور لاگ میں دیکھیں)</p>
+          <input id="otp-code" type="text" placeholder="123456">
+          <button id="verify-otp-btn">تصدیق کریں</button>
+        </div>
+      </section>
+
+      <section id="lessons-view" hidden>
+        <h2>اسباق</h2>
+        <p id="lessons-welcome-text">بائیں پینل سے کوئی سبق یا موضوع منتخب کریں۔</p>
+      </section>
+
+      <section id="history-view" hidden>
+        <h2 id="history-heading">گفتگو کی تاریخ</h2>
+        <div id="history-list"></div>
+      </section>
+
+      <section id="slide-view" hidden>
       <div id="slide-card">
-        <div id="slide-icon" class="slide-icon"></div>
-        <p class="arabic" id="part-arabic"></p>
+        <div class="slide-corner-info">
+          <button id="back-to-lessons-btn" class="slide-back-icon" aria-label="back">&#8678;</button>
+          <span class="progress" id="slide-progress"></span>
+        </div>
         <h3 id="part-title"></h3>
+        <img id="slide-image" class="slide-image" hidden alt="">
+        <div id="slide-icon" class="slide-icon"></div>
+
+        <div class="arabic-row" id="arabic-row">
+          <p class="arabic" id="part-arabic"></p>
+          <button id="example-play-btn" hidden aria-label="play example">&#128264;</button>
+          <audio id="example-audio"></audio>
+        </div>
 
         <div id="sentence-box">
           <p id="sentence-text" class="sentence fade"></p>
         </div>
 
+        <div id="comparison-section" class="comparison-section" hidden>
+          <ul id="comparison-points" class="comparison-points" hidden></ul>
+          <p id="comparison-hint" class="comparison-hint" hidden></p>
+          <div id="comparison-shared-tabs" class="comparison-shared-tabs" hidden></div>
+          <div class="comparison-columns">
+            <div class="comparison-column">
+              <h4 class="comparison-col-label" id="comparison-col-0-label"></h4>
+              <p class="comparison-col-desc" id="comparison-col-0-desc" hidden></p>
+              <div class="comparison-col-tabs" id="comparison-col-0-tabs" hidden></div>
+              <div class="comparison-col-items" id="comparison-col-0-items"></div>
+            </div>
+            <div class="comparison-column">
+              <h4 class="comparison-col-label" id="comparison-col-1-label"></h4>
+              <p class="comparison-col-desc" id="comparison-col-1-desc" hidden></p>
+              <div class="comparison-col-tabs" id="comparison-col-1-tabs" hidden></div>
+              <div class="comparison-col-items" id="comparison-col-1-items"></div>
+            </div>
+          </div>
+        </div>
+
         <button id="play-btn">&#9654; سنیں</button>
         <audio id="part-audio"></audio>
+
+        <div id="examples-section" class="examples-section collapsed" hidden>
+          <button id="examples-toggle-btn" class="examples-toggle-btn">
+            <span id="examples-toggle-label"></span>
+            <span class="examples-toggle-caret">&#9662;</span>
+          </button>
+          <div id="examples-list" class="examples-list"></div>
+        </div>
       </div>
 
-      <div id="question-box" hidden>
-        <h3>سوال</h3>
-        <p id="question-text-display"></p>
-        <textarea id="question-answer" placeholder="یہاں اپنا جواب لکھیں..."></textarea>
+      <div id="question-box" class="chat-panel" hidden>
+        <div class="chat-panel-header">
+          <h3 id="chat-heading">چیٹ</h3>
+          <button id="chat-close-btn" class="link-btn" aria-label="close">&times;</button>
+        </div>
+
+        <div id="feedback-row">
+          <span id="feedback-label"></span>
+          <button id="thumbs-up-btn" class="feedback-btn" data-rating="up" aria-label="thumbs up">&#128077;</button>
+          <button id="thumbs-down-btn" class="feedback-btn" data-rating="down" aria-label="thumbs down">&#128078;</button>
+        </div>
+
+        <div id="part-chat-list"></div>
+
+        <textarea id="question-answer" placeholder="یہاں لکھیں..."></textarea>
         <div class="row">
           <button id="record-btn">&#127908; ریکارڈ کریں</button>
           <button id="stop-record-btn" hidden>&#9209; روکیں</button>
-          <button id="submit-answer-btn">جمع کروائیں</button>
-          <button id="skip-btn" class="link-btn">چھوڑ دیں</button>
+          <button id="submit-answer-btn">بھیجیں</button>
         </div>
         <p id="answer-status"></p>
-        <div id="answer-reveal" hidden>
-          <p id="answer-reveal-text"></p>
-          <audio id="answer-reveal-audio" controls></audio>
-        </div>
-        <button id="next-part-btn" hidden>اگلا تصور &larr;</button>
+        <button id="next-part-btn">اگلا تصور &larr;</button>
       </div>
-    </section>
-  </main>
+
+      <button id="chat-fab" class="chat-fab" hidden>
+        <span class="chat-fab-icon">&#128172;</span>
+        <span id="chat-fab-label"></span>
+      </button>
+      </section>
+    </main>
+  </div>
+
+  <div id="info-modal-backdrop" hidden>
+    <div id="info-modal">
+      <button id="info-modal-close" class="link-btn" aria-label="close">&times;</button>
+      <h2 id="info-modal-title"></h2>
+      <div id="info-modal-body"></div>
+    </div>
+  </div>
+
   <script src="/app.js"></script>
 </body>
 </html>

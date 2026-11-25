@@ -9,24 +9,337 @@
         "ur": "نحو اور صرف میں فرق",
         "en": "The Difference Between Nahw and Sarf"
       },
-      "arabic_example": "نحو / صرف",
+      "arabic_example": "الكِتَابُ / الكِتَابَ — كَتَبَ ← يَكْتُبُ",
       "sentences": [
         {
           "ur": "عربی گرامر کی دو بڑی شاخیں ہیں: نحو اور صرف۔",
           "en": "Arabic grammar has two major branches: nahw (syntax) and sarf (morphology)."
         },
         {
-          "ur": "نحو الفاظ کے آخر اور جملے کی ساخت کا مطالعہ ہ۔",
+          "ur": "نحو کو ٹریفک کے قوانین کی طرح سمجھیں — یہ طے کرتا ہے کہ جملے میں الفاظ ایک دوسرے سے کیسے جڑتے ہیں، اور ہر لفظ کا آخری حرف اس کے کردار کے مطابق کیسے بدلتا ہے۔",
+          "en": "Think of nahw like traffic rules for a sentence: it decides how words relate to each other, and how each word's ending changes based on its job in the sentence."
+        },
+        {
+          "ur": "صرف کو ایک فیکٹری کی طرح سمجھیں — یہ تین بنیادی حروف کی ایک جڑ سے بہت سے الفاظ اور فعل کی مختلف شکلیں بناتی ہے۔",
+          "en": "Think of sarf like a word factory: it takes a root of three letters and builds many related words and verb forms from it."
+        },
+        {
+          "ur": "نحو الفاظ کے آخر اور جملے کی ساخت کا مطالعہ ہے۔",
           "en": "Nahw is the study of word endings and sentence structure."
         },
         {
-          "ur": "صرف فعل کی تصریف اور الفاظ کی ساخت کا مطالعہ ہ۔",
-          "en": "Sarf is the study of verb conjugation and word formation."
+          "ur": "صرف فعل کی تصریف اور الفاظ کی ساخت کا مطالعہ ہے۔ نیچے دی گئی پانچ مثالوں میں دونوں خیال حقیقی جملوں میں دیکھیں۔",
+          "en": "Sarf is the study of verb conjugation and word formation. Look at the five examples below to see both ideas at work in real sentences."
         }
       ],
       "question": {
         "ur": "نحو کس چیز کا مطالعہ کرتا ہے؟",
         "en": "What does nahw study?"
+      },
+      "examples": [
+        {
+          "id": "ex-1",
+          "arabic": "اَلْكِتَابُ جَدِيدٌ",
+          "transliteration": "al-kitabu jadidun",
+          "translation": {
+            "ur": "یہ کتاب نئی ہے۔",
+            "en": "The book is new."
+          },
+          "rule": {
+            "ur": "نحو: 'کتاب' فاعل ہے، آخر میں پیش کی آواز",
+            "en": "nahw: 'kitab' is the subject here, so it ends in -u"
+          }
+        },
+        {
+          "id": "ex-2",
+          "arabic": "قَرَأْتُ الْكِتَابَ",
+          "transliteration": "qara'tu al-kitaba",
+          "translation": {
+            "ur": "میں نے کتاب پڑھی۔",
+            "en": "I read the book."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'کتاب' مفعول ہے، آخر میں زبر کی آواز",
+            "en": "nahw: here 'kitab' is the object, so it ends in -a instead"
+          }
+        },
+        {
+          "id": "ex-3",
+          "arabic": "هٰذَا غِلَافُ الْكِتَابِ",
+          "transliteration": "hadha ghilafu al-kitabi",
+          "translation": {
+            "ur": "یہ کتاب کی جلد ہے۔",
+            "en": "This is the book's cover."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'کتاب' ملکیت میں ہے، آخر میں زیر کی آواز",
+            "en": "nahw: 'kitab' is the possessed noun here, so it ends in -i"
+          }
+        },
+        {
+          "id": "ex-6",
+          "arabic": "اَلْبَيْتُ جَمِيلٌ",
+          "transliteration": "al-baytu jamilun",
+          "translation": {
+            "ur": "یہ گھر خوبصورت ہے۔",
+            "en": "The house is beautiful."
+          },
+          "rule": {
+            "ur": "نحو: 'بیت' فاعل ہے، آخر میں پیش کی آواز",
+            "en": "nahw: 'bayt' is the subject here, so it ends in -u"
+          }
+        },
+        {
+          "id": "ex-7",
+          "arabic": "رَأَيْتُ الْبَيْتَ",
+          "transliteration": "ra'aytu al-bayta",
+          "translation": {
+            "ur": "میں نے گھر دیکھا۔",
+            "en": "I saw the house."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'بیت' مفعول ہے، آخر میں زبر کی آواز",
+            "en": "nahw: here 'bayt' is the object, so it ends in -a instead"
+          }
+        },
+        {
+          "id": "ex-8",
+          "arabic": "هٰذَا بَابُ الْبَيْتِ",
+          "transliteration": "hadha babu al-bayti",
+          "translation": {
+            "ur": "یہ گھر کا دروازہ ہے۔",
+            "en": "This is the house's door."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'بیت' ملکیت میں ہے، آخر میں زیر کی آواز",
+            "en": "nahw: here 'bayt' is the possessed noun, so it ends in -i"
+          }
+        },
+        {
+          "id": "ex-4",
+          "arabic": "كَتَبَ الطَّالِبُ الْكِتَابَ",
+          "transliteration": "kataba at-talibu al-kitaba",
+          "translation": {
+            "ur": "طالب علم نے کتاب لکھی۔",
+            "en": "The student wrote the book."
+          },
+          "rule": {
+            "ur": "صرف: جڑ 'ک-ت-ب' سے ماضی کا فعل",
+            "en": "sarf: the root 'k-t-b' built as a past-tense verb"
+          }
+        },
+        {
+          "id": "ex-5",
+          "arabic": "يَكْتُبُ الطَّالِبُ الْكِتَابَ الْآنَ",
+          "transliteration": "yaktubu at-talibu al-kitaba al-an",
+          "translation": {
+            "ur": "طالب علم ابھی کتاب لکھ رہا ہے۔",
+            "en": "The student is writing the book right now."
+          },
+          "rule": {
+            "ur": "صرف: وہی جڑ 'ک-ت-ب' سے حال کا فعل",
+            "en": "sarf: the same root 'k-t-b' built as a present-tense verb instead"
+          }
+        },
+        {
+          "id": "ex-9",
+          "arabic": "بَنَى الرَّجُلُ الْبَيْتَ",
+          "transliteration": "bana ar-rajulu al-bayta",
+          "translation": {
+            "ur": "آدمی نے گھر بنایا۔",
+            "en": "The man built the house."
+          },
+          "rule": {
+            "ur": "صرف: جڑ 'ب-ن-ی' سے ماضی کا فعل",
+            "en": "sarf: the root 'b-n-y' built as a past-tense verb"
+          }
+        },
+        {
+          "id": "ex-10",
+          "arabic": "يَبْنِي الرَّجُلُ الْبَيْتَ الْآنَ",
+          "transliteration": "yabni ar-rajulu al-bayta al-an",
+          "translation": {
+            "ur": "آدمی ابھی گھر بنا رہا ہے۔",
+            "en": "The man is building the house right now."
+          },
+          "rule": {
+            "ur": "صرف: وہی جڑ 'ب-ن-ی' سے حال کا فعل",
+            "en": "sarf: the same root 'b-n-y' built as a present-tense verb instead"
+          }
+        },
+        {
+          "id": "ex-11",
+          "arabic": "اَلْقَلَمُ جَمِيلٌ",
+          "transliteration": "al-qalamu jamilun",
+          "translation": {
+            "ur": "یہ قلم خوبصورت ہے۔",
+            "en": "The pen is beautiful."
+          },
+          "rule": {
+            "ur": "نحو: 'قلم' فاعل ہے، آخر میں پیش کی آواز",
+            "en": "nahw: 'qalam' is the subject here, so it ends in -u"
+          }
+        },
+        {
+          "id": "ex-12",
+          "arabic": "كَتَبَ الْوَلَدُ بِالْقَلَمِ",
+          "transliteration": "kataba al-waladu bil-qalami",
+          "translation": {
+            "ur": "لڑکے نے قلم سے لکھا۔",
+            "en": "The boy wrote with the pen."
+          },
+          "rule": {
+            "ur": "صرف: جڑ 'ک-ت-ب' سے ماضی کا فعل",
+            "en": "sarf: the root 'k-t-b' built as a past-tense verb"
+          }
+        },
+        {
+          "id": "ex-13",
+          "arabic": "اَلْبَابُ مَفْتُوحٌ",
+          "transliteration": "al-babu maftoohun",
+          "translation": {
+            "ur": "یہ دروازہ کھلا ہے۔",
+            "en": "The door is open."
+          },
+          "rule": {
+            "ur": "نحو: 'باب' فاعل ہے، آخر میں پیش کی آواز",
+            "en": "nahw: 'bab' is the subject here, so it ends in -u"
+          }
+        },
+        {
+          "id": "ex-14",
+          "arabic": "فَتَحَ الْوَلَدُ الْبَابَ",
+          "transliteration": "fataha al-waladu al-baba",
+          "translation": {
+            "ur": "لڑکے نے دروازہ کھولا۔",
+            "en": "The boy opened the door."
+          },
+          "rule": {
+            "ur": "صرف: جڑ 'ف-ت-ح' سے ماضی کا فعل",
+            "en": "sarf: the root 'f-t-h' built as a past-tense verb"
+          }
+        }
+      ],
+      "layout": "comparison",
+      "comparison": {
+        "hint": {
+          "ur": "اوپر کوئی لفظ منتخب کریں — کتاب، گھر، قلم یا دروازہ — اور دیکھیں کہ وہ نحو اور صرف میں کیسے استعمال ہوتا ہے۔",
+          "en": "Select a word above -- book, house, pen or door -- and see how it's used in both nahw and sarf."
+        },
+        "points": [
+          {
+            "text": {
+              "ur": "نحو بتاتا ہے کہ ایک لفظ جملے میں اپنے کردار کے مطابق اپنی آخری آواز کیوں بدلتا ہے۔",
+              "en": "Nahw explains why the same word changes its final sound based on its role in the sentence."
+            }
+          },
+          {
+            "text": {
+              "ur": "مثال: 'کتاب' پر کلک کریں — دیکھیں فاعل، مفعول اور ملکیت میں اس کی آواز کیسے بدلتی ہے۔",
+              "en": "Example: click 'kitab' above -- see how its ending changes as subject, object, and possessive."
+            },
+            "group_id": "kitab"
+          },
+          {
+            "text": {
+              "ur": "صرف بتاتا ہے کہ ایک ہی جڑ سے مختلف افعال کیسے بنتے ہیں۔",
+              "en": "Sarf explains how different verb forms are built from one single root."
+            }
+          },
+          {
+            "text": {
+              "ur": "مثال: 'گھر' پر کلک کریں — دیکھیں جڑ 'ب-ن-ی' سے ماضی اور حال دونوں افعال کیسے بنتے ہیں۔",
+              "en": "Example: click 'bayt' (house) above -- see how the root 'b-n-y' builds both the past and present verb."
+            },
+            "group_id": "bait"
+          }
+        ],
+        "columns": [
+          {
+            "id": "nahw",
+            "label": {
+              "ur": "نحو",
+              "en": "Nahw (Syntax)"
+            },
+            "description": {
+              "ur": "جملے میں الفاظ کے آخر اور ساخت کا علم",
+              "en": "The study of word endings and sentence structure"
+            }
+          },
+          {
+            "id": "sarf",
+            "label": {
+              "ur": "صرف",
+              "en": "Sarf (Morphology)"
+            },
+            "description": {
+              "ur": "فعل کی تصریف اور الفاظ کی ساخت کا علم",
+              "en": "The study of verb conjugation and word formation"
+            }
+          }
+        ],
+        "groups": [
+          {
+            "id": "kitab",
+            "label": {
+              "ur": "کتاب",
+              "en": "kitab (book)"
+            },
+            "columns": {
+              "nahw": [
+                "ex-1"
+              ],
+              "sarf": [
+                "ex-4"
+              ]
+            }
+          },
+          {
+            "id": "bait",
+            "label": {
+              "ur": "گھر",
+              "en": "bayt (house)"
+            },
+            "columns": {
+              "nahw": [
+                "ex-6"
+              ],
+              "sarf": [
+                "ex-9"
+              ]
+            }
+          },
+          {
+            "id": "qalam",
+            "label": {
+              "ur": "قلم",
+              "en": "qalam (pen)"
+            },
+            "columns": {
+              "nahw": [
+                "ex-11"
+              ],
+              "sarf": [
+                "ex-12"
+              ]
+            }
+          },
+          {
+            "id": "bab",
+            "label": {
+              "ur": "دروازہ",
+              "en": "bab (door)"
+            },
+            "columns": {
+              "nahw": [
+                "ex-13"
+              ],
+              "sarf": [
+                "ex-14"
+              ]
+            }
+          }
+        ]
       }
     },
     {
@@ -37,22 +350,73 @@
       "arabic_example": "هذا / هذه",
       "sentences": [
         {
-          "ur": "کسی قریبی چیز کی طرف اشارہ کرنے کے لیے عربی میں دو الفاظ استعمال ہوتے ہیں۔",
-          "en": "Arabic uses two words to point to something nearby."
+          "ur": "کسی قریبی چیز کی طرف اشارہ کرنے کے لیے عربی میں دو الفاظ استعمال ہوتے ہیں: 'هذا' اور 'هذه'۔",
+          "en": "Arabic uses two words to point to something nearby: hadha and hadhihi."
         },
         {
-          "ur": "مذکر کے لیے 'هذا' کہتے ہیں، جیسے 'هذا كتاب' یعنی یہ ایک کتاب ہے۔",
-          "en": "For masculine nouns, 'hadha' is used, as in 'hadha kitab', meaning 'this is a book'."
+          "ur": "مذکر کے لیے 'هذا' اور مؤنث کے لیے 'هذه' استعمال ہوتا ہے — عربی میں تقریباً ہر اسم کی ایک جنس ہوتی ہے، چاہے وہ بے جان چیز ہی ہو۔",
+          "en": "Hadha is used for masculine nouns, and hadhihi for feminine ones -- almost every Arabic noun is grammatically either masculine or feminine, even for objects."
         },
         {
-          "ur": "مؤنث کے لیے 'هذه' کہتے ہیں، جیسے 'هذه مدرسة' یعنی یہ ایک سکول ہے۔",
-          "en": "For feminine nouns, 'hadhihi' is used, as in 'hadhihi madrasa', meaning 'this is a school'."
+          "ur": "ایک آسان نکتہ: زیادہ تر مؤنث اسم آخر میں گول 'ة' (تاء مربوطہ) پر ختم ہوتے ہیں، جیسے 'مدرسة' یا 'سيارة'۔",
+          "en": "A simple trick: most feminine nouns end in the round letter 'ta marbuta', like 'madrasa' (school) or 'sayyara' (car)."
+        },
+        {
+          "ur": "نیچے دی گئی پانچ مثالیں دیکھیں — ترجمہ دیکھنے سے پہلے تصویر سے خود اندازہ لگانے کی کوشش کریں کہ 'هذا' ہوگا یا 'هذه'۔",
+          "en": "Look at the five examples below -- try covering the translation and guessing hadha or hadhihi from the picture first."
         }
       ],
       "question": {
         "ur": "ایک مذکر چیز کی طرف اشارہ کرنے کے لیے کون سا لفظ استعمال ہوگا؟",
         "en": "Which word is used to point to a masculine object?"
-      }
+      },
+      "examples": [
+        {
+          "id": "ex-1",
+          "arabic": "هٰذَا كِتَابٌ",
+          "transliteration": "hadha kitabun",
+          "translation": {
+            "ur": "یہ ایک کتاب ہے۔ (مذکر)",
+            "en": "This is a book. (masculine)"
+          }
+        },
+        {
+          "id": "ex-2",
+          "arabic": "هٰذِهِ مَدْرَسَةٌ",
+          "transliteration": "hadhihi madrasatun",
+          "translation": {
+            "ur": "یہ ایک سکول ہے۔ (مؤنث)",
+            "en": "This is a school. (feminine)"
+          }
+        },
+        {
+          "id": "ex-3",
+          "arabic": "هٰذَا قَلَمٌ",
+          "transliteration": "hadha qalamun",
+          "translation": {
+            "ur": "یہ ایک قلم ہے۔ (مذکر)",
+            "en": "This is a pen. (masculine)"
+          }
+        },
+        {
+          "id": "ex-4",
+          "arabic": "هٰذِهِ سَيَّارَةٌ",
+          "transliteration": "hadhihi sayyaratun",
+          "translation": {
+            "ur": "یہ ایک گاڑی ہے۔ (مؤنث)",
+            "en": "This is a car. (feminine)"
+          }
+        },
+        {
+          "id": "ex-5",
+          "arabic": "هٰذَا بَابٌ",
+          "transliteration": "hadha babun",
+          "translation": {
+            "ur": "یہ ایک دروازہ ہے۔ (مذکر)",
+            "en": "This is a door. (masculine)"
+          }
+        }
+      ]
     },
     {
       "title": {

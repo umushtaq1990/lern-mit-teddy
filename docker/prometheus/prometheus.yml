@@ -5,3 +5,6 @@ scrape_configs:
   - job_name: frontend
     static_configs:
       - targets: ["frontend:8080"]
+  - job_name: urdu-arabic
+    static_configs:
+      - targets: ["urdu-arabic:8090"]

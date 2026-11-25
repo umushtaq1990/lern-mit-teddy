@@ -24,6 +24,7 @@ from sqlalchemy import select
 from src.db.session import get_session_factory
 from src.settings import get_settings
 
+from .events import log_event
 from .models import UrduArabicOtpCode, UrduArabicUser
 
 logger = logging.getLogger("urdu_arabic.auth")
@@ -107,6 +108,7 @@ def verify_otp(body: VerifyOtpBody, request: Request) -> dict[str, str]:
 
         db.commit()
         request.session["user"] = {"user_id": user.id, "identifier": user.identifier}
+        log_event(user.id, "login")
         return {"status": "ok"}
     finally:
         db.close()
@@ -114,6 +116,9 @@ def verify_otp(body: VerifyOtpBody, request: Request) -> dict[str, str]:
 
 @router.post("/logout")
 def logout(request: Request) -> dict[str, str]:
+    user = request.session.get("user")
+    if user:
+        log_event(user["user_id"], "logout")
     request.session.pop("user", None)
     return {"status": "ok"}
 

@@ -30,6 +30,19 @@ LANGUAGES: dict[str, dict[str, str]] = {
 
 DEFAULT_LANGUAGE = "ur"
 
+# Not a UI-selectable interface language (there's no Arabic-language content
+# track for the picker) -- just the voice used to correctly pronounce the
+# `arabic_example` field on each slide. Urdu/English narration voices
+# mispronounce embedded Arabic script, since Urdu and Arabic share a script
+# but not phonetics, so that text gets its own dedicated Arabic TTS pass.
+EXAMPLE_VOICE = "ar-SA-HamedNeural"
+
+# Arabic vocabulary/example audio is slowed down relative to normal speech --
+# a beginner learning individual words/phrases needs each sound articulated
+# clearly, not natural conversational pace. Edge TTS's `rate` is a percentage
+# offset from the voice's default speed.
+EXAMPLE_RATE = "-20%"
+
 
 def is_supported(language: str) -> bool:
     return language in LANGUAGES

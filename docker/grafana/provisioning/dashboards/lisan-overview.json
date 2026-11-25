@@ -1,0 +1,148 @@
+{
+  "title": "Lisan Overview",
+  "uid": "lisan-overview",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-7d", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Logins per day",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT date_trunc('day', created_at) AS time, count(*) AS logins FROM urdu_arabic_events WHERE event_type = 'login' GROUP BY 1 ORDER BY 1",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Active users (all time)",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT count(DISTINCT user_id) AS value FROM urdu_arabic_events WHERE user_id IS NOT NULL",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Questions asked per day",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT date_trunc('day', created_at) AS time, count(*) AS questions FROM urdu_arabic_questions GROUP BY 1 ORDER BY 1",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Question status breakdown",
+      "type": "piechart",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 8 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT status, count(*) AS value FROM urdu_arabic_questions GROUP BY 1",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Most-asked lessons",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT lesson_id, count(*) AS questions FROM urdu_arabic_questions GROUP BY 1 ORDER BY 2 DESC LIMIT 15",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Feedback: thumbs up vs down",
+      "type": "piechart",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 16 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT rating, count(*) AS value FROM urdu_arabic_feedback GROUP BY 1",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Lowest-rated parts (most thumbs down)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT lesson_id, part_id, count(*) AS thumbs_down FROM urdu_arabic_feedback WHERE rating = 'down' GROUP BY 1, 2 ORDER BY 3 DESC LIMIT 20",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Events by type (last 7 days)",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT event_type, count(*) AS events FROM urdu_arabic_events WHERE created_at > now() - interval '7 days' GROUP BY 1 ORDER BY 2 DESC",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Request latency (p50 / p95)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 32 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{job=\"urdu-arabic\"}[5m])) by (le))",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=\"urdu-arabic\"}[5m])) by (le))",
+          "legendFormat": "p95"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Requests/sec and error rate",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 32 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{job=\"urdu-arabic\"}[5m]))",
+          "legendFormat": "requests/sec"
+        },
+        {
+          "expr": "sum(rate(http_requests_total{job=\"urdu-arabic\", status=~\"5..\"}[5m]))",
+          "legendFormat": "5xx/sec"
+        }
+      ]
+    }
+  ]
+}
