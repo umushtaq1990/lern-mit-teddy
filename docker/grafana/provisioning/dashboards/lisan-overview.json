@@ -143,6 +143,59 @@
           "legendFormat": "5xx/sec"
         }
       ]
+    },
+    {
+      "id": 11,
+      "title": "Chat answer latency (Ollama, avg / p95)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 40 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "fieldConfig": { "defaults": { "unit": "ms" } },
+      "targets": [
+        {
+          "rawSql": "SELECT date_trunc('hour', answered_at) AS time, avg(llm_latency_ms) AS avg_ms, percentile_cont(0.95) WITHIN GROUP (ORDER BY llm_latency_ms) AS p95_ms FROM urdu_arabic_questions WHERE answered_at IS NOT NULL AND llm_latency_ms IS NOT NULL GROUP BY 1 ORDER BY 1",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Chat answer token usage (avg prompt / completion)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 40 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT date_trunc('hour', answered_at) AS time, avg(prompt_tokens) AS avg_prompt_tokens, avg(completion_tokens) AS avg_completion_tokens FROM urdu_arabic_questions WHERE answered_at IS NOT NULL GROUP BY 1 ORDER BY 1",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Chat answer ratings: like vs dislike",
+      "type": "piechart",
+      "gridPos": { "h": 8, "w": 6, "x": 0, "y": 48 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT rating, count(*) AS value FROM urdu_arabic_questions WHERE rating IS NOT NULL GROUP BY 1",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Lowest-rated chat answers (most disliked)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 18, "x": 6, "y": 48 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT id, lesson_id, part_id, question_text, answer_text FROM urdu_arabic_questions WHERE rating = 'down' ORDER BY answered_at DESC LIMIT 20",
+          "format": "table"
+        }
+      ]
     }
   ]
 }

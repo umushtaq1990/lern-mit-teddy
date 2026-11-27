@@ -32,7 +32,9 @@ Lesson context:
 """
 
 
-def answer_question(question_text: str, lesson_context: str, language: str = DEFAULT_LANGUAGE) -> str:
+def answer_question(
+    question_text: str, lesson_context: str, language: str = DEFAULT_LANGUAGE
+) -> ollama_client.GenerationResult:
     language_name = LANGUAGES.get(language, LANGUAGES[DEFAULT_LANGUAGE])["prompt_name"]
     system = _SYSTEM_PROMPT.format(language_name=language_name, lesson_context=lesson_context)
     return ollama_client.generate(question_text, system=system)

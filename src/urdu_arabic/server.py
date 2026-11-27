@@ -294,6 +294,7 @@ def list_questions(
                     "error": row.error,
                     "created_at": row.created_at.isoformat() if row.created_at else None,
                     "answered_at": row.answered_at.isoformat() if row.answered_at else None,
+                    "rating": row.rating,
                 }
                 for row in rows
             ]
@@ -338,9 +339,43 @@ def get_question(question_id: int, request: Request) -> dict[str, Any]:
             "answer_text": row.answer_text,
             "answer_audio_url": f"/api/questions/{row.id}/audio" if row.answer_audio_path else None,
             "error": row.error,
+            "rating": row.rating,
         }
     finally:
         db.close()
+
+
+class QuestionRatingBody(BaseModel):
+    rating: str  # "up" | "down"
+
+
+@app.post("/api/questions/{question_id}/rate")
+def rate_question(question_id: int, body: QuestionRatingBody, request: Request) -> dict[str, str]:
+    user = auth.current_user(request)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Login required")
+    if body.rating not in ("up", "down"):
+        raise HTTPException(status_code=400, detail="rating must be 'up' or 'down'")
+
+    db = get_session_factory()()
+    try:
+        row = db.get(UrduArabicQuestion, question_id)
+        if row is None or row.user_id != user.user_id:
+            raise HTTPException(status_code=404, detail="Question not found")
+        row.rating = body.rating
+        lesson_id, part_id = row.lesson_id, row.part_id
+        db.commit()
+    finally:
+        db.close()
+
+    log_event(
+        user.user_id,
+        "chat_answer_rated",
+        lesson_id=lesson_id,
+        part_id=part_id,
+        metadata={"question_id": question_id, "rating": body.rating},
+    )
+    return {"status": "ok"}
 
 
 @app.get("/api/questions/{question_id}/audio")

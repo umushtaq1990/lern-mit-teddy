@@ -19,11 +19,29 @@ below plus an entry in `languages.py`, nothing else):
       "sentences": [
         {"ur": "2-4 short Urdu sentences, each a complete teaching point", "en": "faithful English translation of the same sentence"}
       ],
-      "question": {"ur": "One short Urdu comprehension question", "en": "Equivalent English question"}
+      "question": {"ur": "One short Urdu comprehension question", "en": "Equivalent English question"},
+      "categories": [
+        {"id": "short-slug", "label": {"ur": "...", "en": "Button label, e.g. Animals"}}
+      ],
+      "examples": [
+        {
+          "id": "unique-id",
+          "category": "short-slug (must match a categories[].id above)",
+          "arabic": "Fully vocalized Arabic (e.g. a question + its answer)",
+          "transliteration": "...",
+          "translation": {"ur": "...", "en": "..."}
+        }
+      ]
     }
   ]
 }
 ```
+
+`categories` + `examples[].category` together turn a concept's examples list
+into a vocabulary slide with picker buttons (e.g. Animals / Home / Living
+Room / People) instead of a plain list -- the learner switches sections
+themselves. Only set `categories` when that's the intent; a concept with
+`examples` but no `categories` keeps the plain flat-list rendering.
 
 Every sentence should already read naturally as a complete sentence in each
 language; `generate_concept_slides.py` appends a trailing sentence-final

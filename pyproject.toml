@@ -36,6 +36,8 @@ dependencies = [
     "psycopg[binary]>=3.2.3",
     "prometheus-fastapi-instrumentator>=7.0.0",
     "mutagen>=1.48.1",
+    "pydub>=0.25.1",
+    "static-ffmpeg>=3.0",
 ]
 
 [dependency-groups]

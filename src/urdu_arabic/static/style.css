@@ -6,6 +6,15 @@ body {
   padding: 0;
 }
 
+/* Shared with the fixed player bar below (see .player-bar) so it can inset
+   itself past the sidebar instead of running underneath it -- kept in sync
+   with #sidebar's own width/flex-basis here rather than duplicating the
+   clamp() expression in two places. Zeroed out at the mobile breakpoint
+   where the sidebar becomes an off-canvas overlay instead of a column. */
+:root {
+  --sidebar-w: clamp(220px, 22vw, 320px);
+}
+
 #app-shell {
   display: flex;
   align-items: flex-start;
@@ -31,8 +40,8 @@ html[dir="rtl"] #app-shell {
    list scrolls inside #sidebar-nav instead of stretching the whole page.
    position: sticky keeps it pinned while the main content area scrolls. */
 #sidebar {
-  flex: 0 0 clamp(220px, 22vw, 320px);
-  width: clamp(220px, 22vw, 320px);
+  flex: 0 0 var(--sidebar-w);
+  width: var(--sidebar-w);
   height: 100vh;
   position: sticky;
   top: 0;
@@ -226,6 +235,10 @@ html[dir="rtl"] #info-modal-close {
    hamburger button in the header) instead of squeezing the content column,
    sliding in from whichever side matches the current language's direction. */
 @media (max-width: 720px) {
+  :root {
+    --sidebar-w: 0px;
+  }
+
   html[dir="ltr"] #app-shell,
   html[dir="rtl"] #app-shell {
     flex-direction: row;
@@ -355,7 +368,7 @@ button:disabled {
    competes for space with the slide content itself. */
 #question-box.chat-panel {
   position: fixed;
-  bottom: 84px;
+  bottom: 148px; /* clears the chat-fab, which itself clears the player bar */
   inset-inline-end: 20px;
   width: min(360px, calc(100vw - 32px));
   max-height: min(70vh, 560px);
@@ -391,7 +404,7 @@ button:disabled {
 
 .chat-fab {
   position: fixed;
-  bottom: 20px;
+  bottom: 84px; /* clears the fixed bottom player bar */
   inset-inline-end: 20px;
   z-index: 60;
   display: flex;
@@ -421,7 +434,7 @@ button:disabled {
 
 @media (max-width: 720px) {
   #question-box.chat-panel {
-    bottom: 76px;
+    bottom: 140px;
     inset-inline-end: 12px;
     inset-inline-start: 12px;
     width: auto;
@@ -540,13 +553,31 @@ button:disabled {
   border-color: #0B6E4F;
 }
 
+/* Let the slide fill the available window height instead of just hugging
+   its own content, so a short concept doesn't leave a chunk of bare page
+   below the card. */
+#slide-view {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 170px);
+}
+
+/* A bounded, internally-scrolling frame so a long slide (lots of
+   narration/examples) scrolls inside this card instead of the whole page
+   growing past the viewport. The extra bottom padding reserves room for
+   the now-viewport-fixed .player-bar, which overlays the page rather than
+   taking up flow space, so the card's last bit of content (e.g. the
+   bottom row of a vocabulary grid) doesn't end up hidden underneath it. */
 #slide-card {
+  flex: 1;
   position: relative;
   background: white;
   border-radius: 16px;
-  padding: 44px 24px 32px;
+  padding: 44px 24px 76px;
   text-align: center;
   min-height: 220px;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
 }
 
 /* Lesson title + position ("1 / 8") and the back-to-lessons arrow, tucked
@@ -610,6 +641,17 @@ button:disabled {
   margin: 0;
   opacity: 1;
   transform: none;
+}
+
+/* Category-tabbed vocabulary slide (e.g. ma hadha?): the generated
+   illustration is a generic, concept-level picture (today's model can't
+   target "hadha/hadhihi/ma hadha" meaningfully), while every word already
+   has its own correct picture in the grid below -- so the big top image
+   is just dead space here, dropped entirely rather than shrunk into a
+   corner, to leave more room for more words per category. */
+#slide-card.categories-layout .slide-image,
+#slide-card.categories-layout .slide-icon {
+  display: none;
 }
 
 .slide-icon {
@@ -688,6 +730,37 @@ button:disabled {
   transform: rotate(180deg);
 }
 
+/* Category buttons for a vocabulary slide (e.g. Animals / Home / Living
+   Room / People) -- picking one filters .examples-list down to just that
+   category's words, same visual language as .comparison-tab. */
+.examples-category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.examples-category-tabs[hidden] {
+  display: none;
+}
+
+.category-tab {
+  background: white;
+  border: 1px solid #e3e9e6;
+  border-radius: 14px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2F3B37;
+}
+
+.category-tab.active {
+  background: #0B6E4F;
+  border-color: #0B6E4F;
+  color: white;
+}
+
 .examples-list {
   display: flex;
   flex-wrap: wrap;
@@ -719,44 +792,47 @@ button:disabled {
   display: none;
 }
 
-.comparison-points {
-  list-style: none;
-  margin: 0 0 14px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+/* One key point at a time per column (not a fixed list dumped all at
+   once) -- app.js cycles through column.points on a timer, replacing the
+   single paragraph here each time so it reads like a short presentation
+   playing out next to that column's own examples. */
+.comparison-col-points {
+  margin: 0 0 10px;
+  min-height: 34px;
 }
 
-.comparison-points[hidden] {
+.comparison-col-points[hidden] {
   display: none;
 }
 
-.comparison-point {
+.comparison-col-point {
   font-size: 13px;
   line-height: 1.4;
   color: #2F3B37;
   background: #F4F8F6;
   border-radius: 10px;
   padding: 8px 12px;
-  opacity: 0;
-  transform: translateY(6px);
-  animation: comparison-point-in 0.35s ease forwards;
+  margin: 0;
+  animation: comparison-point-in 0.4s ease;
 }
 
 @keyframes comparison-point-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.comparison-point.linked {
+.comparison-col-point.linked {
   cursor: pointer;
   border: 1px solid #e3e9e6;
 }
 
-.comparison-point.linked:hover {
+.comparison-col-point.linked:hover {
   border-color: #0B6E4F;
 }
 
@@ -855,6 +931,39 @@ button:disabled {
   gap: 6px;
 }
 
+/* All of a column's word groups stacked together (kitab, bayt, qalam,
+   bab...), each under its own small word label, instead of hiding every
+   word but one behind a tab. */
+.comparison-group-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.comparison-group-label {
+  margin: 0 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #8A9A91;
+}
+
+/* Hidden until the narration actually reaches the sentence explaining this
+   word (see handleComparisonSync in app.js) -- collapsed out of the flow
+   entirely (not just invisible) so later groups don't leave gaps waiting
+   to be revealed. */
+.comparison-group-block.pending {
+  display: none;
+}
+
+.comparison-group-block.revealed {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: comparison-point-in 0.4s ease forwards;
+}
+
 /* Reuses .example-card for visual consistency with the collapsed examples
    list elsewhere, just stacked in a column instead of wrapped in a row.
    `.example-card`'s `flex: 1 1 210px` is a WIDTH hint for its other home
@@ -873,6 +982,19 @@ button:disabled {
 /* Compact horizontal card: a small picture beside the text instead of a
    big picture above it, sized to let several fit per row and to shrink
    gracefully on narrow screens. */
+/* Voice-synced reveal (see handleExampleSync in app.js): hidden until the
+   narration actually reaches the sentence explaining it, same pattern as
+   the comparison layout's word-group blocks. */
+.example-card.pending {
+  display: none;
+}
+
+.example-card.revealed {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: comparison-point-in 0.4s ease forwards;
+}
+
 .example-card {
   position: relative;
   display: flex;
@@ -1015,6 +1137,67 @@ button:disabled {
   display: none;
 }
 
+/* A real play/pause + seek control (like a video player's control bar),
+   pinned to the bottom of the browser viewport at all times while a slide
+   is open -- not just while the card is scrolled into view (position:
+   sticky's old behavior let it scroll away once you passed the card's own
+   bottom edge). inset-inline-start uses --sidebar-w (see :root above) so
+   the bar starts past the sidebar column instead of running under it; the
+   inner wrapper re-centers the actual controls to the same max-width as
+   the slide card above it, rather than stretching them across the full
+   remaining width. [hidden] on the ancestor #slide-view still removes
+   this from rendering entirely when a slide isn't open. */
+.player-bar {
+  position: fixed;
+  inset-inline-start: var(--sidebar-w);
+  inset-inline-end: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.player-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 760px;
+  padding: 10px 24px;
+  box-sizing: border-box;
+  background: white;
+  border-top: 1px solid #e3e9e6;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.player-bar #play-btn {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-seek {
+  flex: 1;
+  min-width: 0;
+  accent-color: #0B6E4F;
+}
+
+.player-time {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: #8A9A91;
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+}
+
 .sentence {
   font-size: 22px;
   line-height: 1.6;
@@ -1119,4 +1302,24 @@ button:disabled {
 [dir="rtl"] .chat-bubble-answer {
   margin-right: 0;
   margin-left: auto;
+}
+
+.answer-rating-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.answer-rating-btn {
+  background: white;
+  border: 1px solid #e3e9e6;
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 2px 8px;
+  margin: 0;
+}
+
+.answer-rating-btn.active {
+  background: #0B6E4F;
+  border-color: #0B6E4F;
 }

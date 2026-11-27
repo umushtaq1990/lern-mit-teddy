@@ -42,7 +42,15 @@ from pathlib import Path
 from typing import Any
 
 import edge_tts
-from mutagen.mp3 import MP3
+import static_ffmpeg
+
+# pydub's own ffmpeg/ffprobe lookup (get_encoder_name/get_prober_name) only
+# ever searches PATH, and does so once at import time (AudioSegment.converter
+# is set from that lookup as a class attribute) -- so the static binaries
+# static-ffmpeg fetches (cached after the first run) must be added to PATH
+# *before* pydub itself is imported, not just before first use.
+static_ffmpeg.add_paths()
+from pydub import AudioSegment  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -141,21 +149,38 @@ def _split_segments(sentence: str) -> list[tuple[str, bool]]:
     return segments
 
 
-def _mp3_duration(data: bytes) -> float:
-    return MP3(io.BytesIO(data)).info.length
+def _decode_mp3(data: bytes) -> AudioSegment:
+    return AudioSegment.from_file(io.BytesIO(data), format="mp3")
+
+
+def _encode_mp3(segment: AudioSegment) -> bytes:
+    buf = io.BytesIO()
+    segment.export(buf, format="mp3")
+    return buf.getvalue()
+
+
+# Each segment/sentence is its own independent Edge TTS call, so naively
+# concatenating their raw (VBR-encoded) MP3 bytes splices together frames
+# from unrelated encoder sessions -- audible as a click or brief glitch at
+# the seam, most noticeable right at a sentence's final word/punctuation
+# since that's often the shortest, most abrupt segment. Decoding each piece
+# to PCM via pydub/ffmpeg and inserting real digital silence before
+# re-encoding once avoids that entirely, and doubles as a natural breathing
+# pause (shorter within a sentence, longer between sentences).
+_SEGMENT_GAP_MS = 120
+_SENTENCE_GAP_MS = 280
 
 
 async def _synthesize_mixed_sentence(sentence: str, main_voice: str) -> tuple[bytes, float]:
     """Synthesize one sentence as a sequence of per-segment TTS calls, each
     in whichever voice (main narration voice, or the dedicated Arabic voice)
-    fits that segment, concatenated back together. Duration is measured
-    from the actual audio rather than relying on Edge TTS's SentenceBoundary
-    events, since those only apply within a single Communicate stream."""
+    fits that segment, decoded and re-joined with a short silence gap (see
+    above) rather than raw byte concatenation."""
     segments = _split_segments(sentence)
     if not segments:
         return b"", 0.0
-    audio_chunks: list[bytes] = []
-    total_duration = 0.0
+    combined = AudioSegment.silent(duration=0)
+    any_segment = False
     for text, is_arabic in segments:
         voice = EXAMPLE_VOICE if is_arabic else main_voice
         rate = EXAMPLE_RATE if is_arabic else "+0%"
@@ -166,17 +191,30 @@ async def _synthesize_mixed_sentence(sentence: str, main_voice: str) -> tuple[by
             continue
         if not audio_bytes:
             continue
-        audio_chunks.append(audio_bytes)
-        total_duration += _mp3_duration(audio_bytes)
-    return b"".join(audio_chunks), total_duration
+        if any_segment:
+            combined += AudioSegment.silent(duration=_SEGMENT_GAP_MS)
+        combined += _decode_mp3(audio_bytes)
+        any_segment = True
+    if not any_segment:
+        return b"", 0.0
+    return _encode_mp3(combined), combined.duration_seconds
 
 
 def _ensure_full_stop(sentence: str, language: str) -> str:
     """Edge TTS only emits a SentenceBoundary at real sentence punctuation --
     without a trailing sentence-final mark, two authored sentences joined by
     a space collapse into one TTS "sentence" and lose per-sentence timing,
-    which breaks the pop-in/pop-out sync entirely."""
+    which breaks the pop-in/pop-out sync entirely. This only affects the
+    text actually sent to the TTS engine -- displayed/caption text always
+    comes from the original authored sentence, untouched."""
     s = sentence.strip()
+    if language == "ur" and s.endswith("۔"):
+        # "۔" (U+06D4, the Urdu/Arabic full stop) isn't reliably treated as
+        # silent punctuation by this voice -- reported as an audible
+        # trailing "ya"-like sound right after the last word. A plain ASCII
+        # period is a near-universally trained silent sentence terminator,
+        # so swap it in just for synthesis.
+        return s[:-1] + "."
     full_stop = LANGUAGES[language]["full_stop"]
     terminators = "۔؟!.?" if language != "ur" else "۔؟!"
     if s and s[-1] not in terminators:
@@ -210,18 +248,26 @@ async def _build_narration_mixed_voice(sentences: list[str], language: str) -> t
     rendered audio instead of Edge TTS's SentenceBoundary events, since
     those don't apply across multiple concatenated Communicate streams."""
     main_voice = LANGUAGES[language]["voice"]
-    audio_chunks: list[bytes] = []
+    combined = AudioSegment.silent(duration=0)
     boundaries: list[dict[str, float]] = []
     cursor = 0.0
+    any_sentence = False
     for raw_sentence in sentences:
         sentence = _ensure_full_stop(raw_sentence, language)
-        audio_bytes, duration = await _synthesize_mixed_sentence(sentence, main_voice)
+        audio_bytes, _ = await _synthesize_mixed_sentence(sentence, main_voice)
         if not audio_bytes:
             continue
-        audio_chunks.append(audio_bytes)
-        boundaries.append({"text": raw_sentence, "start": cursor, "end": cursor + duration})
-        cursor += duration
-    return b"".join(audio_chunks), boundaries
+        if any_sentence:
+            combined += AudioSegment.silent(duration=_SENTENCE_GAP_MS)
+            cursor += _SENTENCE_GAP_MS / 1000.0
+        clip = _decode_mp3(audio_bytes)
+        combined += clip
+        any_sentence = True
+        boundaries.append({"text": raw_sentence, "start": cursor, "end": cursor + clip.duration_seconds})
+        cursor += clip.duration_seconds
+    if not any_sentence:
+        return b"", []
+    return _encode_mp3(combined), boundaries
 
 
 def _build_narration(
@@ -287,6 +333,7 @@ def _build_examples(
         current["transliteration"] = example.get("transliteration")
         current["translation"] = example.get("translation", {})
         current["rule"] = example.get("rule", {})
+        current["category"] = example.get("category")
         if not current.get("audio_url"):
             try:
                 current["audio_url"] = _build_example_entry_audio(
@@ -344,6 +391,10 @@ def _build_part(
         part["layout"] = concept["layout"]
     if concept.get("comparison"):
         part["comparison"] = concept["comparison"]
+    if concept.get("sync"):
+        part["sync"] = concept["sync"]
+    if concept.get("categories"):
+        part["categories"] = concept["categories"]
 
     for language in LANGUAGES:
         if language in part["narration"]:
@@ -388,6 +439,10 @@ def _needs_work(lesson: dict[str, Any] | None, concepts: list[dict[str, Any]]) -
         if concept.get("layout") and part.get("layout") != concept.get("layout"):
             return True
         if concept.get("comparison") and part.get("comparison") != concept.get("comparison"):
+            return True
+        if concept.get("sync") and part.get("sync") != concept.get("sync"):
+            return True
+        if concept.get("categories") and part.get("categories") != concept.get("categories"):
             return True
     return False
 

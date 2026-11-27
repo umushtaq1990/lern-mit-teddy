@@ -53,7 +53,8 @@ def _process_question(row: UrduArabicQuestion) -> None:
         raise ValueError("No question text available after transcription")
 
     lesson_context = content.get_part_context(row.lesson_id, row.part_id, language=language)
-    answer_text = llm.answer_question(question_text, lesson_context, language=language)
+    generation = llm.answer_question(question_text, lesson_context, language=language)
+    answer_text = generation.text
 
     # The text answer is the useful part; audio is a nice-to-have on top of
     # it. Don't lose an already-generated answer just because TTS (an
@@ -70,6 +71,9 @@ def _process_question(row: UrduArabicQuestion) -> None:
     row.answer_audio_path = answer_audio_path
     row.status = "answered"
     row.answered_at = datetime.now(timezone.utc)
+    row.llm_latency_ms = generation.latency_ms
+    row.prompt_tokens = generation.prompt_tokens
+    row.completion_tokens = generation.completion_tokens
 
 
 def run_once() -> bool:

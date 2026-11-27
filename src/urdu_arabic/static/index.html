@@ -75,35 +75,43 @@
         </div>
 
         <div id="comparison-section" class="comparison-section" hidden>
-          <ul id="comparison-points" class="comparison-points" hidden></ul>
           <p id="comparison-hint" class="comparison-hint" hidden></p>
           <div id="comparison-shared-tabs" class="comparison-shared-tabs" hidden></div>
           <div class="comparison-columns">
             <div class="comparison-column">
               <h4 class="comparison-col-label" id="comparison-col-0-label"></h4>
               <p class="comparison-col-desc" id="comparison-col-0-desc" hidden></p>
+              <div class="comparison-col-points" id="comparison-col-0-points" hidden></div>
               <div class="comparison-col-tabs" id="comparison-col-0-tabs" hidden></div>
               <div class="comparison-col-items" id="comparison-col-0-items"></div>
             </div>
             <div class="comparison-column">
               <h4 class="comparison-col-label" id="comparison-col-1-label"></h4>
               <p class="comparison-col-desc" id="comparison-col-1-desc" hidden></p>
+              <div class="comparison-col-points" id="comparison-col-1-points" hidden></div>
               <div class="comparison-col-tabs" id="comparison-col-1-tabs" hidden></div>
               <div class="comparison-col-items" id="comparison-col-1-items"></div>
             </div>
           </div>
         </div>
 
-        <button id="play-btn">&#9654; سنیں</button>
-        <audio id="part-audio"></audio>
-
         <div id="examples-section" class="examples-section collapsed" hidden>
           <button id="examples-toggle-btn" class="examples-toggle-btn">
             <span id="examples-toggle-label"></span>
             <span class="examples-toggle-caret">&#9662;</span>
           </button>
+          <div id="examples-category-tabs" class="examples-category-tabs" hidden></div>
           <div id="examples-list" class="examples-list"></div>
         </div>
+
+        <div id="player-bar" class="player-bar">
+          <div class="player-bar-inner">
+            <button id="play-btn" aria-label="play/pause">&#9654;</button>
+            <input id="player-seek" class="player-seek" type="range" min="0" max="1000" value="0">
+            <span id="player-time" class="player-time">0:00 / 0:00</span>
+          </div>
+        </div>
+        <audio id="part-audio"></audio>
       </div>
 
       <div id="question-box" class="chat-panel" hidden>

@@ -166,6 +166,12 @@ src/urdu_arabic/content_data/manifest.json
 # Local course content / media (lectures, books) — large, not committed
 data/
 
+# Scratch voice-cloning fine-tune dataset/run (experimental, parked for now --
+# the audio dataset and the run directory in particular are large binary
+# artifacts regenerable from data/Arabic_Course/, not authored source).
+scratch_finetune_dataset/
+scratch_finetune_run/
+
 # Local SQLite DBs (default DATABASE_URL / MLFLOW_TRACKING_URI targets)
 *.db
 *.db-journal

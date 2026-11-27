@@ -451,6 +451,46 @@ document.getElementById("sidebar-history-btn").addEventListener("click", () => {
 // same way whether it's the full cross-lesson Chat History view or the
 // current concept's inline chat. `q` can be a real /api/questions row or a
 // synthetic "pending" one for an optimistic just-sent message.
+// Like/dislike for one specific chat answer -- distinct from the lesson-
+// level thumbs-up/down in #feedback-row, which rates the whole concept,
+// not an individual reply.
+function buildAnswerRatingRow(questionId, currentRating) {
+  const row = document.createElement("div");
+  row.className = "answer-rating-row";
+
+  const rate = async (rating, upBtn, downBtn) => {
+    try {
+      await api(`/api/questions/${questionId}/rate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rating }),
+      });
+      upBtn.classList.toggle("active", rating === "up");
+      downBtn.classList.toggle("active", rating === "down");
+      logClientEvent("chat_answer_rated", null, null, { question_id: questionId, rating });
+    } catch {
+      // Best-effort -- a failed rating click shouldn't interrupt reading the answer.
+    }
+  };
+
+  const upBtn = document.createElement("button");
+  upBtn.className = "answer-rating-btn" + (currentRating === "up" ? " active" : "");
+  upBtn.setAttribute("aria-label", "like this answer");
+  upBtn.innerHTML = "&#128077;";
+
+  const downBtn = document.createElement("button");
+  downBtn.className = "answer-rating-btn" + (currentRating === "down" ? " active" : "");
+  downBtn.setAttribute("aria-label", "dislike this answer");
+  downBtn.innerHTML = "&#128078;";
+
+  upBtn.addEventListener("click", () => rate("up", upBtn, downBtn));
+  downBtn.addEventListener("click", () => rate("down", upBtn, downBtn));
+
+  row.appendChild(upBtn);
+  row.appendChild(downBtn);
+  return row;
+}
+
 function buildChatEntry(q, { showMeta = true } = {}) {
   const entry = document.createElement("div");
   entry.className = "chat-entry";
@@ -492,6 +532,9 @@ function buildChatEntry(q, { showMeta = true } = {}) {
       audio.controls = true;
       audio.src = q.answer_audio_url;
       aBubble.appendChild(audio);
+    }
+    if (q.id) {
+      aBubble.appendChild(buildAnswerRatingRow(q.id, q.rating));
     }
   } else if (q.status === "failed") {
     p.textContent = t("reviewError");
@@ -567,9 +610,19 @@ function renderPart() {
   document.getElementById("part-arabic").textContent = part.arabic_example || "";
   document.getElementById("part-title").textContent = part.title[currentLanguage] || part.title.ur;
 
+  // A "comparison" concept (today: nahw vs sarf) replaces the single fading
+  // narration sentence with a static two-column table of its own worked
+  // examples (each with its own audio) -- so the whole-part summary
+  // arabic_example clip (and its now-hidden arabic-row text) is redundant
+  // there, and must be skipped entirely, not just visually hidden: leaving
+  // it wired up meant it kept auto-playing after the narration ended,
+  // reading a word out loud with no matching text visible anywhere.
+  const isComparison = part.layout === "comparison" && !!part.comparison;
+  const isCategoryVocab = !!(part.categories && part.categories.length);
+
   const exampleBtn = document.getElementById("example-play-btn");
   const exampleAudio = document.getElementById("example-audio");
-  if (part.example_audio_url) {
+  if (part.example_audio_url && !isComparison) {
     exampleAudio.src = part.example_audio_url;
     exampleBtn.hidden = false;
   } else {
@@ -623,16 +676,14 @@ function renderPart() {
   audio.src = narration.audio_url;
   audio.currentTime = 0;
 
-  const playBtn = document.getElementById("play-btn");
-  playBtn.hidden = false;
-  playBtn.textContent = "▶";
+  document.getElementById("play-btn").textContent = "▶";
+  const seekEl = document.getElementById("player-seek");
+  seekEl.value = 0;
+  seekEl.disabled = true;
+  document.getElementById("player-time").textContent = "0:00 / 0:00";
 
-  // A "comparison" concept (today: nahw vs sarf) replaces the single fading
-  // narration sentence with a static two-column table -- the whole point is
-  // that it's all visible at once, not revealed piece by piece -- and
-  // shrinks the illustration into a corner so the columns own the space.
-  const isComparison = part.layout === "comparison" && !!part.comparison;
   document.getElementById("slide-card").classList.toggle("comparison-layout", isComparison);
+  document.getElementById("slide-card").classList.toggle("categories-layout", isCategoryVocab);
   document.getElementById("arabic-row").hidden = isComparison;
   document.getElementById("sentence-box").hidden = isComparison;
   document.getElementById("comparison-section").hidden = !isComparison;
@@ -702,10 +753,18 @@ function buildExampleCard(example, badgeLabel) {
       if (exampleAudioEl) {
         exampleAudioEl.currentTime = 0;
         exampleAudioEl.play();
+        logClientEvent("example_played", currentLesson.id, currentLesson.parts[currentPartIndex].id, {
+          example_id: example.id,
+        });
       }
       if (ruleEl) {
         ruleEl.hidden = !ruleEl.hidden;
         playExampleBtn.classList.toggle("active", !ruleEl.hidden);
+        if (!ruleEl.hidden) {
+          logClientEvent("rule_revealed", currentLesson.id, currentLesson.parts[currentPartIndex].id, {
+            example_id: example.id,
+          });
+        }
       }
     });
     arabicRow.appendChild(playExampleBtn);
@@ -739,20 +798,109 @@ function buildExampleCard(example, badgeLabel) {
 function renderExamples(part) {
   const section = document.getElementById("examples-section");
   const list = document.getElementById("examples-list");
+  const toggleBtn = document.getElementById("examples-toggle-btn");
+  const categoryTabsEl = document.getElementById("examples-category-tabs");
   list.innerHTML = "";
+  categoryTabsEl.innerHTML = "";
+  categoryTabsEl.hidden = true;
 
   if (!part.examples || !part.examples.length) {
     section.hidden = true;
     return;
   }
+
+  // A vocabulary slide (part.categories set): all examples are available at
+  // once, grouped into picker buttons (Animals / Home / ...) instead of a
+  // voice-synced reveal or a single flat list -- the learner switches
+  // sections themselves rather than listening for a narration cue.
+  if (part.categories && part.categories.length) {
+    section.hidden = false;
+    section.classList.remove("collapsed");
+    toggleBtn.hidden = true;
+    renderCategorizedExamples(part, part.categories[0].id);
+    return;
+  }
+
+  if (part.sync && part.sync.length) {
+    // Voice-synced reveal (same idea as the comparison layout's word
+    // groups): every card exists but starts "pending" (hidden), and
+    // handleExampleSync un-hides each one exactly when the narration
+    // reaches the sentence that explains it -- no manual expand/collapse,
+    // since the whole point is that it appears on its own as you listen.
+    section.hidden = false;
+    section.classList.remove("collapsed");
+    toggleBtn.hidden = true;
+    part.examples.forEach((example, index) => {
+      const card = buildExampleCard(example, index + 1);
+      card.id = `example-card-${example.id}`;
+      card.classList.add("pending");
+      list.appendChild(card);
+    });
+    return;
+  }
+
+  // Fallback for a part with examples but no sync data yet: the older
+  // collapsed-toggle list, everything available immediately once expanded.
   section.hidden = false;
-  section.classList.add("collapsed"); // always start collapsed on a fresh slide
+  section.classList.add("collapsed");
+  toggleBtn.hidden = false;
   document.getElementById("examples-toggle-label").textContent =
     `${part.examples.length} ${t("examplesHeading")}`;
-
   part.examples.forEach((example, index) => {
     list.appendChild(buildExampleCard(example, index + 1));
   });
+}
+
+// Renders the category picker buttons (once) and the word list for
+// whichever category is currently selected -- re-run on every tab click,
+// but the tabs themselves are only (re)built here too so switching
+// category doesn't need its own separate code path.
+function renderCategorizedExamples(part, activeCategoryId) {
+  const list = document.getElementById("examples-list");
+  const categoryTabsEl = document.getElementById("examples-category-tabs");
+  list.innerHTML = "";
+  categoryTabsEl.innerHTML = "";
+  categoryTabsEl.hidden = false;
+
+  part.categories.forEach((category) => {
+    const tab = document.createElement("button");
+    tab.className = "category-tab" + (category.id === activeCategoryId ? " active" : "");
+    tab.textContent = (category.label && (category.label[currentLanguage] || category.label.ur)) || category.id;
+    tab.addEventListener("click", () => renderCategorizedExamples(part, category.id));
+    categoryTabsEl.appendChild(tab);
+  });
+
+  part.examples
+    .filter((example) => example.category === activeCategoryId)
+    .forEach((example) => list.appendChild(buildExampleCard(example)));
+}
+
+// Mirrors handleComparisonSync/syncComparisonToTime, but for an ordinary
+// (non-comparison) part's flat examples list: part.sync[i] = {example_id}
+// reveals that one card when sentence i plays.
+function handleExampleSync(part, sentenceIndex) {
+  const step = part.sync && part.sync[sentenceIndex];
+  if (!step || !step.example_id) return;
+  const cardEl = document.getElementById(`example-card-${step.example_id}`);
+  if (cardEl) {
+    cardEl.classList.remove("pending");
+    cardEl.classList.add("revealed");
+  }
+}
+
+function syncExamplesToTime(part, narration, currentTime) {
+  document.querySelectorAll("#examples-list .example-card").forEach((el) => {
+    el.classList.add("pending");
+    el.classList.remove("revealed");
+  });
+  const sentences = narration.sentences;
+  let idx = sentences.findIndex((s) => currentTime >= s.start && currentTime < s.end);
+  if (idx === -1 && sentences.length && currentTime >= sentences[sentences.length - 1].end) {
+    idx = sentences.length - 1;
+  }
+  for (let i = 0; i <= idx; i++) {
+    handleExampleSync(part, i);
+  }
 }
 
 // A two-column "A vs B" comparison table: each column pulls its own subset
@@ -767,8 +915,151 @@ function renderExamples(part) {
 // still define its own independent tabs instead (part.comparison.columns[i]
 // .groups) for a concept where the two sides don't share a vocabulary axis,
 // or a flat example_ids list when no grouping is needed at all.
+// Drives the comparison layout's reveal-as-the-narration-speaks behavior.
+// part.comparison.sync is a list parallel to the narration's sentence list
+// (same index == same sentence): each entry names which column's caption
+// should show that sentence's text, and optionally which word-group block
+// to reveal in that column at that moment -- so every point and every
+// example pops in exactly when the voice actually talks about it, instead
+// of all at once or on a blind timer.
+// Recomputes the comparison layout's whole reveal state (every caption,
+// every example block) as a pure function of the current playback time,
+// rather than trusting incremental history -- so dragging the seek slider
+// backward un-reveals examples the narration hasn't reached yet, and
+// jumping forward catches up and reveals everything it should have, not
+// just whatever the single sentence at the drop point happens to mention.
+function syncComparisonToTime(part, narration, currentTime) {
+  document.querySelectorAll(".comparison-group-block").forEach((el) => {
+    el.classList.add("pending");
+    el.classList.remove("revealed");
+  });
+  document.querySelectorAll(".comparison-col-points").forEach((el) => {
+    el.hidden = true;
+    el.innerHTML = "";
+  });
+  // Reset any case-tab columns (e.g. Nahw's فاعل/زبر/زیر) back to empty
+  // before replaying -- otherwise seeking backward past the point where
+  // the narration first reaches this column would leave its menu built
+  // and visible, when it shouldn't exist yet at that point in time.
+  (part.comparison.columns || []).forEach((column, columnIndex) => {
+    if (!column.case_tabs || !column.case_tabs.length) return;
+    const tabsEl = document.getElementById(`comparison-col-${columnIndex}-tabs`);
+    const itemsEl = document.getElementById(`comparison-col-${columnIndex}-items`);
+    if (tabsEl) {
+      tabsEl.innerHTML = "";
+      tabsEl.hidden = true;
+    }
+    if (itemsEl) itemsEl.innerHTML = "";
+  });
+
+  const sentences = narration.sentences;
+  let idx = sentences.findIndex((s) => currentTime >= s.start && currentTime < s.end);
+  if (idx === -1 && sentences.length && currentTime >= sentences[sentences.length - 1].end) {
+    idx = sentences.length - 1;
+  }
+  for (let i = 0; i <= idx; i++) {
+    handleComparisonSync(part, i, narration);
+  }
+}
+
+// Builds a column's case-tab menu (e.g. Nahw's فاعل/زبر/زیر) the first
+// time the narration actually reaches it, selecting `activeTabId` (or the
+// first tab if not given). Safe to call again later -- it's a no-op once
+// the tabs already exist, so handleComparisonSync can call it on every
+// sync step for this column without rebuilding repeatedly.
+function buildCaseTabs(column, columnIndex, activeTabId) {
+  const tabsEl = document.getElementById(`comparison-col-${columnIndex}-tabs`);
+  if (tabsEl.childElementCount > 0) return;
+
+  const activeIndex = Math.max(
+    0,
+    column.case_tabs.findIndex((tab) => tab.id === activeTabId)
+  );
+  tabsEl.hidden = false;
+  column.case_tabs.forEach((tab, tabIndex) => {
+    const tabBtn = document.createElement("button");
+    tabBtn.className = "comparison-tab" + (tabIndex === activeIndex ? " active" : "");
+    tabBtn.textContent = (tab.label && (tab.label[currentLanguage] || tab.label.ur)) || tab.id;
+    tabBtn.addEventListener("click", () => {
+      tabsEl.querySelectorAll(".comparison-tab").forEach((b) => b.classList.remove("active"));
+      tabBtn.classList.add("active");
+      showColumnExamples(columnIndex, tab.example_ids);
+      logClientEvent("case_tab_selected", currentLesson.id, currentLesson.parts[currentPartIndex].id, {
+        column_id: column.id,
+        tab_id: tab.id,
+      });
+    });
+    tabsEl.appendChild(tabBtn);
+  });
+  showColumnExamples(columnIndex, column.case_tabs[activeIndex].example_ids);
+}
+
+function handleComparisonSync(part, sentenceIndex, narration) {
+  const sync = part.comparison && part.comparison.sync;
+  const step = sync && sync[sentenceIndex];
+  if (!step) return;
+
+  const columns = part.comparison.columns || [];
+  const columnIndex = columns.findIndex((column) => column.id === step.column_id);
+  if (columnIndex === -1) return;
+  const column = columns[columnIndex];
+
+  const captionEl = document.getElementById(`comparison-col-${columnIndex}-points`);
+  if (captionEl) {
+    const sentence = narration.sentences[sentenceIndex];
+    captionEl.innerHTML = "";
+    captionEl.hidden = false;
+    const p = document.createElement("p");
+    p.className = "comparison-col-point";
+    p.textContent = (sentence && sentence.text) || "";
+    captionEl.appendChild(p);
+  }
+
+  // A case-tab column (e.g. Nahw's فاعل/زبر/زیر) stays empty until the
+  // narration actually reaches it -- buildCaseTabs builds the menu the
+  // first time any sync step touches this column (whether or not that
+  // step names a specific case), then later steps just switch the active
+  // tab, by reusing the same click handler the user would use manually.
+  // The fixed-size menu still tracks the voice; it just never needs to
+  // grow taller, or appear, before the voice gets there.
+  if (column.case_tabs) {
+    const tabsEl = document.getElementById(`comparison-col-${columnIndex}-tabs`);
+    if (tabsEl && tabsEl.childElementCount === 0) {
+      buildCaseTabs(column, columnIndex, step.case_tab_id);
+    } else if (step.case_tab_id) {
+      const tabButtons = tabsEl ? Array.from(tabsEl.querySelectorAll(".comparison-tab")) : [];
+      const tabIndex = column.case_tabs.findIndex((tab) => tab.id === step.case_tab_id);
+      if (tabIndex !== -1 && tabButtons[tabIndex]) {
+        tabButtons[tabIndex].click();
+      }
+    }
+  }
+
+  if (step.group_id) {
+    const groupEl = document.getElementById(`comparison-col-${columnIndex}-group-${step.group_id}`);
+    if (groupEl) {
+      groupEl.classList.remove("pending");
+      groupEl.classList.add("revealed");
+    }
+  }
+}
+
+// Populated fresh at the top of each renderComparison call; read by
+// showColumnExamples, which buildCaseTabs (module scope, called lazily
+// from handleComparisonSync) also needs access to.
+let comparisonExampleById = {};
+
+function showColumnExamples(columnIndex, exampleIds) {
+  const itemsEl = document.getElementById(`comparison-col-${columnIndex}-items`);
+  itemsEl.innerHTML = "";
+  (exampleIds || []).forEach((id) => {
+    const example = comparisonExampleById[id];
+    if (example) itemsEl.appendChild(buildExampleCard(example));
+  });
+}
+
 function renderComparison(part) {
-  const exampleById = Object.fromEntries((part.examples || []).map((example) => [example.id, example]));
+  comparisonExampleById = Object.fromEntries((part.examples || []).map((example) => [example.id, example]));
   const comparison = part.comparison || {};
   const columns = comparison.columns || [];
   const sharedGroups = comparison.groups;
@@ -781,21 +1072,15 @@ function renderComparison(part) {
   hintEl.textContent = hint || "";
   hintEl.hidden = !hint;
 
-  const showColumnExamples = (columnIndex, exampleIds) => {
-    const itemsEl = document.getElementById(`comparison-col-${columnIndex}-items`);
-    itemsEl.innerHTML = "";
-    (exampleIds || []).forEach((id) => {
-      const example = exampleById[id];
-      if (example) itemsEl.appendChild(buildExampleCard(example));
-    });
-  };
-
   columns.forEach((column, columnIndex) => {
     const labelEl = document.getElementById(`comparison-col-${columnIndex}-label`);
     const descEl = document.getElementById(`comparison-col-${columnIndex}-desc`);
+    const pointsEl = document.getElementById(`comparison-col-${columnIndex}-points`);
     const tabsEl = document.getElementById(`comparison-col-${columnIndex}-tabs`);
     tabsEl.innerHTML = "";
     tabsEl.hidden = true;
+    pointsEl.innerHTML = "";
+    pointsEl.hidden = true;
     labelEl.textContent = (column.label && (column.label[currentLanguage] || column.label.ur)) || "";
     const description =
       column.description && (column.description[currentLanguage] || column.description.ur);
@@ -803,58 +1088,51 @@ function renderComparison(part) {
     descEl.hidden = !description;
   });
 
-  const pointsEl = document.getElementById("comparison-points");
-  pointsEl.innerHTML = "";
-  pointsEl.hidden = true;
-
-  if (sharedGroups && sharedGroups.length) {
-    sharedTabsEl.hidden = false;
-    const selectGroup = (group) => {
-      columns.forEach((column, columnIndex) => {
-        showColumnExamples(columnIndex, group.columns && group.columns[column.id]);
-      });
-    };
-    const tabButtonsByGroupId = {};
-    sharedGroups.forEach((group, groupIndex) => {
-      const tab = document.createElement("button");
-      tab.className = "comparison-tab" + (groupIndex === 0 ? " active" : "");
-      tab.textContent = (group.label && (group.label[currentLanguage] || group.label.ur)) || group.id;
-      tab.addEventListener("click", () => {
-        sharedTabsEl.querySelectorAll(".comparison-tab").forEach((b) => b.classList.remove("active"));
-        tab.classList.add("active");
-        selectGroup(group);
-      });
-      sharedTabsEl.appendChild(tab);
-      tabButtonsByGroupId[group.id] = tab;
-    });
-    selectGroup(sharedGroups[0]);
-
-    // Key-point bullets, each one popping in with a short staggered delay
-    // (a lightweight stand-in for a real narration-synced reveal, since this
-    // layout's narration audio plays as a whole rather than per-sentence).
-    // A point tied to a group_id is clickable and jumps straight to that
-    // word's tab, so the explanation and its concrete example are one click
-    // apart instead of the learner having to find it themselves.
-    const points = comparison.points || [];
-    if (points.length) {
-      pointsEl.hidden = false;
-      points.forEach((point, pointIndex) => {
-        const li = document.createElement("li");
-        li.className = "comparison-point";
-        li.style.animationDelay = `${pointIndex * 0.15}s`;
-        li.textContent = (point.text && (point.text[currentLanguage] || point.text.ur)) || "";
-        if (point.group_id && tabButtonsByGroupId[point.group_id]) {
-          li.classList.add("linked");
-          li.addEventListener("click", () => tabButtonsByGroupId[point.group_id].click());
-        }
-        pointsEl.appendChild(li);
-      });
-    }
-    return;
-  }
-
   columns.forEach((column, columnIndex) => {
     const tabsEl = document.getElementById(`comparison-col-${columnIndex}-tabs`);
+
+    // A column with its own case_tabs (today: Nahw's فاعل/زبر/زیر) shows a
+    // fixed, small set of examples at a time -- selectable from a menu --
+    // instead of stacking every word's every case underneath each other
+    // and growing the slide taller as more cases get added. This is
+    // independent of the word-grouped sync reveal below (used by Sarf).
+    //
+    // The menu itself stays empty until the narration first reaches this
+    // column (see buildCaseTabs, called lazily from handleComparisonSync)
+    // -- so nothing shows up before the voice has actually introduced it,
+    // even though the container's size never changes once it does.
+    if (column.case_tabs && column.case_tabs.length) {
+      return;
+    }
+
+    // Otherwise, if this column participates in the shared word groups
+    // (today: Sarf), stack each word's example(s) under its own label,
+    // starting "pending" (hidden) -- the narration timeupdate handler
+    // reveals each one (handleComparisonSync) exactly when the voice
+    // reaches the sentence that explains it, via part.comparison.sync.
+    if (sharedGroups && sharedGroups.length) {
+      const itemsEl = document.getElementById(`comparison-col-${columnIndex}-items`);
+      itemsEl.innerHTML = "";
+      sharedGroups.forEach((group) => {
+        const exampleIds = group.columns && group.columns[column.id];
+        if (!exampleIds || !exampleIds.length) return;
+        const groupBlock = document.createElement("div");
+        groupBlock.className = "comparison-group-block pending";
+        groupBlock.id = `comparison-col-${columnIndex}-group-${group.id}`;
+        const groupLabel = document.createElement("p");
+        groupLabel.className = "comparison-group-label";
+        groupLabel.textContent = (group.label && (group.label[currentLanguage] || group.label.ur)) || group.id;
+        groupBlock.appendChild(groupLabel);
+        exampleIds.forEach((id) => {
+          const example = exampleById[id];
+          if (example) groupBlock.appendChild(buildExampleCard(example));
+        });
+        itemsEl.appendChild(groupBlock);
+      });
+      return;
+    }
+
+    // Plain flat fallback: no grouping of any kind for this column.
     if (column.groups && column.groups.length) {
       tabsEl.hidden = false;
       column.groups.forEach((group, groupIndex) => {
@@ -910,30 +1188,122 @@ document.querySelectorAll(".feedback-btn").forEach((btn) => {
   });
 });
 
+function formatTime(seconds) {
+  if (!isFinite(seconds) || seconds < 0) seconds = 0;
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+// A real play/pause toggle + seek slider (like a video player), instead of
+// a one-shot "play" button with no way to pause or jump back once started.
 document.getElementById("play-btn").addEventListener("click", () => {
   const audio = document.getElementById("part-audio");
-  audio.play();
-  document.getElementById("play-btn").hidden = true;
-  logClientEvent("audio_played", currentLesson.id, currentLesson.parts[currentPartIndex].id);
+  if (audio.paused) {
+    audio.play();
+    logClientEvent("audio_played", currentLesson.id, currentLesson.parts[currentPartIndex].id);
+  } else {
+    audio.pause();
+    logClientEvent("audio_paused", currentLesson.id, currentLesson.parts[currentPartIndex].id, {
+      at_seconds: Math.round(audio.currentTime),
+    });
+  }
+});
+
+document.getElementById("part-audio").addEventListener("play", () => {
+  document.getElementById("play-btn").textContent = "❚❚";
+});
+
+document.getElementById("part-audio").addEventListener("pause", () => {
+  document.getElementById("play-btn").textContent = "▶";
+});
+
+document.getElementById("part-audio").addEventListener("loadedmetadata", (e) => {
+  document.getElementById("player-seek").disabled = false;
+  document.getElementById("player-time").textContent = `0:00 / ${formatTime(e.target.duration)}`;
+});
+
+let seekDragging = false;
+
+document.getElementById("part-audio").addEventListener("timeupdate", (e) => {
+  if (seekDragging) return;
+  const { currentTime, duration } = e.target;
+  if (isFinite(duration) && duration > 0) {
+    document.getElementById("player-seek").value = Math.round((currentTime / duration) * 1000);
+  }
+  document.getElementById("player-time").textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+});
+
+document.getElementById("player-seek").addEventListener("input", () => {
+  seekDragging = true;
+});
+
+document.getElementById("player-seek").addEventListener("change", (e) => {
+  const audio = document.getElementById("part-audio");
+  if (isFinite(audio.duration) && audio.duration > 0) {
+    audio.currentTime = (e.target.value / 1000) * audio.duration;
+    logClientEvent("audio_seeked", currentLesson.id, currentLesson.parts[currentPartIndex].id, {
+      to_seconds: Math.round(audio.currentTime),
+    });
+  }
+  seekDragging = false;
 });
 
 // Pop in / pop out each sentence exactly in sync with its real narration
 // timing (Edge TTS SentenceBoundary offsets baked in by
 // generate_concept_slides.py), not a guessed interval.
+function showSentenceText(narration, idx) {
+  const sentenceEl = document.getElementById("sentence-text");
+  sentenceEl.classList.remove("visible");
+  setTimeout(() => {
+    sentenceEl.textContent = narration.sentences[idx].text;
+    requestAnimationFrame(() => sentenceEl.classList.add("visible"));
+  }, 150);
+}
+
 document.getElementById("part-audio").addEventListener("timeupdate", (e) => {
   const part = currentLesson.parts[currentPartIndex];
   const narration = part.narration[currentLanguage] || part.narration.ur;
   const t = e.target.currentTime;
   const idx = narration.sentences.findIndex((s) => t >= s.start && t < s.end);
-  if (idx !== -1 && idx !== currentSentenceIndex) {
-    currentSentenceIndex = idx;
-    const sentenceEl = document.getElementById("sentence-text");
-    sentenceEl.classList.remove("visible");
-    setTimeout(() => {
-      sentenceEl.textContent = narration.sentences[idx].text;
-      requestAnimationFrame(() => sentenceEl.classList.add("visible"));
-    }, 150);
+  if (idx === -1 || idx === currentSentenceIndex) return;
+  currentSentenceIndex = idx;
+
+  if (part.layout === "comparison" && part.comparison) {
+    handleComparisonSync(part, idx, narration);
+    return;
   }
+
+  if (part.sync && part.sync.length) {
+    handleExampleSync(part, idx);
+  }
+
+  showSentenceText(narration, idx);
+});
+
+// Seeking (dragging the slider, or any other jump) doesn't fire a smooth
+// run through every intervening timeupdate tick, so it needs its own
+// handler to fully resync the screen to wherever the cursor landed --
+// otherwise scrubbing backward leaves examples revealed that the
+// narration hasn't actually reached yet, and the displayed state drifts
+// out of sync with the actual audio position.
+document.getElementById("part-audio").addEventListener("seeked", (e) => {
+  const part = currentLesson.parts[currentPartIndex];
+  const narration = part.narration[currentLanguage] || part.narration.ur;
+  const t = e.target.currentTime;
+  const idx = narration.sentences.findIndex((s) => t >= s.start && t < s.end);
+  currentSentenceIndex = idx;
+
+  if (part.layout === "comparison" && part.comparison) {
+    syncComparisonToTime(part, narration, t);
+    return;
+  }
+
+  if (part.sync && part.sync.length) {
+    syncExamplesToTime(part, narration, t);
+  }
+
+  if (idx !== -1) showSentenceText(narration, idx);
 });
 
 document.getElementById("example-play-btn").addEventListener("click", () => {
@@ -1037,11 +1407,18 @@ function advancePart() {
 }
 
 document.getElementById("chat-fab").addEventListener("click", () => {
-  document.getElementById("question-box").classList.toggle("open");
+  const panel = document.getElementById("question-box");
+  panel.classList.toggle("open");
+  logClientEvent("chat_panel_toggled", currentLesson.id, currentLesson.parts[currentPartIndex].id, {
+    state: panel.classList.contains("open") ? "open" : "closed",
+  });
 });
 
 document.getElementById("chat-close-btn").addEventListener("click", () => {
   document.getElementById("question-box").classList.remove("open");
+  logClientEvent("chat_panel_toggled", currentLesson.id, currentLesson.parts[currentPartIndex].id, {
+    state: "closed",
+  });
 });
 
 // Each sent chat message polls independently by its own question id, so
@@ -1062,6 +1439,7 @@ function pollAnswer(id, bubbleEl) {
         audio.src = data.answer_audio_url;
         bubbleEl.appendChild(audio);
       }
+      bubbleEl.appendChild(buildAnswerRatingRow(id, data.rating));
     } else if (data.status === "failed") {
       clearInterval(interval);
       bubbleEl.innerHTML = "";

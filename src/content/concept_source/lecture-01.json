@@ -16,20 +16,40 @@
           "en": "Arabic grammar has two major branches: nahw (syntax) and sarf (morphology)."
         },
         {
-          "ur": "نحو کو ٹریفک کے قوانین کی طرح سمجھیں — یہ طے کرتا ہے کہ جملے میں الفاظ ایک دوسرے سے کیسے جڑتے ہیں، اور ہر لفظ کا آخری حرف اس کے کردار کے مطابق کیسے بدلتا ہے۔",
-          "en": "Think of nahw like traffic rules for a sentence: it decides how words relate to each other, and how each word's ending changes based on its job in the sentence."
+          "ur": "نحو بتاتا ہے کہ جملے میں لفظ کا کردار اس کے آخری حرف کی آواز بدل دیتا ہے — فاعل پَیش لیتا ہے، مفعول زبر لیتا ہے، اور ملکیت میں آنے والا لفظ زیر لیتا ہے۔",
+          "en": "Nahw tells us that a word's role in the sentence changes its final sound: the subject (fa'il) takes a 'pesh' (u), the object takes a 'zabar' (a), and a possessed word takes a 'zair' (i)."
         },
         {
-          "ur": "صرف کو ایک فیکٹری کی طرح سمجھیں — یہ تین بنیادی حروف کی ایک جڑ سے بہت سے الفاظ اور فعل کی مختلف شکلیں بناتی ہے۔",
-          "en": "Think of sarf like a word factory: it takes a root of three letters and builds many related words and verb forms from it."
+          "ur": "جب کوئی لفظ فاعل ہو، یعنی وہ کام کرنے والا ہو، تو اس کے آخر میں پَیش کی آواز آتی ہے — دیکھیں: کتاب کے لیے 'اَلْكِتَابُ جَدِيدٌ'، گھر کے لیے 'اَلْبَيْتُ جَمِيلٌ'، قلم کے لیے 'اَلْقَلَمُ جَمِيلٌ'، اور دروازہ کے لیے 'اَلْبَابُ مَفْتُوحٌ'۔",
+          "en": "When a word is the fa'il (subject) -- the one doing the action -- it takes a 'pesh' sound at the end. See: for 'kitab' it's 'al-kitabu jadidun'; for 'bayt' it's 'al-baytu jamilun'; for 'qalam' it's 'al-qalamu jamilun'; and for 'bab' it's 'al-babu maftoohun'."
         },
         {
-          "ur": "نحو الفاظ کے آخر اور جملے کی ساخت کا مطالعہ ہے۔",
-          "en": "Nahw is the study of word endings and sentence structure."
+          "ur": "جب وہی لفظ مفعول ہو، یعنی جس پر کام ہو رہا ہو، تو آخر میں زبر کی آواز آتی ہے — 'قَرَأْتُ الْكِتَابَ'، 'رَأَيْتُ الْبَيْتَ'، 'اِشْتَرَيْتُ الْقَلَمَ'، اور 'فَتَحْتُ الْبَابَ'۔",
+          "en": "When that same word is the maf'ul (object) -- the thing the action is done to -- it takes a 'zabar' sound: 'qara'tu al-kitaba', 'ra'aytu al-bayta', 'ishtaraytu al-qalama', and 'fatahtu al-baba'."
         },
         {
-          "ur": "صرف فعل کی تصریف اور الفاظ کی ساخت کا مطالعہ ہے۔ نیچے دی گئی پانچ مثالوں میں دونوں خیال حقیقی جملوں میں دیکھیں۔",
-          "en": "Sarf is the study of verb conjugation and word formation. Look at the five examples below to see both ideas at work in real sentences."
+          "ur": "اور جب وہی لفظ ملکیت میں آئے، یعنی کسی اور لفظ سے جڑا ہو، تو آخر میں زیر کی آواز آتی ہے — 'هٰذَا غِلَافُ الْكِتَابِ'، 'هٰذَا بَابُ الْبَيْتِ'، 'هٰذَا غِلَافُ الْقَلَمِ'، اور 'هٰذَا لَوْنُ الْبَابِ'۔",
+          "en": "And when that same word shows possession -- linked to another word -- it takes a 'zair' sound: 'hadha ghilafu al-kitabi', 'hadha babu al-bayti', 'hadha ghilafu al-qalami', and 'hadha lawnu al-babi'."
+        },
+        {
+          "ur": "دوسری طرف، صرف بتاتا ہے کہ ایک جڑ، یعنی صرف تین بنیادی حروف، سے مختلف افعال کیسے بنتے ہیں — جس فعل سے پتا چلے کہ کام ہو چکا ہے، اسے ماضی کا فعل کہتے ہیں۔",
+          "en": "On the other hand, sarf explains how different verb forms are built from one root -- just three base letters -- such as the verb form that says an action already happened, called the 'madi' (past tense)."
+        },
+        {
+          "ur": "کتاب کے ساتھ: 'كَتَبَ الطَّالِبُ الْكِتَابَ' یعنی طالب علم نے کتاب لکھی — یہ جڑ 'ک-ت-ب' سے بنا ماضی کا فعل ہے، یعنی لکھنے کا کام ہو چکا ہے۔",
+          "en": "With 'kitab': 'kataba at-talibu al-kitaba' means the student wrote the book -- this is the past-tense verb built from the root 'k-t-b', meaning the writing already happened."
+        },
+        {
+          "ur": "گھر کے ساتھ: 'بَنَى الرَّجُلُ الْبَيْتَ' یعنی آدمی نے گھر بنایا — یہ جڑ 'ب-ن-ی' سے بنا ماضی کا فعل ہے، یعنی بنانے کا کام ہو چکا ہے۔",
+          "en": "With 'bayt': 'bana ar-rajulu al-bayta' means the man built the house -- this is the past-tense verb built from the root 'b-n-y', meaning the building already happened."
+        },
+        {
+          "ur": "قلم کے ساتھ: 'كَتَبَ الْوَلَدُ بِالْقَلَمِ' یعنی لڑکے نے قلم سے لکھا — یہ وہی جڑ 'ک-ت-ب' سے بنا ماضی کا فعل ہے۔",
+          "en": "With 'qalam': 'kataba al-waladu bil-qalami' means the boy wrote with the pen -- this is the past-tense verb built from that same root 'k-t-b'."
+        },
+        {
+          "ur": "اور دروازہ کے ساتھ: 'فَتَحَ الْوَلَدُ الْبَابَ' یعنی لڑکے نے دروازہ کھولا — یہ جڑ 'ف-ت-ح' سے بنا ماضی کا فعل ہے، یعنی کھولنے کا کام ہو چکا ہے۔",
+          "en": "And with 'bab': 'fataha al-waladu al-baba' means the boy opened the door -- this is the past-tense verb built from the root 'f-t-h', meaning the opening already happened."
         }
       ],
       "question": {
@@ -218,42 +238,66 @@
             "ur": "صرف: جڑ 'ف-ت-ح' سے ماضی کا فعل",
             "en": "sarf: the root 'f-t-h' built as a past-tense verb"
           }
+        },
+        {
+          "id": "ex-15",
+          "arabic": "اِشْتَرَيْتُ الْقَلَمَ",
+          "transliteration": "ishtaraytu al-qalama",
+          "translation": {
+            "ur": "میں نے قلم خریدا۔",
+            "en": "I bought the pen."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'قلم' مفعول ہے، آخر میں زبر کی آواز",
+            "en": "nahw: here 'qalam' is the object, so it ends in -a instead"
+          }
+        },
+        {
+          "id": "ex-16",
+          "arabic": "هٰذَا غِلَافُ الْقَلَمِ",
+          "transliteration": "hadha ghilafu al-qalami",
+          "translation": {
+            "ur": "یہ قلم کا غلاف ہے۔",
+            "en": "This is the pen's cover."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'قلم' ملکیت میں ہے، آخر میں زیر کی آواز",
+            "en": "nahw: 'qalam' is the possessed noun here, so it ends in -i"
+          }
+        },
+        {
+          "id": "ex-17",
+          "arabic": "فَتَحْتُ الْبَابَ",
+          "transliteration": "fatahtu al-baba",
+          "translation": {
+            "ur": "میں نے دروازہ کھولا۔",
+            "en": "I opened the door."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'باب' مفعول ہے، آخر میں زبر کی آواز",
+            "en": "nahw: here 'bab' is the object, so it ends in -a instead"
+          }
+        },
+        {
+          "id": "ex-18",
+          "arabic": "هٰذَا لَوْنُ الْبَابِ",
+          "transliteration": "hadha lawnu al-babi",
+          "translation": {
+            "ur": "یہ دروازے کا رنگ ہے۔",
+            "en": "This is the door's color."
+          },
+          "rule": {
+            "ur": "نحو: یہاں 'باب' ملکیت میں ہے، آخر میں زیر کی آواز",
+            "en": "nahw: 'bab' is the possessed noun here, so it ends in -i"
+          }
         }
       ],
       "layout": "comparison",
       "comparison": {
         "hint": {
-          "ur": "اوپر کوئی لفظ منتخب کریں — کتاب، گھر، قلم یا دروازہ — اور دیکھیں کہ وہ نحو اور صرف میں کیسے استعمال ہوتا ہے۔",
-          "en": "Select a word above -- book, house, pen or door -- and see how it's used in both nahw and sarf."
+          "ur": "نیچے دی گئی مثالیں آواز کے ساتھ ساتھ سامنے آئیں گی — سننا شروع کریں۔",
+          "en": "The examples below will appear as the narration explains them -- press play to begin."
         },
-        "points": [
-          {
-            "text": {
-              "ur": "نحو بتاتا ہے کہ ایک لفظ جملے میں اپنے کردار کے مطابق اپنی آخری آواز کیوں بدلتا ہے۔",
-              "en": "Nahw explains why the same word changes its final sound based on its role in the sentence."
-            }
-          },
-          {
-            "text": {
-              "ur": "مثال: 'کتاب' پر کلک کریں — دیکھیں فاعل، مفعول اور ملکیت میں اس کی آواز کیسے بدلتی ہے۔",
-              "en": "Example: click 'kitab' above -- see how its ending changes as subject, object, and possessive."
-            },
-            "group_id": "kitab"
-          },
-          {
-            "text": {
-              "ur": "صرف بتاتا ہے کہ ایک ہی جڑ سے مختلف افعال کیسے بنتے ہیں۔",
-              "en": "Sarf explains how different verb forms are built from one single root."
-            }
-          },
-          {
-            "text": {
-              "ur": "مثال: 'گھر' پر کلک کریں — دیکھیں جڑ 'ب-ن-ی' سے ماضی اور حال دونوں افعال کیسے بنتے ہیں۔",
-              "en": "Example: click 'bayt' (house) above -- see how the root 'b-n-y' builds both the past and present verb."
-            },
-            "group_id": "bait"
-          }
-        ],
         "columns": [
           {
             "id": "nahw",
@@ -264,7 +308,24 @@
             "description": {
               "ur": "جملے میں الفاظ کے آخر اور ساخت کا علم",
               "en": "The study of word endings and sentence structure"
-            }
+            },
+            "case_tabs": [
+              {
+                "id": "faal",
+                "label": {"ur": "فاعل", "en": "Subject (pesh)"},
+                "example_ids": ["ex-1", "ex-6", "ex-11", "ex-13"]
+              },
+              {
+                "id": "zabar",
+                "label": {"ur": "زبر", "en": "Object (zabar)"},
+                "example_ids": ["ex-2", "ex-7", "ex-15", "ex-17"]
+              },
+              {
+                "id": "zair",
+                "label": {"ur": "زیر", "en": "Possessive (zair)"},
+                "example_ids": ["ex-3", "ex-8", "ex-16", "ex-18"]
+              }
+            ]
           },
           {
             "id": "sarf",
@@ -278,6 +339,43 @@
             }
           }
         ],
+        "sync": [
+          null,
+          {
+            "column_id": "nahw"
+          },
+          {
+            "column_id": "nahw",
+            "case_tab_id": "faal"
+          },
+          {
+            "column_id": "nahw",
+            "case_tab_id": "zabar"
+          },
+          {
+            "column_id": "nahw",
+            "case_tab_id": "zair"
+          },
+          {
+            "column_id": "sarf"
+          },
+          {
+            "column_id": "sarf",
+            "group_id": "kitab"
+          },
+          {
+            "column_id": "sarf",
+            "group_id": "bait"
+          },
+          {
+            "column_id": "sarf",
+            "group_id": "qalam"
+          },
+          {
+            "column_id": "sarf",
+            "group_id": "bab"
+          }
+        ],
         "groups": [
           {
             "id": "kitab",
@@ -286,9 +384,6 @@
               "en": "kitab (book)"
             },
             "columns": {
-              "nahw": [
-                "ex-1"
-              ],
               "sarf": [
                 "ex-4"
               ]
@@ -301,9 +396,6 @@
               "en": "bayt (house)"
             },
             "columns": {
-              "nahw": [
-                "ex-6"
-              ],
               "sarf": [
                 "ex-9"
               ]
@@ -316,9 +408,6 @@
               "en": "qalam (pen)"
             },
             "columns": {
-              "nahw": [
-                "ex-11"
-              ],
               "sarf": [
                 "ex-12"
               ]
@@ -331,9 +420,6 @@
               "en": "bab (door)"
             },
             "columns": {
-              "nahw": [
-                "ex-13"
-              ],
               "sarf": [
                 "ex-14"
               ]
@@ -344,229 +430,394 @@
     },
     {
       "title": {
-        "ur": "اشارہ کرنے والے الفاظ: هذا، هذه",
-        "en": "Demonstrative Words: hadha, hadhihi"
+        "ur": "اشارہ اور سوال: هذا اور ما هذا؟",
+        "en": "Demonstratives and Asking: hadha, hadhihi, ma hadha?"
       },
-      "arabic_example": "هذا / هذه",
+      "arabic_example": "هذا / ما هذا؟",
       "sentences": [
         {
           "ur": "کسی قریبی چیز کی طرف اشارہ کرنے کے لیے عربی میں دو الفاظ استعمال ہوتے ہیں: 'هذا' اور 'هذه'۔",
           "en": "Arabic uses two words to point to something nearby: hadha and hadhihi."
         },
         {
-          "ur": "مذکر کے لیے 'هذا' اور مؤنث کے لیے 'هذه' استعمال ہوتا ہے — عربی میں تقریباً ہر اسم کی ایک جنس ہوتی ہے، چاہے وہ بے جان چیز ہی ہو۔",
-          "en": "Hadha is used for masculine nouns, and hadhihi for feminine ones -- almost every Arabic noun is grammatically either masculine or feminine, even for objects."
+          "ur": "مذکر کے لیے 'هذا' اور مؤنث کے لیے 'هذه' استعمال ہوتا ہے — زیادہ تر مؤنث اسم آخر میں گول 'ة' یعنی تاء مربوطہ پر ختم ہوتے ہیں۔",
+          "en": "Hadha is used for masculine nouns, and hadhihi for feminine ones -- most feminine nouns end in the round letter 'ta marbuta'."
         },
         {
-          "ur": "ایک آسان نکتہ: زیادہ تر مؤنث اسم آخر میں گول 'ة' (تاء مربوطہ) پر ختم ہوتے ہیں، جیسے 'مدرسة' یا 'سيارة'۔",
-          "en": "A simple trick: most feminine nouns end in the round letter 'ta marbuta', like 'madrasa' (school) or 'sayyara' (car)."
+          "ur": "کسی نامعلوم چیز کے بارے میں پوچھنے کے لیے 'ما هذا؟' کہا جاتا ہے، یعنی 'یہ کیا ہے؟'۔",
+          "en": "To ask about something unknown, we say 'ma hadha?' -- meaning 'what is this?'."
         },
         {
-          "ur": "نیچے دی گئی پانچ مثالیں دیکھیں — ترجمہ دیکھنے سے پہلے تصویر سے خود اندازہ لگانے کی کوشش کریں کہ 'هذا' ہوگا یا 'هذه'۔",
-          "en": "Look at the five examples below -- try covering the translation and guessing hadha or hadhihi from the picture first."
-        }
-      ],
-      "question": {
-        "ur": "ایک مذکر چیز کی طرف اشارہ کرنے کے لیے کون سا لفظ استعمال ہوگا؟",
-        "en": "Which word is used to point to a masculine object?"
-      },
-      "examples": [
-        {
-          "id": "ex-1",
-          "arabic": "هٰذَا كِتَابٌ",
-          "transliteration": "hadha kitabun",
-          "translation": {
-            "ur": "یہ ایک کتاب ہے۔ (مذکر)",
-            "en": "This is a book. (masculine)"
-          }
-        },
-        {
-          "id": "ex-2",
-          "arabic": "هٰذِهِ مَدْرَسَةٌ",
-          "transliteration": "hadhihi madrasatun",
-          "translation": {
-            "ur": "یہ ایک سکول ہے۔ (مؤنث)",
-            "en": "This is a school. (feminine)"
-          }
-        },
-        {
-          "id": "ex-3",
-          "arabic": "هٰذَا قَلَمٌ",
-          "transliteration": "hadha qalamun",
-          "translation": {
-            "ur": "یہ ایک قلم ہے۔ (مذکر)",
-            "en": "This is a pen. (masculine)"
-          }
-        },
-        {
-          "id": "ex-4",
-          "arabic": "هٰذِهِ سَيَّارَةٌ",
-          "transliteration": "hadhihi sayyaratun",
-          "translation": {
-            "ur": "یہ ایک گاڑی ہے۔ (مؤنث)",
-            "en": "This is a car. (feminine)"
-          }
-        },
-        {
-          "id": "ex-5",
-          "arabic": "هٰذَا بَابٌ",
-          "transliteration": "hadha babun",
-          "translation": {
-            "ur": "یہ ایک دروازہ ہے۔ (مذکر)",
-            "en": "This is a door. (masculine)"
-          }
-        }
-      ]
-    },
-    {
-      "title": {
-        "ur": "سوال پوچھنا: ما هذا؟",
-        "en": "Asking a Question: ma hadha?"
-      },
-      "arabic_example": "ما هذا؟",
-      "sentences": [
-        {
-          "ur": "'ما هذا؟' کا مطلب ہے 'یہ کیا ہے؟'۔",
-          "en": "'ma hadha?' means 'what is this?'."
-        },
-        {
-          "ur": "یہ سوال کسی نامعلوم چیز کے بارے میں پوچھنے کے لیے استعمال ہوتا ہے۔",
-          "en": "This question is used to ask about something unknown."
-        },
-        {
-          "ur": "اس کا جواب 'هذا...' سے شروع ہو کر چیز کا نام بتا کر دیا جاتا ہے۔",
-          "en": "The answer is given by starting with 'hadha...' followed by the name of the thing."
+          "ur": "اس کا جواب 'هٰذَا...' سے شروع ہو کر چیز کا نام بتا کر دیا جاتا ہے، جیسے 'هٰذَا كَلْبٌ' یعنی 'یہ ایک کتا ہے'۔",
+          "en": "The answer is given by starting with 'hadha...' followed by the name of the thing, like 'hadha kalbun' meaning 'this is a dog'."
         }
       ],
       "question": {
         "ur": "'ما هذا؟' کا اردو میں کیا مطلب ہے؟",
         "en": "What does 'ma hadha?' mean?"
-      }
+      },
+      "categories": [
+        {"id": "animals", "label": {"ur": "جانور", "en": "Animals"}},
+        {"id": "home", "label": {"ur": "گھر", "en": "Home"}},
+        {"id": "living-room", "label": {"ur": "بیٹھک", "en": "Living Room"}},
+        {"id": "nature", "label": {"ur": "فطرت", "en": "Nature"}}
+      ],
+      "examples": [
+        {
+          "id": "mh-1",
+          "category": "animals",
+          "arabic": "مَا هٰذَا؟ هٰذَا كَلْبٌ.",
+          "transliteration": "ma hadha? hadha kalbun.",
+          "translation": {"ur": "یہ ایک کتا ہے۔", "en": "This is a dog."}
+        },
+        {
+          "id": "mh-2",
+          "category": "animals",
+          "arabic": "مَا هٰذَا؟ هٰذَا حِصَانٌ.",
+          "transliteration": "ma hadha? hadha hisanun.",
+          "translation": {"ur": "یہ ایک گھوڑا ہے۔", "en": "This is a horse."}
+        },
+        {
+          "id": "mh-3",
+          "category": "home",
+          "arabic": "مَا هٰذَا؟ هٰذَا بَابٌ.",
+          "transliteration": "ma hadha? hadha babun.",
+          "translation": {"ur": "یہ ایک دروازہ ہے۔", "en": "This is a door."}
+        },
+        {
+          "id": "mh-4",
+          "category": "home",
+          "arabic": "مَا هٰذَا؟ هٰذَا مِفْتَاحٌ.",
+          "transliteration": "ma hadha? hadha miftahun.",
+          "translation": {"ur": "یہ ایک چابی ہے۔", "en": "This is a key."}
+        },
+        {
+          "id": "mh-5",
+          "category": "living-room",
+          "arabic": "مَا هٰذَا؟ هٰذَا كُرْسِيٌّ.",
+          "transliteration": "ma hadha? hadha kursiyyun.",
+          "translation": {"ur": "یہ ایک کرسی ہے۔", "en": "This is a chair."}
+        },
+        {
+          "id": "mh-6",
+          "category": "living-room",
+          "arabic": "مَا هٰذَا؟ هٰذَا كِتَابٌ.",
+          "transliteration": "ma hadha? hadha kitabun.",
+          "translation": {"ur": "یہ ایک کتاب ہے۔", "en": "This is a book."}
+        },
+        {
+          "id": "mh-7",
+          "category": "nature",
+          "arabic": "مَا هٰذَا؟ هٰذَا قَمَرٌ.",
+          "transliteration": "ma hadha? hadha qamarun.",
+          "translation": {"ur": "یہ ایک چاند ہے۔", "en": "This is a moon."}
+        },
+        {
+          "id": "mh-8",
+          "category": "nature",
+          "arabic": "مَا هٰذَا؟ هٰذَا نَجْمٌ.",
+          "transliteration": "ma hadha? hadha najmun.",
+          "translation": {"ur": "یہ ایک ستارہ ہے۔", "en": "This is a star."}
+        },
+        {
+          "id": "mh-9",
+          "category": "animals",
+          "arabic": "مَا هٰذَا؟ هٰذَا جَمَلٌ.",
+          "transliteration": "ma hadha? hadha jamalun.",
+          "translation": {"ur": "یہ ایک اونٹ ہے۔", "en": "This is a camel."}
+        },
+        {
+          "id": "mh-10",
+          "category": "animals",
+          "arabic": "مَا هٰذَا؟ هٰذَا حِمَارٌ.",
+          "transliteration": "ma hadha? hadha himarun.",
+          "translation": {"ur": "یہ ایک گدھا ہے۔", "en": "This is a donkey."}
+        },
+        {
+          "id": "mh-11",
+          "category": "home",
+          "arabic": "مَا هٰذَا؟ هٰذَا مَنْزِلٌ.",
+          "transliteration": "ma hadha? hadha manzilun.",
+          "translation": {"ur": "یہ ایک گھر ہے۔", "en": "This is a house."}
+        },
+        {
+          "id": "mh-12",
+          "category": "home",
+          "arabic": "مَا هٰذَا؟ هٰذَا مَسْجِدٌ.",
+          "transliteration": "ma hadha? hadha masjidun.",
+          "translation": {"ur": "یہ ایک مسجد ہے۔", "en": "This is a mosque."}
+        },
+        {
+          "id": "mh-13",
+          "category": "living-room",
+          "arabic": "مَا هٰذَا؟ هٰذَا قَلَمٌ.",
+          "transliteration": "ma hadha? hadha qalamun.",
+          "translation": {"ur": "یہ ایک قلم ہے۔", "en": "This is a pen."}
+        },
+        {
+          "id": "mh-14",
+          "category": "living-room",
+          "arabic": "مَا هٰذَا؟ هٰذَا مَكْتَبٌ.",
+          "transliteration": "ma hadha? hadha maktabun.",
+          "translation": {"ur": "یہ ایک میز ہے۔", "en": "This is a desk."}
+        },
+        {
+          "id": "mh-15",
+          "category": "nature",
+          "arabic": "مَا هٰذَا؟ هٰذَا بَحْرٌ.",
+          "transliteration": "ma hadha? hadha bahrun.",
+          "translation": {"ur": "یہ ایک سمندر ہے۔", "en": "This is a sea."}
+        },
+        {
+          "id": "mh-16",
+          "category": "nature",
+          "arabic": "مَا هٰذَا؟ هٰذَا جَبَلٌ.",
+          "transliteration": "ma hadha? hadha jabalun.",
+          "translation": {"ur": "یہ ایک پہاڑ ہے۔", "en": "This is a mountain."}
+        }
+      ]
     },
     {
       "title": {
-        "ur": "ہاں اور نہیں: نعم، لا",
-        "en": "Yes and No: na'am, la"
+        "ur": "سوال پوچھنا: من هذا؟",
+        "en": "Asking a Question: man hadha? (Who is this?)"
       },
-      "arabic_example": "نعم / لا",
+      "arabic_example": "من هذا؟",
       "sentences": [
         {
-          "ur": "عربی میں 'ہاں' کہنے کے لیے 'نعم' استعمال ہوتا ہے۔",
-          "en": "In Arabic, 'na'am' is used to say 'yes'."
+          "ur": "عربی میں 'یہ کیا/کون ہے؟' پوچھنے کے لیے دو الفاظ ہیں: 'ما' غیر عاقل یعنی بے عقل چیز کے بارے میں پوچھنے کے لیے، اور 'من' عاقل یعنی عقل رکھنے والے کے بارے میں پوچھنے کے لیے۔",
+          "en": "Arabic has two question words for 'this': 'ma' asks about something ghair-aakil (non-rational) -- an object, a plant, an animal -- while 'man' asks about someone aakil (rational) -- a human being or a jinn."
         },
         {
-          "ur": "'نہیں' کہنے کے لیے 'لا' استعمال ہوتا ہے۔",
-          "en": "'la' is used to say 'no'."
+          "ur": "'من هذا؟' کا مطلب ہے 'یہ کون ہے؟' — یہ صرف کسی عقل رکھنے والے کے بارے میں پوچھا جاتا ہے، کسی چیز یا جانور کے بارے میں نہیں۔",
+          "en": "'man hadha?' means 'who is this?' -- used only for a rational being, never for an object or an animal."
         },
         {
-          "ur": "یہ الفاظ ہاں یا نہیں میں جواب دینے والے سوالوں کے جواب میں استعمال ہوتے ہیں۔",
-          "en": "These words are used to answer yes/no questions."
+          "ur": "جانور زندہ ہونے کے باوجود عربی گرامر میں غیر عاقل شمار ہوتا ہے، بالکل کسی چیز کی طرح — اس لیے جانور کے بارے میں بھی 'ما هذا؟' ہی پوچھا جاتا ہے، 'من هذا؟' نہیں۔",
+          "en": "Even though an animal is alive, Arabic grammar still treats it as ghair-aakil, just like an object -- so we still ask 'ma hadha?' about an animal, never 'man hadha?'."
+        },
+        {
+          "ur": "اس کا جواب بھی 'هٰذَا...' سے شروع ہو کر وہ شخص کون ہے بتا کر دیا جاتا ہے، جیسے 'هٰذَا مُدَرِّسٌ' یعنی 'یہ ایک استاد ہے'۔",
+          "en": "The answer still starts with 'hadha...' followed by who the person is, like 'hadha mudarrisun' meaning 'this is a teacher'."
         }
       ],
       "question": {
-        "ur": "عربی میں 'نہیں' کس لفظ سے کہا جاتا ہے؟",
-        "en": "Which word means 'no' in Arabic?"
-      }
+        "ur": "'من هذا؟' کس کے بارے میں پوچھنے کے لیے استعمال ہوتا ہے؟",
+        "en": "What does 'man hadha?' ask about?"
+      },
+      "categories": [
+        {"id": "family", "label": {"ur": "خاندان", "en": "Family"}},
+        {"id": "professions", "label": {"ur": "پیشے", "en": "Professions"}},
+        {"id": "people", "label": {"ur": "لوگ", "en": "People"}},
+        {"id": "spiritual", "label": {"ur": "جن و ملائکہ", "en": "Jinn & Angels"}}
+      ],
+      "examples": [
+        {
+          "id": "wh-1",
+          "category": "family",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا أَبٌ.",
+          "transliteration": "man hadha? hadha abun.",
+          "translation": {"ur": "یہ ایک والد ہے۔", "en": "This is a father."}
+        },
+        {
+          "id": "wh-2",
+          "category": "family",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا أَخٌ.",
+          "transliteration": "man hadha? hadha akhun.",
+          "translation": {"ur": "یہ ایک بھائی ہے۔", "en": "This is a brother."}
+        },
+        {
+          "id": "wh-3",
+          "category": "professions",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا مُدَرِّسٌ.",
+          "transliteration": "man hadha? hadha mudarrisun.",
+          "translation": {"ur": "یہ ایک استاد ہے۔", "en": "This is a teacher."}
+        },
+        {
+          "id": "wh-4",
+          "category": "professions",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا طَبِيبٌ.",
+          "transliteration": "man hadha? hadha tabibun.",
+          "translation": {"ur": "یہ ایک ڈاکٹر ہے۔", "en": "This is a doctor."}
+        },
+        {
+          "id": "wh-5",
+          "category": "people",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا وَلَدٌ.",
+          "transliteration": "man hadha? hadha waladun.",
+          "translation": {"ur": "یہ ایک لڑکا ہے۔", "en": "This is a boy."}
+        },
+        {
+          "id": "wh-6",
+          "category": "people",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا رَجُلٌ.",
+          "transliteration": "man hadha? hadha rajulun.",
+          "translation": {"ur": "یہ ایک آدمی ہے۔", "en": "This is a man."}
+        },
+        {
+          "id": "wh-7",
+          "category": "spiritual",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا جِنِّيٌّ.",
+          "transliteration": "man hadha? hadha jinniyyun.",
+          "translation": {"ur": "یہ ایک جن ہے۔", "en": "This is a jinn."}
+        },
+        {
+          "id": "wh-8",
+          "category": "spiritual",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا مَلَاكٌ.",
+          "transliteration": "man hadha? hadha malakun.",
+          "translation": {"ur": "یہ ایک فرشتہ ہے۔", "en": "This is an angel."}
+        },
+        {
+          "id": "wh-9",
+          "category": "family",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا اِبْنٌ.",
+          "transliteration": "man hadha? hadha ibnun.",
+          "translation": {"ur": "یہ ایک بیٹا ہے۔", "en": "This is a son."}
+        },
+        {
+          "id": "wh-10",
+          "category": "family",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا جَدٌّ.",
+          "transliteration": "man hadha? hadha jaddun.",
+          "translation": {"ur": "یہ ایک دادا ہے۔", "en": "This is a grandfather."}
+        },
+        {
+          "id": "wh-11",
+          "category": "professions",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا طَالِبٌ.",
+          "transliteration": "man hadha? hadha talibun.",
+          "translation": {"ur": "یہ ایک طالب علم ہے۔", "en": "This is a student."}
+        },
+        {
+          "id": "wh-12",
+          "category": "professions",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا مُهَنْدِسٌ.",
+          "transliteration": "man hadha? hadha muhandisun.",
+          "translation": {"ur": "یہ ایک انجینئر ہے۔", "en": "This is an engineer."}
+        },
+        {
+          "id": "wh-13",
+          "category": "people",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا شَيْخٌ.",
+          "transliteration": "man hadha? hadha shaykhun.",
+          "translation": {"ur": "یہ ایک بزرگ ہے۔", "en": "This is an elder."}
+        },
+        {
+          "id": "wh-14",
+          "category": "people",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا صَدِيقٌ.",
+          "transliteration": "man hadha? hadha sadiqun.",
+          "translation": {"ur": "یہ ایک دوست ہے۔", "en": "This is a friend."}
+        },
+        {
+          "id": "wh-15",
+          "category": "spiritual",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا إِنْسَانٌ.",
+          "transliteration": "man hadha? hadha insanun.",
+          "translation": {"ur": "یہ ایک انسان ہے۔", "en": "This is a human being."}
+        },
+        {
+          "id": "wh-16",
+          "category": "spiritual",
+          "arabic": "مَنْ هٰذَا؟ هٰذَا مَلِكٌ.",
+          "transliteration": "man hadha? hadha malikun.",
+          "translation": {"ur": "یہ ایک بادشاہ ہے۔", "en": "This is a king."}
+        }
+      ]
     },
     {
       "title": {
-        "ur": "گھر کی چیزوں کے نام",
-        "en": "Names of Household Items"
+        "ur": "سوال و جواب: أهذا؟ نعم / لا",
+        "en": "Yes/No Questions: a-hadha?, na'am, la"
       },
-      "arabic_example": "منزل، مفتاح، كتاب",
+      "arabic_example": "أهذا؟ / نعم / لا",
       "sentences": [
         {
-          "ur": "'منزل' کا مطلب ہے گھر، اور 'مسجد' کا مطلب ہے مسجد۔",
-          "en": "'manzil' means house, and 'masjid' means mosque."
+          "ur": "کسی جملے کو ہاں/نہیں کے سوال میں بدلنے کے لیے عربی میں شروع میں 'أ' لگایا جاتا ہے — 'أَهٰذَا...؟' کا مطلب ہے 'کیا یہ...ہے؟'۔",
+          "en": "To turn a sentence into a yes/no question, Arabic adds 'a' to the very start -- 'a-hadha...?' means 'is this...?'."
         },
         {
-          "ur": "'مفتاح' چابی کو کہتے ہیں، اور 'باب' دروازے کو۔",
-          "en": "'miftah' means key, and 'bab' means door."
+          "ur": "اگر جواب درست ہو تو 'نَعَمْ' یعنی 'ہاں' کہہ کر وہی بات دہرائی جاتی ہے۔",
+          "en": "If the answer is correct, we say 'na'am' meaning 'yes', then repeat the same thing."
         },
         {
-          "ur": "'كتاب' کتاب ہے، 'قلم' قلم ہے، اور 'كرسي' کرسی کو کہتے ہیں۔",
-          "en": "'kitab' is book, 'qalam' is pen, and 'kursi' means chair."
+          "ur": "اگر جواب غلط ہو تو 'لَا' یعنی 'نہیں' کہہ کر صحیح چیز بتائی جاتی ہے۔",
+          "en": "If the answer is wrong, we say 'la' meaning 'no', then give the correct thing instead."
+        },
+        {
+          "ur": "مثال کے طور پر: 'أَهٰذَا كَلْبٌ؟' یعنی 'کیا یہ کتا ہے؟' — جواب 'نَعَمْ، هٰذَا كَلْبٌ' یا 'لَا، هٰذَا...' ہو سکتا ہے۔",
+          "en": "For example: 'a-hadha kalbun?' means 'is this a dog?' -- the answer can be 'na'am, hadha kalbun' or 'la, hadha...'."
         }
       ],
       "question": {
-        "ur": "'مفتاح' کا اردو میں کیا مطلب ہے؟",
-        "en": "What does 'miftah' mean?"
-      }
-    },
-    {
-      "title": {
-        "ur": "جانوروں کے نام",
-        "en": "Names of Animals"
+        "ur": "'نعم' کا مطلب کیا ہے؟",
+        "en": "What does 'na'am' mean?"
       },
-      "arabic_example": "جمل، كلب، حصان، حمار",
-      "sentences": [
-        {
-          "ur": "'جمل' اونٹ کو کہتے ہیں۔",
-          "en": "'jamal' means camel."
-        },
-        {
-          "ur": "'كلب' کتے کو، اور 'حصان' گھوڑے کو کہتے ہیں۔",
-          "en": "'kalb' means dog, and 'hisan' means horse."
-        },
-        {
-          "ur": "'حمار' گدھے کو کہتے ہیں۔",
-          "en": "'himar' means donkey."
-        }
+      "categories": [
+        {"id": "animals", "label": {"ur": "جانور", "en": "Animals"}},
+        {"id": "home", "label": {"ur": "گھر", "en": "Home"}},
+        {"id": "living-room", "label": {"ur": "بیٹھک", "en": "Living Room"}},
+        {"id": "people", "label": {"ur": "لوگ", "en": "People"}}
       ],
-      "question": {
-        "ur": "'جمل' کس جانور کو کہتے ہیں؟",
-        "en": "Which animal does 'jamal' refer to?"
-      }
-    },
-    {
-      "title": {
-        "ur": "لوگوں کے نام: مدرّس، طالب، رجل",
-        "en": "Words for People: mudarris, talib, rajul"
-      },
-      "arabic_example": "مدرّس، طالب، رجل",
-      "sentences": [
+      "examples": [
         {
-          "ur": "'مدرّس' استاد کو کہتے ہیں، اور 'طالب' طالب علم کو۔",
-          "en": "'mudarris' means teacher, and 'talib' means student."
+          "id": "ay-1",
+          "category": "animals",
+          "arabic": "أَهٰذَا كَلْبٌ؟ نَعَمْ، هٰذَا كَلْبٌ.",
+          "transliteration": "a-hadha kalbun? na'am, hadha kalbun.",
+          "translation": {"ur": "ہاں، یہ ایک کتا ہے۔", "en": "Yes, this is a dog."}
         },
         {
-          "ur": "'رجل' ایک بالغ مرد کے لیے استعمال ہوتا ہے۔",
-          "en": "'rajul' is used for an adult man."
+          "id": "ay-2",
+          "category": "animals",
+          "arabic": "أَهٰذَا حِصَانٌ؟ لَا، هٰذَا حِمَارٌ.",
+          "transliteration": "a-hadha hisanun? la, hadha himarun.",
+          "translation": {"ur": "نہیں، یہ ایک گدھا ہے۔", "en": "No, this is a donkey."}
         },
         {
-          "ur": "ایک چھوٹے لڑکے کے لیے الگ لفظ 'ولد' استعمال ہوتا ہے، 'رجل' نہیں۔",
-          "en": "A separate word, 'walad', is used for a young boy, not 'rajul'."
+          "id": "ay-3",
+          "category": "home",
+          "arabic": "أَهٰذَا بَابٌ؟ نَعَمْ، هٰذَا بَابٌ.",
+          "transliteration": "a-hadha babun? na'am, hadha babun.",
+          "translation": {"ur": "ہاں، یہ ایک دروازہ ہے۔", "en": "Yes, this is a door."}
+        },
+        {
+          "id": "ay-4",
+          "category": "home",
+          "arabic": "أَهٰذَا مِفْتَاحٌ؟ لَا، هٰذَا قَلَمٌ.",
+          "transliteration": "a-hadha miftahun? la, hadha qalamun.",
+          "translation": {"ur": "نہیں، یہ ایک قلم ہے۔", "en": "No, this is a pen."}
+        },
+        {
+          "id": "ay-5",
+          "category": "living-room",
+          "arabic": "أَهٰذَا كُرْسِيٌّ؟ نَعَمْ، هٰذَا كُرْسِيٌّ.",
+          "transliteration": "a-hadha kursiyyun? na'am, hadha kursiyyun.",
+          "translation": {"ur": "ہاں، یہ ایک کرسی ہے۔", "en": "Yes, this is a chair."}
+        },
+        {
+          "id": "ay-6",
+          "category": "living-room",
+          "arabic": "أَهٰذَا كِتَابٌ؟ لَا، هٰذَا مَكْتَبٌ.",
+          "transliteration": "a-hadha kitabun? la, hadha maktabun.",
+          "translation": {"ur": "نہیں، یہ ایک میز ہے۔", "en": "No, this is a desk."}
+        },
+        {
+          "id": "ay-7",
+          "category": "people",
+          "arabic": "أَهٰذَا طَالِبٌ؟ نَعَمْ، هٰذَا طَالِبٌ.",
+          "transliteration": "a-hadha talibun? na'am, hadha talibun.",
+          "translation": {"ur": "ہاں، یہ ایک طالب علم ہے۔", "en": "Yes, this is a student."}
+        },
+        {
+          "id": "ay-8",
+          "category": "people",
+          "arabic": "أَهٰذَا مُدَرِّسٌ؟ لَا، هٰذَا طَبِيبٌ.",
+          "transliteration": "a-hadha mudarrisun? la, hadha tabibun.",
+          "translation": {"ur": "نہیں، یہ ایک ڈاکٹر ہے۔", "en": "No, this is a doctor."}
         }
-      ],
-      "question": {
-        "ur": "'رجل' کس کے لیے استعمال ہوتا ہے: لڑکے کے لیے یا بالغ مرد کے لیے؟",
-        "en": "Is 'rajul' used for a boy or for an adult man?"
-      }
-    },
-    {
-      "title": {
-        "ur": "تنوین: بولنے اور لکھنے میں فرق",
-        "en": "Tanween: The Difference Between Speech and Writing"
-      },
-      "arabic_example": "ـٌ (تنوین)",
-      "sentences": [
-        {
-          "ur": "لکھی ہوئی کلاسیکی عربی میں غیر معرفہ اسم کے آخر میں تنوین کی آواز آتی ہے۔",
-          "en": "In written classical Arabic, an indefinite noun carries the tanween sound at the end."
-        },
-        {
-          "ur": "بول چال کی عربی میں اکثر رک کر بات کرتے وقت یہ آواز چھوڑ دی جاتی ہے۔",
-          "en": "In spoken Arabic, this sound is often dropped when pausing at the end of a word."
-        },
-        {
-          "ur": "یعنی 'كتابٌ' بولتے وقت اکثر صرف 'كتاب' کہا جاتا ہے۔",
-          "en": "So when speaking, 'kitabun' is often simply pronounced as 'kitab'."
-        }
-      ],
-      "question": {
-        "ur": "بول چال کی عربی میں تنوین کی آواز اکثر کیا ہوتی ہے؟",
-        "en": "What usually happens to the tanween sound in spoken Arabic?"
-      }
+      ]
     }
   ]
 }
