@@ -104,6 +104,24 @@ class Settings(BaseSettings):
     urdu_arabic_host: str = "127.0.0.1"
     urdu_arabic_port: int = 8090
 
+    # OTP delivery: email via Gmail SMTP (stdlib smtplib, an App Password --
+    # see src/urdu_arabic/otp_delivery.py docstring for setup) and WhatsApp
+    # via Twilio's REST API (httpx, no SDK dependency added). Any of these
+    # left unset falls back to logging the code instead of sending it, same
+    # as before -- never a hard failure for local dev.
+    urdu_arabic_smtp_host: str = "smtp.gmail.com"
+    urdu_arabic_smtp_port: int = 587
+    urdu_arabic_smtp_user: str = ""
+    urdu_arabic_smtp_app_password: str = ""
+    urdu_arabic_otp_email_from_name: str = "Lisan"
+
+    urdu_arabic_twilio_account_sid: str = ""
+    urdu_arabic_twilio_auth_token: str = ""
+    # Twilio's shared sandbox WhatsApp number -- works immediately for
+    # testing (recipients must first join the sandbox), swap for your own
+    # Twilio WhatsApp-enabled number once approved for production.
+    urdu_arabic_twilio_whatsapp_from: str = "whatsapp:+14155238886"
+
     # ── Local LLM (Ollama) ───────────────────────────────────────────────────
     # Same pattern as JME: a local Ollama server, plain HTTP, no OpenAI spend.
     ollama_url: str = "http://localhost:11434"

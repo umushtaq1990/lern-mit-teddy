@@ -5,14 +5,15 @@ tenant -- this is a self-contained phone-or-email + one-time-code flow
 instead, with its own session cookie (separate secret from the existing
 frontend's SessionMiddleware).
 
-send_otp() just logs the code for now -- swap for a real SMS/email provider
-later without touching anything else here.
+Real delivery (Gmail SMTP for an email identifier, Twilio WhatsApp for a
+phone one) lives in otp_delivery.py -- see its module docstring for setup.
+That module itself falls back to logging the code if its credentials
+aren't configured, so this keeps working unchanged in local dev.
 """
 
 from __future__ import annotations
 
 import hashlib
-import logging
 import secrets
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -26,19 +27,13 @@ from src.settings import get_settings
 
 from .events import log_event
 from .models import UrduArabicOtpCode, UrduArabicUser
-
-logger = logging.getLogger("urdu_arabic.auth")
+from .otp_delivery import send_otp
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 def _hash_code(code: str) -> str:
     return hashlib.sha256(code.encode()).hexdigest()
-
-
-def send_otp(identifier: str, code: str) -> None:
-    """Placeholder delivery -- logs the code. Swap for real SMS/email later."""
-    logger.info("OTP for %s: %s", identifier, code)
 
 
 class RequestOtpBody(BaseModel):
