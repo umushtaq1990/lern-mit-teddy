@@ -100,3 +100,20 @@ class UrduArabicFeedback(Base):
     rating: Mapped[str] = mapped_column(String(10))  # "up" | "down"
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class UrduArabicComment(Base):
+    """Free-text feedback a learner can leave on a specific lesson part --
+    product-quality feedback for us to review, not a public discussion
+    thread: unlike UrduArabicFeedback (one up/down per part, overwritten),
+    this is append-only (a learner can leave several comments over time),
+    and no endpoint ever returns another user's comments."""
+
+    __tablename__ = "urdu_arabic_comments"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("urdu_arabic_users.id"))
+    lesson_id: Mapped[str] = mapped_column(String(100))
+    part_id: Mapped[str] = mapped_column(String(100))
+    comment_text: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

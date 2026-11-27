@@ -107,6 +107,11 @@ const UI_STRINGS = {
     chatHeading: "چیٹ",
     examplesHeading: "مثالیں",
     feedbackLabel: "کیا یہ مفید تھا؟",
+    commentLabel: "اس سبق کے بارے میں کوئی رائے یا تجویز؟",
+    commentPlaceholder: "یہاں لکھیں...",
+    submitComment: "رائے بھیجیں",
+    commentThanks: "شکریہ! آپ کی رائے موصول ہوگئی۔",
+    commentError: "رائے بھیجی نہیں جا سکی۔",
     chatPlaceholder: "کچھ بھی لکھیں یا پوچھیں...",
     record: "&#127908; ریکارڈ کریں",
     stopRecord: "&#9209; روکیں",
@@ -148,6 +153,11 @@ const UI_STRINGS = {
     chatHeading: "Chat",
     examplesHeading: "Examples",
     feedbackLabel: "Was this helpful?",
+    commentLabel: "Any feedback or suggestions about this slide?",
+    commentPlaceholder: "Type here...",
+    submitComment: "Submit feedback",
+    commentThanks: "Thanks! Your feedback was received.",
+    commentError: "Could not submit your feedback.",
     chatPlaceholder: "Type anything, or ask a question...",
     record: "&#127908; Record",
     stopRecord: "&#9209; Stop",
@@ -198,6 +208,9 @@ function applyUiStrings() {
   document.getElementById("chat-heading").textContent = t("chatHeading");
   document.getElementById("chat-fab-label").textContent = t("chatHeading");
   document.getElementById("feedback-label").textContent = t("feedbackLabel");
+  document.getElementById("comment-label").textContent = t("commentLabel");
+  document.getElementById("part-comment").placeholder = t("commentPlaceholder");
+  document.getElementById("submit-comment-btn").textContent = t("submitComment");
   document.getElementById("question-answer").placeholder = t("chatPlaceholder");
   document.getElementById("record-btn").innerHTML = t("record");
   document.getElementById("stop-record-btn").innerHTML = t("stopRecord");
@@ -670,6 +683,7 @@ function renderPart() {
 
   loadPartChat(currentLesson.id, part.id);
   loadFeedbackState(currentLesson.id, part.id);
+  loadComments(currentLesson.id, part.id);
   logClientEvent("part_viewed", currentLesson.id, part.id);
 
   const audio = document.getElementById("part-audio");
@@ -1186,6 +1200,53 @@ document.querySelectorAll(".feedback-btn").forEach((btn) => {
     document.getElementById("thumbs-up-btn").classList.toggle("active", rating === "up");
     document.getElementById("thumbs-down-btn").classList.toggle("active", rating === "down");
   });
+});
+
+// Private product-feedback comments on this slide (append-only, own
+// comments only -- see /api/comments in server.py). The server already
+// logs "comment_submitted" at the POST call site, so no separate
+// logClientEvent here -- same pattern as /api/feedback above.
+async function loadComments(lessonId, partId) {
+  const list = document.getElementById("comment-list");
+  list.innerHTML = "";
+  const data = await api(
+    `/api/comments?lesson_id=${encodeURIComponent(lessonId)}&part_id=${encodeURIComponent(partId)}`
+  );
+  data.comments.forEach((c) => {
+    const entry = document.createElement("div");
+    entry.className = "comment-entry";
+
+    const text = document.createElement("p");
+    text.textContent = c.comment_text;
+    entry.appendChild(text);
+
+    const time = document.createElement("time");
+    time.textContent = new Date(c.created_at).toLocaleString();
+    entry.appendChild(time);
+
+    list.appendChild(entry);
+  });
+}
+
+document.getElementById("submit-comment-btn").addEventListener("click", async () => {
+  const part = currentLesson.parts[currentPartIndex];
+  const textarea = document.getElementById("part-comment");
+  const statusEl = document.getElementById("comment-status");
+  const commentText = textarea.value.trim();
+  if (!commentText) return;
+
+  try {
+    await api("/api/comments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lesson_id: currentLesson.id, part_id: part.id, comment_text: commentText }),
+    });
+    textarea.value = "";
+    statusEl.textContent = t("commentThanks");
+    await loadComments(currentLesson.id, part.id);
+  } catch (err) {
+    statusEl.textContent = t("commentError");
+  }
 });
 
 function formatTime(seconds) {

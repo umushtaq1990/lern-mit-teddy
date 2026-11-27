@@ -1239,6 +1239,64 @@ button:disabled {
   color: white;
 }
 
+/* Private product-feedback comments on this slide -- visually its own
+   block, distinct from the chat list below (which is Q&A with the AI,
+   not open-ended feedback for us to review). */
+#comment-section {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e3e9e6;
+}
+
+#comment-label {
+  display: block;
+  font-size: 13px;
+  color: #8A9A91;
+  margin-bottom: 4px;
+}
+
+#comment-section textarea {
+  min-height: 60px;
+}
+
+#submit-comment-btn {
+  margin-top: 6px;
+}
+
+#comment-status {
+  font-size: 12px;
+  color: #0B6E4F;
+  margin: 6px 0 0;
+}
+
+#comment-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.comment-entry {
+  font-size: 13px;
+  line-height: 1.4;
+  background: #F4F8F6;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.comment-entry p {
+  margin: 0;
+}
+
+.comment-entry time {
+  display: block;
+  font-size: 11px;
+  color: #8A9A91;
+  margin-top: 2px;
+  direction: ltr;
+  text-align: inherit;
+}
+
 #part-chat-list {
   margin-bottom: 12px;
   max-height: 320px;

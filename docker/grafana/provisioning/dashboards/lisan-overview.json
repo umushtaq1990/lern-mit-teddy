@@ -196,6 +196,192 @@
           "format": "table"
         }
       ]
+    },
+    {
+      "id": 15,
+      "title": "Per-Slide Analytics",
+      "type": "row",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 56 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 16,
+      "title": "Views per slide (most viewed)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 57 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT lesson_id, part_id, count(*) AS views, count(DISTINCT user_id) AS unique_viewers FROM urdu_arabic_events WHERE event_type = 'part_viewed' GROUP BY 1, 2 ORDER BY 3 DESC LIMIT 25",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Likes vs dislikes per slide",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 57 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT lesson_id, part_id, count(*) FILTER (WHERE rating = 'up') AS likes, count(*) FILTER (WHERE rating = 'down') AS dislikes FROM urdu_arabic_feedback GROUP BY 1, 2 ORDER BY (count(*) FILTER (WHERE rating = 'down')) DESC, (count(*) FILTER (WHERE rating = 'up')) DESC LIMIT 25",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Comments per slide",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 65 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT lesson_id || '/' || part_id AS slide, count(*) AS comments FROM urdu_arabic_comments GROUP BY 1 ORDER BY 2 DESC LIMIT 20",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Recent comments (all slides)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 65 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT c.created_at, c.lesson_id, c.part_id, u.identifier AS user, c.comment_text FROM urdu_arabic_comments c JOIN urdu_arabic_users u ON u.id = c.user_id ORDER BY c.created_at DESC LIMIT 50",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Per-User Drilldown (pick a user above)",
+      "type": "row",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 73 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 21,
+      "title": "User: logins",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 74 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT count(*) AS value FROM urdu_arabic_events WHERE user_id = $user_id AND event_type = 'login'",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "User: distinct slides viewed",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 74 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT count(DISTINCT lesson_id || '/' || part_id) AS value FROM urdu_arabic_events WHERE user_id = $user_id AND event_type = 'part_viewed'",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "User: questions asked",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 74 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT count(*) AS value FROM urdu_arabic_questions WHERE user_id = $user_id",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title": "User: last active",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 74 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT to_char(max(created_at), 'YYYY-MM-DD HH24:MI') AS value FROM urdu_arabic_events WHERE user_id = $user_id",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "title": "User: activity timeline (events)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 78 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT created_at, event_type, lesson_id, part_id, language, metadata_json FROM urdu_arabic_events WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 200",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "title": "User: feedback given",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 86 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT lesson_id, part_id, rating, updated_at FROM urdu_arabic_feedback WHERE user_id = $user_id ORDER BY updated_at DESC",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "title": "User: comments left",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 86 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT lesson_id, part_id, comment_text, created_at FROM urdu_arabic_comments WHERE user_id = $user_id ORDER BY created_at DESC",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "title": "User: questions asked (detail)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 94 },
+      "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+      "targets": [
+        {
+          "rawSql": "SELECT created_at, lesson_id, part_id, status, question_text, answer_text, rating FROM urdu_arabic_questions WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 100",
+          "format": "table"
+        }
+      ]
     }
-  ]
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "user_id",
+        "label": "User",
+        "type": "query",
+        "datasource": { "type": "postgres", "uid": "postgres-teddy" },
+        "query": "SELECT id AS __value, identifier AS __text FROM urdu_arabic_users ORDER BY identifier",
+        "refresh": 1,
+        "sort": 1,
+        "current": {}
+      }
+    ]
+  }
 }

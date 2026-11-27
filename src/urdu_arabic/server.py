@@ -46,7 +46,7 @@ from src.settings import get_settings  # noqa: E402
 from . import auth, content, storage  # noqa: E402
 from .events import log_event  # noqa: E402
 from .languages import LANGUAGES  # noqa: E402
-from .models import UrduArabicFeedback, UrduArabicQuestion  # noqa: E402
+from .models import UrduArabicComment, UrduArabicFeedback, UrduArabicQuestion  # noqa: E402
 
 logging.getLogger("urdu_arabic").setLevel(logging.INFO)
 if not logging.getLogger("urdu_arabic").handlers:
@@ -197,6 +197,73 @@ def get_feedback(lesson_id: str, part_id: str, request: Request) -> dict[str, An
             )
         ).first()
         return {"rating": row.rating if row else None}
+    finally:
+        db.close()
+
+
+class CommentBody(BaseModel):
+    lesson_id: str
+    part_id: str
+    comment_text: str
+
+
+@app.post("/api/comments")
+def submit_comment(body: CommentBody, request: Request) -> dict[str, str]:
+    """Free-text product feedback on a specific slide -- private: unlike
+    the chat panel (an AI Q&A), this is never answered or shown to other
+    learners, just captured for us to review. Append-only, so a learner
+    can leave several over time rather than overwriting one value."""
+    user = auth.current_user(request)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Login required")
+    comment_text = body.comment_text.strip()
+    if not comment_text:
+        raise HTTPException(status_code=400, detail="comment_text must not be empty")
+
+    db = get_session_factory()()
+    try:
+        db.add(
+            UrduArabicComment(
+                user_id=user.user_id,
+                lesson_id=body.lesson_id,
+                part_id=body.part_id,
+                comment_text=comment_text,
+            )
+        )
+        db.commit()
+    finally:
+        db.close()
+
+    log_event(user.user_id, "comment_submitted", lesson_id=body.lesson_id, part_id=body.part_id)
+    return {"status": "ok"}
+
+
+@app.get("/api/comments")
+def list_comments(lesson_id: str, part_id: str, request: Request) -> dict[str, Any]:
+    """Only the current user's own comments -- there is no endpoint that
+    returns another learner's comments, by design (private feedback, not a
+    public thread)."""
+    user = auth.current_user(request)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Login required")
+
+    db = get_session_factory()()
+    try:
+        rows = db.scalars(
+            select(UrduArabicComment)
+            .where(
+                UrduArabicComment.user_id == user.user_id,
+                UrduArabicComment.lesson_id == lesson_id,
+                UrduArabicComment.part_id == part_id,
+            )
+            .order_by(UrduArabicComment.created_at)
+        ).all()
+        return {
+            "comments": [
+                {"id": row.id, "comment_text": row.comment_text, "created_at": row.created_at.isoformat()}
+                for row in rows
+            ]
+        }
     finally:
         db.close()
 
